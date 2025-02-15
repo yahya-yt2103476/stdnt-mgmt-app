@@ -6,5 +6,55 @@
     <title>Studnet Dashboard</title>
     <link rel="stylesheet" href="styles/stdnt-mp.css" />
   </head>
-  <body></body>
+  <body>
+    <header>
+      <nav>
+        <button>
+          <img
+            src="data:image/png;base64,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"
+          />
+        </button>
+        <div class="search-group">
+            <input
+            type="search"
+            name="searchBar"
+            id="searchBar"
+            placeholder="Search by course or category"
+          />
+          <button>
+            <img
+              name="searchBtn"
+              id="searchBtn"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAEMUlEQVRoQ+1ZaaiNQRg+l+xr2bNdO8lSkiLqhvywZc9W9oiyJRSyRn5YIiJbiOxFiB+WsiRKSWS/ln/2NUQ8z+189Zo735l5v3O+nFP3raczc847z8wz33wz7zsnL5Hjlpfj40+UCPjfTzCdJ1Aeg+8PDAZaAzWToKY3SdzH5zHgNPA9DrFRBNTBQFYCo4EKnoP6Br+9wBLgtWcbLzetgOVgnQdw9qMYhaxOTkCU9sXa+AqogZZngc4Z6TWRuAieQcDHdPl8BLRJDr6xpbP3+O4kcBh4CrxK+jTAZ3NgKDAQqG5p+wjf9QJepCPCJaA+yG8A/JT2LLkUduPzl2MA5fD7RGAB0NDwpYguACcikqUSUBWMV4B2BvMR1McAP5U9VoT/IaCf0e466gXADyVfkXsqAZvx+3SDdC3q86N0JNpsRXmqwbEM9aVReMME5IPsMVBakHI/55pO10qB4AzQRxB9RbkR8E5LHibgAIhGCrInKPOlzJRxeZKTh19g61GYo+3AJoCH0wegrCAbgvJxLbnDfxp+3yJ8eHrXBv5o+rEJGA4CvmyB3UOhrYZU4ctTWT6F7qhz4/A2m4D9aM0wIbAVKDAEiMN2gnSCIFZvEjYBt0DYSZB2Q/laHKMH5zCAh2BgfLn7avqyCeDJKA+cfNSfa0gVvh3he1v430XZPHdS0tkE8IAqI1pVQplBWBzGEEOewp9Qr6bpyCbgMwgqC5IqKH/RkCp82Q/7C4wTxQnzNpsAxidyz2+BOg+1OKwlSB8I4kKUm2g6sgm4DIIegqQnyhc0pArf3vA9L/wZF3VVtLfGQttAMEWQqLc2xQDWwXe28N+I8ixFe6sARounBAmXFB91HMawPF8QDzD6dvZpW0JMF98CDH8DYxDHYC6TNhZkzJMDY/jCRIiBnbeFBXO7wDBesDDbaubN6nbk5HBjqCdceVGw2N30X48wAUwfCw2yg6iP0nYQ4s80lFcygXHWufuobyxSJTQbQDjTGECkWTI4NqE+w/iOCQ43D7WlEsBD5irQ3mDdg7pcXr6dctnwKfJFlXYHlQ6+JKafK6mviwY3Ab5c0rh+VwH7gN+OzpnUTwKYippJPZsy/h8HyBfaW49LAIl4bXgOYMpnGnerE8BRoBDgtQrTUN5i8AQPrlWYgbmMYTVvOVTmI4CEtQDeb2bqYosvKzlNU4vwFRB0xORmkWqKijsziZkLcLA8iU3jHRK3cS/TCiApl8cagHdDGuPpzgFfEo0YRqQlIoqAoH+GvQw7RgBNAd6fMr+VF78MApllMet6GaI2TMRk+O9wzVA6Alzcmt95LvB8kOa1O2WLAA48kohsEhAmgt+3Ah7aHmm2CeAYufa3i8EuRJmbhtWyUYAUwYFTQKhlqwAOuADgPzkpLZsFuMZe9HuJAK9pitGp5AnEOLle1Dn/BP4CV0uiMczELXQAAAAASUVORK5CYII="
+            />
+          </button>
+          <button>
+            <img
+              name="filterBtn"
+              id="filterBtn"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAwElEQVRoQ+2WwQ7DIBTD2v//6O6y0w4dioMqintP4NmAeh6Lf+fi+z8c4GmDGtAAJOARggBxXAMYISzQAASI41sYuDAmVnALecSAAzAB93/MWxiAAOfGRwzM3QFsdwAIEMeJgfbzGu0lCn2xOcDP+YlgRqG3GMAXsFFADDTWxx0OgBHCghkG/j2v1TWrZYOvU3XNapkDBPdhhoFgG3nEAXJ2naQGOhzzFg3k7DpJDXQ45i0ayNl1khrocMxbljfwAXoKDDHmpnQ/AAAAAElFTkSuQmCC"
+            />
+          </button>
+        </nav>
+        </div>
+    </header>
+    <main>
+        <h2>Available Courses</h2>
+        <div class="course-card">
+            <h3>Web Development</h3>
+            <p>Instructor: John Doe</p>
+            <p>Category: Programming</p>
+            <p>Enrolled Students: 30</p>
+            <a href="#" class="view-course-btn">View Course</a>
+        </div>
+        <div class="course-card">
+            <h3>Data Science</h3>
+            <p>Instructor: Jane Smith</p>
+            <p>Category: AI/ML</p>
+            <p>Enrolled Students: 25</p>
+            <a href="#" class="view-course-btn">View Course</a>
+        </div>
+    </main>
+    <footer></footer>
+  </body>
 </html>
