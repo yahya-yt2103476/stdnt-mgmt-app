@@ -52,7 +52,7 @@ main {
   height: 100vh;
 }
 
-.service-card {
+.course-card {
   color: #ff5733;
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -62,13 +62,13 @@ main {
   margin: 0.5rem;
   transition: 0.4s;
 }
-.service-card p {
+.course-card p {
   color: #ff8c42;
 }
-.service-card a {
+.course-card a {
   color: #f4a261;
 }
-.service-card:hover {
+.course-card:hover {
   cursor: pointer;
   scale: 1.025;
 }

@@ -22,7 +22,7 @@ header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.2rem;
+  padding: 0.3rem 0.5rem;
 }
 .search-group {
   display: flex;
@@ -44,9 +44,10 @@ header nav {
   width: 15rem;
   height: 2rem;
   padding: 0.5rem;
+  outline: none;
 }
 .searchBar:focus {
-  border: #007bff solid 0.07rem;
+  border: #4da8da solid 0.1rem;
 }
 
 main {

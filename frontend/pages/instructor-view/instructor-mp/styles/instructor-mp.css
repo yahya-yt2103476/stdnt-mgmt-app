@@ -1,0 +1,80 @@
+/* <!-- 🟢 Primary Colors: #28A745, #6FCF97, #C3E6CB --> */
+/* ------------------------------------------------------- */
+* {
+  /* reset */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #101827;
+}
+
+header {
+  background-color: white;
+}
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+}
+.search-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+.header-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.header-btn:hover {
+  background-color: #9ed7b3;
+}
+.searchBar {
+  width: 15rem;
+  height: 2rem;
+  padding: 0.5rem;
+  outline: none;
+}
+.searchBar:focus {
+  border: #9ed7b3 solid 0.1rem;
+}
+/* C3E6CB */
+main {
+  color: white;
+  padding: 0.5rem;
+  height: 100vh;
+}
+
+.course-card {
+  color: #28a745;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+  padding: 0.3rem;
+  margin: 0.5rem;
+  transition: 0.4s;
+}
+.course-card p {
+  color: #6fcf97;
+}
+.course-card a {
+  color: #9ed7b3;
+}
+.course-card:hover {
+  cursor: pointer;
+  scale: 1.025;
+}
+
+footer {
+  padding: 0.5rem;
+  color: #28a745;
+  background-color: white;
+}
