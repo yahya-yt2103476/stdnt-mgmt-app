@@ -5,10 +5,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
 
+/* mobile view */
 body {
   background-color: #101827;
+
+  display: grid;
+  grid-template-areas: "header" "main" "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+
+  min-height: 100vh;
 }
 
 header {

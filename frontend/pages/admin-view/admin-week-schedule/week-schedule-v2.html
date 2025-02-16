@@ -7,10 +7,33 @@
     <link rel="stylesheet" href="styles/week-schedule-v2.css" />
   </head>
   <body>
-    <div class="page">
-      <header>
-        <nav>
-          <button class="header-btn" name="userBtn" id="userBtn">
+    <header>
+      <nav>
+        <button class="header-btn" name="userBtn" id="userBtn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            style="fill: rgba(0, 0, 0, 1); transform: msFilter"
+          >
+            <path
+              d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z"
+            ></path>
+            <path
+              d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z"
+            ></path>
+          </svg>
+        </button>
+        <div class="search-group">
+          <input
+            type="search"
+            name="searchBar"
+            id="searchBar"
+            class="searchBar"
+            placeholder="Search by course or category"
+          />
+          <button class="header-btn" name="searchBtn" id="searchBtn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -19,128 +42,103 @@
               style="fill: rgba(0, 0, 0, 1); transform: msFilter"
             >
               <path
-                d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z"
-              ></path>
-              <path
-                d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z"
+                d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"
               ></path>
             </svg>
           </button>
-          <div class="search-group">
-            <input
-              type="search"
-              name="searchBar"
-              id="searchBar"
-              class="searchBar"
-              placeholder="Search by course or category"
-            />
-            <button class="header-btn" name="searchBtn" id="searchBtn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                style="fill: rgba(0, 0, 0, 1); transform: msFilter"
-              >
-                <path
-                  d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"
-                ></path>
-              </svg>
-            </button>
-            <button class="header-btn" name="filterBtn" id="filterBtn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                style="fill: rgba(0, 0, 0, 1); transform: msFilter"
-              >
-                <path d="M7 11h10v2H7zM4 7h16v2H4zm6 8h4v2h-4z"></path>
-              </svg>
-            </button>
-          </div>
-        </nav>
-      </header>
-      <main>
-        <!-- need more clarification -->
-        <h2>Weekly Course Schedule</h2>
-        <div class="week-container">
-          <div class="sun">
-            <h3>Sunday</h3>
-            <div class="course-card">
-              <h4>Data Science</h4>
-              <p>Instructor: Jane Smith</p>
-              <p>Category: AI/ML</p>
-              <p>Enrolled Students: 25</p>
-              <p>Time: 12:00 PM - 1:15 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-          </div>
-          <div class="mon">
-            <h3>Monday</h3>
-            <div class="course-card">
-              <h4>Web Development</h4>
-              <p>Instructor: John Doe</p>
-              <p>Category: Programming</p>
-              <p>Enrolled Students: 30</p>
-              <p>Time: 10:00 AM - 12:00 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-            <div class="course-card">
-              <h4>Deep Learning</h4>
-              <p>Instructor: Saeed Salem</p>
-              <p>Category: AI/ML</p>
-              <p>Enrolled Students: 45</p>
-              <p>Time: 12:00 PM - 1:00 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-          </div>
-          <div class="tue">
-            <h3>Tuesday</h3>
-            <div class="course-card">
-              <h4>Data Science</h4>
-              <p>Instructor: Jane Smith</p>
-              <p>Category: AI/ML</p>
-              <p>Enrolled Students: 25</p>
-              <p>Time: 12:00 PM - 1:15 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-          </div>
-          <div class="wed">
-            <h3>Wednesday</h3>
-            <div class="course-card">
-              <h4>Web Development</h4>
-              <p>Instructor: John Doe</p>
-              <p>Category: Programming</p>
-              <p>Enrolled Students: 30</p>
-              <p>Time: 10:00 AM - 12:00 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-            <div class="course-card">
-              <h4>Deep Learning</h4>
-              <p>Instructor: Saeed Salem</p>
-              <p>Category: AI/ML</p>
-              <p>Enrolled Students: 45</p>
-              <p>Time: 12:00 PM - 1:00 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
-          </div>
-          <div class="thu">
-            <h3>Thursday</h3>
-            <div class="course-card">
-              <h4>Islamic Culture</h4>
-              <p>Instructor: Ali Euchi</p>
-              <p>Category: Dawa</p>
-              <p>Enrolled Students: 45</p>
-              <p>Time: 10:00 AM - 12:15 PM</p>
-              <a href="#" class="view-course-btn">View Course</a>
-            </div>
+          <button class="header-btn" name="filterBtn" id="filterBtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              style="fill: rgba(0, 0, 0, 1); transform: msFilter"
+            >
+              <path d="M7 11h10v2H7zM4 7h16v2H4zm6 8h4v2h-4z"></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <!-- need more clarification -->
+      <h2>Weekly Course Schedule</h2>
+      <div class="week-container">
+        <div class="sun">
+          <h3>Sunday</h3>
+          <div class="course-card">
+            <h4>Data Science</h4>
+            <p>Instructor: Jane Smith</p>
+            <p>Category: AI/ML</p>
+            <p>Enrolled Students: 25</p>
+            <p>Time: 12:00 PM - 1:15 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
           </div>
         </div>
-      </main>
-      <footer>
-        <p>&copy; Student Management Application 2025</p>
-      </footer>
-    </div>
+        <div class="mon">
+          <h3>Monday</h3>
+          <div class="course-card">
+            <h4>Web Development</h4>
+            <p>Instructor: John Doe</p>
+            <p>Category: Programming</p>
+            <p>Enrolled Students: 30</p>
+            <p>Time: 10:00 AM - 12:00 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+          <div class="course-card">
+            <h4>Deep Learning</h4>
+            <p>Instructor: Saeed Salem</p>
+            <p>Category: AI/ML</p>
+            <p>Enrolled Students: 45</p>
+            <p>Time: 12:00 PM - 1:00 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+        </div>
+        <div class="tue">
+          <h3>Tuesday</h3>
+          <div class="course-card">
+            <h4>Data Science</h4>
+            <p>Instructor: Jane Smith</p>
+            <p>Category: AI/ML</p>
+            <p>Enrolled Students: 25</p>
+            <p>Time: 12:00 PM - 1:15 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+        </div>
+        <div class="wed">
+          <h3>Wednesday</h3>
+          <div class="course-card">
+            <h4>Web Development</h4>
+            <p>Instructor: John Doe</p>
+            <p>Category: Programming</p>
+            <p>Enrolled Students: 30</p>
+            <p>Time: 10:00 AM - 12:00 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+          <div class="course-card">
+            <h4>Deep Learning</h4>
+            <p>Instructor: Saeed Salem</p>
+            <p>Category: AI/ML</p>
+            <p>Enrolled Students: 45</p>
+            <p>Time: 12:00 PM - 1:00 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+        </div>
+        <div class="thu">
+          <h3>Thursday</h3>
+          <div class="course-card">
+            <h4>Islamic Culture</h4>
+            <p>Instructor: Ali Euchi</p>
+            <p>Category: Dawa</p>
+            <p>Enrolled Students: 45</p>
+            <p>Time: 10:00 AM - 12:15 PM</p>
+            <a href="#" class="view-course-btn">View Course</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; Student Management Application 2025</p>
+    </footer>
   </body>
 </html>
