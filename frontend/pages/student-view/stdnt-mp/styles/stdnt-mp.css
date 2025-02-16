@@ -7,11 +7,8 @@
   box-sizing: border-box;
 }
 
-html {
-  background-color: #101827;
-}
-
 body {
+  background-color: #101827;
   border: #007bff solid 0.01rem;
 }
 
