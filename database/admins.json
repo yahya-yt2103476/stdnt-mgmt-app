@@ -1,0 +1,12 @@
+{
+    "admins": [
+      {
+        "id": "A001",
+        "name": "Mariam Al-Thani"
+      },
+      {
+        "id": "A002",
+        "name": "Hassan Al-Mutawa"
+      }
+    ]
+  }

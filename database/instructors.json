@@ -1,0 +1,16 @@
+{
+    "instructors": [
+      {
+        "id": "I001",
+        "name": "Dr. Khalid Al-Naimi"
+      },
+      {
+        "id": "I002",
+        "name": "Dr. Layla Hassan"
+      },
+      {
+        "id": "I003",
+        "name": "Dr. Saif Al-Muraikhi"
+      }
+    ]
+  }

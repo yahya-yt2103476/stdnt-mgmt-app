@@ -1,0 +1,22 @@
+{
+    "sections": [
+      {
+        "id": "SEC001",
+        "courseId": "CMPS201",
+        "instructorId": "I001",
+        "capacity": 30
+      },
+      {
+        "id": "SEC002",
+        "courseId": "CMPS202",
+        "instructorId": "I002",
+        "capacity": 25
+      },
+      {
+        "id": "SEC003",
+        "courseId": "CMPS203",
+        "instructorId": "I003",
+        "capacity": 20
+      }
+    ]
+  }

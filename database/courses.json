@@ -1,0 +1,23 @@
+{
+    "courses": [
+      {
+        "id": "CMPS201",
+        "name": "Web Development",
+        "category": "Programming",
+        "prerequisites": ["CMPS101"]
+      },
+      {
+        "id": "CMPS202",
+        "name": "Database Systems",
+        "category": "Databases",
+        "prerequisites": ["CMPS101"]
+      },
+      {
+        "id": "CMPS203",
+        "name": "Cybersecurity Basics",
+        "category": "Security",
+        "prerequisites": ["CMPS101"]
+      }
+    ]
+  }
+  

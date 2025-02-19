@@ -1,0 +1,29 @@
+{
+    "registrations": [
+      {
+        "studentId": "S001",
+        "sectionId": "SEC001",
+        "status": "Pending"
+      },
+      {
+        "studentId": "S001",
+        "sectionId": "SEC001",
+        "status": "Passed"
+      },
+      {
+        "studentId": "S001",
+        "sectionId": "SEC001",
+        "status": "Failed"
+      },
+      {
+        "studentId": "S002",
+        "sectionId": "SEC002",
+        "status": "Approved"
+      },
+      {
+        "studentId": "S003",
+        "sectionId": "SEC003",
+        "status": "Pending Approval"
+      }
+    ]
+  }
