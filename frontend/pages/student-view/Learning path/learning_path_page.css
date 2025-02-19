@@ -1,16 +1,51 @@
-.Finished_Semester{
+.Semester{
     
-    background-color: green ;
+    background-color: lightgreen ;
+    justify-self: center;
+    display: flex;
+    width: 80%;
+    height: 10%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    border-radius: 2%;
+    border: 2px solid black;
+}
+.Period{
+    width: fit-content;
+    justify-self: start;
+    align-self: start;
+    margin-left: 10%;
+}
+.course{
+    width: 100%;
+}
+.Course_Names{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:stretch;
+}
+.Course_Info{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:stretch;
+}
+.Course_Grades{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:stretch;
 }
 
-table {
-
-    padding: 15px; /* Fixed padding issue */
-    margin: auto; /* Centers the table */
-    border-collapse: collapse; 
+.Semesters{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:  space-evenly;
+    border: 1px solid black ;
+    padding: 0 0 5% 0;
 }
 
-td, th {
-    padding: 10px; /* Adds padding inside cells */
-    text-align: center; /* Centers text inside table cells */
-}
+
