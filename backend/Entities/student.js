@@ -14,4 +14,8 @@ class Student{
     getStudentCourses()
     {
     }
+
+    finishedPrerequietses(courseId) {
+        
+    }
 }

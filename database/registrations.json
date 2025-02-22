@@ -3,7 +3,7 @@
       {
         "studentId": "S001",
         "sectionId": "SEC001",
-        "status": "Pending"
+        "status": "In-Progress"
       },
       {
         "studentId": "S001",
@@ -23,7 +23,7 @@
       {
         "studentId": "S003",
         "sectionId": "SEC003",
-        "status": "Pending Approval"
+        "status": "Pending"
       }
     ]
   }

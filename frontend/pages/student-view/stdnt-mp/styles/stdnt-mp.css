@@ -22,6 +22,7 @@ body {
 
 header {
   background-color: white;
+  height: fit-content;
 }
 header nav {
   display: flex;
@@ -86,4 +87,12 @@ footer {
   padding: 0.5rem;
   color: #007bff;
   background-color: white;
+}
+.nav-buttons{
+  display: flex;
+  flex-direction: row;
+
+}
+nav{
+  background-color: lightblue;
 }
