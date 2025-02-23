@@ -16,7 +16,7 @@
   align-items: center;
   flex-direction: column;
   text-align: center;
-  transition: background-color 1s ease, transform 1s ease, box-shadow 1s ease;
+  transition: ease-in-out background-color 1s ease, transform 1s ease, box-shadow 1s ease;
 }
 
 .fa:hover {

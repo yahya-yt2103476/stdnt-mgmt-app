@@ -5,7 +5,10 @@
         "courseId": "CMPS201",
         "instructorId": "I001",
         "capacity": 30,
-        "semester":"Spring 2023"
+        "semester":"Spring 2023",
+        "Time": "00:00 00:50",
+        "Days": ["Sunday,Tuesday,Thursday"]
+
       },
       {
         "id": "SEC002",
@@ -14,6 +17,7 @@
         "capacity": 25,
         "semester":"Fall 2024"
       },
+
       {
         "id": "SEC003",
         "courseId": "CMPS203",

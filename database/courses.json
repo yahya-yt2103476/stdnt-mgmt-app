@@ -4,7 +4,8 @@
         "id": "CMPS201",
         "name": "Web Development",
         "category": "Programming",
-        "prerequisites": ["CMPS101"]
+        "prerequisites": ["CMPS101"],
+        "Description": "This course is about the fundmentals of web dev"
       },
       {
         "id": "CMPS202",

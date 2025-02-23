@@ -3,12 +3,15 @@
       {
         "studentId": "S001",
         "sectionId": "SEC001",
-        "status": "In-Progress"
+        "status": "In-Progress",
+        "Grade": ""
+        
       },
       {
         "studentId": "S001",
         "sectionId": "SEC001",
-        "status": "Passed"
+        "status": "Passed",
+        "Grade": "A"
       },
       {
         "studentId": "S001",
