@@ -1,5 +1,6 @@
-const icons = [];
-const users = [];
+async function main() {
+    const icons = [];
+    let users = []
 
 const form = document.querySelector("#form")
 const std_icn = document.querySelector("#Student-icon")
@@ -8,16 +9,17 @@ const Inst_icn = document.querySelector("#Instructor-icon")
 icons.push(Inst_icn)
 const Admin_icn = document.querySelector("#Admin-icon")
 icons.push(Admin_icn)
+const indicator = document.querySelector("#indicator")
+const userType = document.querySelector("#usertype")
 
 console.log("will print users in a min");
 
 const path = "http://127.0.0.1:5500/database/users.json"
-const response = fetch(path).then(r => r.json()
-).then(data => data.forEach(element => {
-    console.log(element);
 
-})
+users = await fetch(path).then((e)=> e.json()).then((data) => {return data})
+users.forEach(u=> console.log(u)
 )
+
 
 
 let usertype;
@@ -55,12 +57,34 @@ function handleUserType(e) {
 }
 
 
-function handleLoginUser(e) {
+async function handleLoginUser(e) {
     e.preventDefault()
 
-    const data = new FormData(e.target)
-    console.log(data);
+    const formData = new FormData(form);
+    let formObject = {};
+
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+
+    var user = users.find(u=>{
+        return u.email == formObject.email && u.password == formObject.password
+    })    
+    if(user && usertype != undefined){
+        console.log(`user have been found`);
+        indicator.style.display = "none"
+        
+    }else if(usertype == undefined){
+        userType.style.display = "block"
+        await new Promise(resolve => setTimeout(resolve, 4000));
+        userType.style.display = "none"
+    }else{
+        indicator.style.display = "block"
+    }    
     form.reset();
 
 
 }
+}
+
+main()

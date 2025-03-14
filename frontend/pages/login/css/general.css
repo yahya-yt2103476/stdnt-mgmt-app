@@ -113,3 +113,16 @@ button:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
+
+#indicator{
+  color: red;
+  font-size: 14px;
+  padding: 10px;
+  display: none;
+}
+
+#usertype{
+  font-size: 14px;
+  color: red;
+  display: none;
+}
