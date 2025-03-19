@@ -18,6 +18,13 @@
         "name": "Cybersecurity Basics",
         "category": "Security",
         "prerequisites": ["CMPS101"]
+      },
+      {
+        "id": "CMPS497",
+        "section":"L01",
+        "name": "Deep Learning",
+        "category": "AI",
+        "prerequisites": ["CMPS101","CMPS251"]
       }
     ]
   }

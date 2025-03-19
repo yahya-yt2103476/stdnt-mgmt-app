@@ -22,9 +22,9 @@
 
   .container{
     display: grid;
-    grid-template-areas: "header" "body";
+    grid-template-areas: "header" "body footer";
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
   }
   
   header {
@@ -73,12 +73,8 @@
   }
   
     body {
-      grid-area: "body";
       background-color: #101827;
-      display: grid;
-      grid-template-areas: "main" "footer";
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr auto;
+      border: none;
     }
   
 
