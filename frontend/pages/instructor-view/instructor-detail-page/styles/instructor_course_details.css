@@ -187,16 +187,22 @@
     background-color: #6fcf97;
   }
 
-  .finalGradeFOrm label{
+  .finalGradeFOrm label, .finalGradeFOrm button{
     display: block;
     margin: 0.5rem;
     color: #28a745;
   }
+
   .finalGradeFOrm select, .finalGradeFOrm input{
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem;
   }
-  
-  
+
+  .finalGradeFOrm input[type="number"] {
+    font-size: 1.5em;
+    color: blue;
+  }
+
   .finalGradeFOrm button{
     background-color: #28a745;
     color: white;
@@ -218,5 +224,3 @@
     background-color: white;
     text-align: center;
   }
-
-
