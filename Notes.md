@@ -5,4 +5,5 @@
 3. you will notice i used a layout which we didn't take in this course display: block but in short 
     Elements with display:block will take up the full available width of their parent container.
     you can then manipluate it further using margins and border etc (there is probably more to it but i used it for that purpose).
+   
 nth. ... add more notes ...
