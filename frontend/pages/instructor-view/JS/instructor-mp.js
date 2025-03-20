@@ -34,8 +34,16 @@ console.log(JSON.stringify(localStorage.getItem("course_list")));
 
 
 function main(){
-  
 
+  const main = document.querySelector("main");
+  courseList = localStorage.getItem("course_list");
+  sectionList = localStorage.getItem("section_list");
+  main.innerHTML = loadCourses();
+
+}
+
+function loadCourses(d1,d2){
+  return 
 }
 main();
 
