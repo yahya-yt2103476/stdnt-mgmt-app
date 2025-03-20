@@ -16,9 +16,8 @@ console.log("will print users in a min");
 
 const path = "http://127.0.0.1:5500/database/users.json"
 
-users = await fetch(path).then((e)=> e.json()).then((data) => {return data})
-users.forEach(u=> console.log(u)
-)
+users = await fetch(path).then((e)=> e.json()).then((data) => {return data});
+users.forEach(u=> console.log(u));
 
 
 
@@ -73,8 +72,11 @@ async function handleLoginUser(e) {
     if(user && usertype != undefined){
         console.log(`user have been found`);
         indicator.style.display = "none"
-        
-    }else if(usertype == undefined){
+
+        //Mahmoud added the following function
+        loadPage(user,"../instructor-view/instructor-mp/instructor-mp.html");
+    }
+    else if(usertype == undefined){
         userType.style.display = "block"
         await new Promise(resolve => setTimeout(resolve, 4000));
         userType.style.display = "none"
@@ -88,3 +90,31 @@ async function handleLoginUser(e) {
 }
 
 main()
+
+
+
+/*
+Mahmoud added this function
+currently this function isn't complete it's just a trail
+*/
+async function loadPage(user,page){
+    const mainContent = document.querySelector("html");
+    const response = await fetch(page);
+    const result = await response.text();
+    mainContent.innerHTML = result;
+
+
+
+    // try {
+    //     const response = await fetch(page);
+    //     if (!response.ok) {
+    //         throw new Error(`Failed to load page: ${response.status} ${response.statusText}`);
+    //     }
+    //     const htmlContent = await response.text(); // Use .text() for HTML files
+    //     mainContent.innerHTML = htmlContent; // Insert the HTML content into the DOM
+    // } catch (error) {
+    //     console.error("Error loading page:", error);
+    // }
+
+
+}
