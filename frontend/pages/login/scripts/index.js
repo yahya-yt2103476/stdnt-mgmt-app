@@ -69,7 +69,7 @@ async function handleLoginUser(e) {
     var user = users.find(u=>{
         return u.email == formObject.email && u.password == formObject.password
     })    
-    if(user && usertype != undefined){
+    if((user && usertype != undefined) && user.userType == usertype){
         console.log(`user have been found`);
         indicator.style.display = "none"
 

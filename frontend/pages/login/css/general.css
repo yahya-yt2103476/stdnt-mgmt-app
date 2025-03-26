@@ -125,4 +125,5 @@ button:hover {
   font-size: 14px;
   color: red;
   display: none;
+  transition: display 0.5s ease-in-out;
 }
