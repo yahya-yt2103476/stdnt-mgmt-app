@@ -1,31 +1,90 @@
-{
-    "courses": [
-      {
-        "id": "CMPS201",
-        "name": "Web Development",
-        "category": "Programming",
-        "prerequisites": ["CMPS101"],
-        "Description": "This course is about the fundmentals of web dev"
-      },
-      {
-        "id": "CMPS202",
-        "name": "Database Systems",
-        "category": "Databases",
-        "prerequisites": ["CMPS101"]
-      },
-      {
-        "id": "CMPS203",
-        "name": "Cybersecurity Basics",
-        "category": "Security",
-        "prerequisites": ["CMPS101"]
-      },
-      {
-        "id": "CMPS497",
-        "section":"L01",
-        "name": "Deep Learning",
-        "category": "AI",
-        "prerequisites": ["CMPS101","CMPS251"]
-      }
-    ]
+[
+  {
+    "id": "CMPS 201",
+    "name": "Web Development",
+    "category": "Programming",
+    "prerequisites": ["CMPS101"],
+    "Description": "This course is about the fundmentals of web dev",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 202",
+    "name": "Data Structures",
+    "category": "Programming",
+    "prerequisites": ["CMPS101"],
+    "Description": "This course covers the basics of data structures.",
+    "creditHours": 4
+  },
+  {
+    "id": "CMPS 203",
+    "name": "Algorithms",
+    "category": "Programming",
+    "prerequisites": ["CMPS202"],
+    "Description": "This course focuses on algorithm design and analysis.",
+    "creditHours": 4
+  },
+  {
+    "id": "CMPS 204",
+    "name": "Database Systems",
+    "category": "Programming",
+    "prerequisites": ["CMPS202"],
+    "Description": "This course introduces database design and SQL.",
+    "creditHours": 4
+  },
+  {
+    "id": "CMPS 205",
+    "name": "Operating Systems",
+    "category": "Programming",
+    "prerequisites": ["CMPS203"],
+    "Description": "This course explores the fundamentals of operating systems.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 206",
+    "name": "Computer Networks",
+    "category": "Programming",
+    "prerequisites": ["CMPS203"],
+    "Description": "This course covers the principles of computer networking.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 207",
+    "name": "Software Engineering",
+    "category": "Programming",
+    "prerequisites": ["CMPS204"],
+    "Description": "This course focuses on software development methodologies.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 208",
+    "name": "Artificial Intelligence",
+    "category": "Programming",
+    "prerequisites": ["CMPS203"],
+    "Description": "This course introduces the basics of artificial intelligence.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 209",
+    "name": "Machine Learning",
+    "category": "Programming",
+    "prerequisites": ["CMPS208"],
+    "Description": "This course covers machine learning algorithms and techniques.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 210",
+    "name": "Cybersecurity",
+    "category": "Programming",
+    "prerequisites": ["CMPS205"],
+    "Description": "This course explores the fundamentals of cybersecurity.",
+    "creditHours": 3
+  },
+  {
+    "id": "CMPS 211",
+    "name": "Cloud Computing",
+    "category": "Programming",
+    "prerequisites": ["CMPS206"],
+    "Description": "This course introduces cloud computing concepts and services.",
+    "creditHours": 3
   }
-  
+]

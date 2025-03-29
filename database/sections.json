@@ -1,30 +1,202 @@
-{
-    "sections": [
-      {
-        "id": "SEC001",
-        "courseId": "CMPS201",
-        "instructorId": "I001",
-        "capacity": 30,
-        "semester":"Spring 2023",
-        "Time": "00:00 00:50",
-        "Days": ["Sunday,Tuesday,Thursday"],
-        "courseContent":[]
-
-      },
-      {
-        "id": "SEC002",
-        "courseId": "CMPS202",
-        "instructorId": "I002",
-        "capacity": 25,
-        "semester":"Fall 2024"
-      },
-
-      {
-        "id": "SEC003",
-        "courseId": "CMPS203",
-        "instructorId": "I003",
-        "capacity": 20,
-        "semester":"Fall 2023"
-      }
-    ]
+[
+  {
+    "id": "SEC001",
+    "courseId": "CMPS 201",
+    "instructorId": "I001",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "00:00 00:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC002",
+    "courseId": "CMPS 201",
+    "instructorId": "I002",
+    "capacity": 25,
+    "semester": "Spring 2023",
+    "Time": "01:00 01:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC003",
+    "courseId": "CMPS 202",
+    "instructorId": "I003",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "02:00 02:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC004",
+    "courseId": "CMPS 202",
+    "instructorId": "I004",
+    "capacity": 20,
+    "semester": "Spring 2023",
+    "Time": "03:00 03:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC005",
+    "courseId": "CMPS 203",
+    "instructorId": "I005",
+    "capacity": 35,
+    "semester": "Spring 2023",
+    "Time": "04:00 04:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC006",
+    "courseId": "CMPS 203",
+    "instructorId": "I006",
+    "capacity": 25,
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC007",
+    "courseId": "CMPS 204",
+    "instructorId": "I007",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "06:00 06:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC008",
+    "courseId": "CMPS 204",
+    "instructorId": "I008",
+    "capacity": 20,
+    "semester": "Spring 2023",
+    "Time": "07:00 07:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC009",
+    "courseId": "CMPS 205",
+    "instructorId": "I009",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "08:00 08:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC010",
+    "courseId": "CMPS 205",
+    "instructorId": "I010",
+    "capacity": 25,
+    "semester": "Spring 2023",
+    "Time": "09:00 09:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC011",
+    "courseId": "CMPS 206",
+    "instructorId": "I011",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "10:00 10:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC012",
+    "courseId": "CMPS 206",
+    "instructorId": "I012",
+    "capacity": 20,
+    "semester": "Spring 2023",
+    "Time": "11:00 11:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC013",
+    "courseId": "CMPS 207",
+    "instructorId": "I013",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "12:00 12:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC014",
+    "courseId": "CMPS 207",
+    "instructorId": "I014",
+    "capacity": 25,
+    "semester": "Spring 2023",
+    "Time": "01:00 01:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC015",
+    "courseId": "CMPS 208",
+    "instructorId": "I015",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "02:00 02:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC016",
+    "courseId": "CMPS 208",
+    "instructorId": "I016",
+    "capacity": 20,
+    "semester": "Spring 2023",
+    "Time": "03:00 03:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC017",
+    "courseId": "CMPS 209",
+    "instructorId": "I017",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "04:00 04:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC018",
+    "courseId": "CMPS 209",
+    "instructorId": "I018",
+    "capacity": 25,
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC019",
+    "courseId": "CMPS 210",
+    "instructorId": "I019",
+    "capacity": 30,
+    "semester": "Spring 2023",
+    "Time": "06:00 06:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
+  },
+  {
+    "id": "SEC020",
+    "courseId": "CMPS 210",
+    "instructorId": "I020",
+    "capacity": 20,
+    "semester": "Spring 2023",
+    "Time": "07:00 07:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
   }
+]

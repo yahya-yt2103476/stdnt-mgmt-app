@@ -74,7 +74,18 @@ async function handleLoginUser(e) {
         indicator.style.display = "none"
 
         //Mahmoud added the following function
-        loadPage(user,"../instructor-view/instructor-mp/instructor-mp.html");
+        
+
+        switch (user.userType) {
+            case "Student":
+                loadPage(user, "../student-view/stdnt-mp/stdnt-mp.html")
+                break;
+            case "Instructor":
+                loadPage(user,"../instructor-view/instructor-mp/instructor-mp.html");   
+        
+            case "Admin":
+                loadPage(user,"../admin-view/admin-mp/admin-mp.html")
+        }
     }
     else if(usertype == undefined){
         userType.style.display = "block"

@@ -1,6 +1,7 @@
 /* <!-- 🔹 Primary Colors: #007BFF, #4DA8DA, #a2b9cf --> */
 /* ------------------------------------------------------- */
 * {
+  color: black;
   /* reset */
   margin: 0;
   padding: 0;
@@ -62,37 +63,78 @@ main {
   height: 100vh;
 }
 
-.course-card {
-  color: #007bff;
-  background-color: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  border-left: 4px solid #007bff;
-  padding: 0.3rem;
-  margin: 0.5rem;
-  transition: 0.4s;
-}
-.course-card p {
-  color: #4da8da;
-}
-.course-card a {
-  color: #a2b9cf;
-}
-.course-card:hover {
-  cursor: pointer;
-  scale: 1.025;
+.mainContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-footer {
-  padding: 0.5rem;
-  color: #007bff;
-  background-color: white;
-}
-.nav-buttons{
+.CoursesContainer{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 20px;
 
 }
-nav{
-  background-color: lightblue;
+/*card container desgin*/
+.container {
+  max-width: 700px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin: 10px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 2fr 4fr auto;
+  grid-template-rows: auto auto auto auto;
+  gap: 5px;
+  grid-template-areas:
+    "header header header"
+    "courseDetails description description"
+    "- - btn-container";
+  background-image: url("assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  height: auto;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
 }
+
+.header {
+  grid-area: header;
+  background-color: aliceblue;
+}
+
+.courseDetails {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  grid-area: courseDetails;
+  background-color: antiquewhite;
+}
+
+.btn-container {
+  display: flex;
+  width: 180px;
+  grid-area: btn-container;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.btn-container > button {
+  border: none;
+  border-radius: 15px;
+  width: 75%;
+  height: 40px;
+  font-weight: bold;
+  font-style: italic;
+  transition: ease-in-out 0.2s;
+}
+.btn-container > button:hover {
+  scale: 1.05;
+}
+.description {
+  padding: 5px;
+  text-align: start;
+  grid-area: description;
+  background-color: bisque;
+}
+
