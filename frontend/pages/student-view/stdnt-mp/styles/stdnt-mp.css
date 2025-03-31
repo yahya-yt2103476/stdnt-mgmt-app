@@ -11,8 +11,12 @@
 
 /* mobile view */
 body {
-  background-color: #101827;
-
+  /* background-color: #101827; */
+  background: linear-gradient(
+    to right,
+    rgba(107, 17, 203, 0.5),
+    rgba(37, 116, 252, 0.5)
+  );
   display: grid;
   grid-template-areas: "header" "main" "footer";
   grid-template-columns: 1fr;
@@ -63,17 +67,32 @@ main {
   height: 100vh;
 }
 
-.mainContainer{
+.mainContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* grid-template-columns: 1fr 1fr; */
+  grid-template-columns: 1fr;
+
+  place-items: center;
 }
 
-.CoursesContainer{
+.CoursesContainer {
   display: flex;
   flex-direction: column;
   padding: 20px;
-
 }
+
+.sectionsContainer {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
 /*card container desgin*/
 .container {
   max-width: 700px;
@@ -137,4 +156,3 @@ main {
   grid-area: description;
   background-color: bisque;
 }
-
