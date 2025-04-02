@@ -35,15 +35,17 @@ console.log(JSON.stringify(localStorage.getItem("course_list")));
 
 function main(){
 
-  const main = document.querySelector("main");
+  const mainContent = document.querySelector("main");
   courseList = localStorage.getItem("course_list");
   sectionList = localStorage.getItem("section_list");
-  main.innerHTML = loadCourses();
-
+  let newSectionList = sectionList.map(obj => obj.instructorId === instructorId)
+  let newCourseList = courseList.map(e => (e.id === newSectionList))
+  mainContent.innerHTML = loadCourses(courseList,newSectionList).join(" ");
 }
 
 function loadCourses(d1,d2){
-  return 
+  let newCourseList = d1.map();
+  return newCourseList;
 }
 main();
 
