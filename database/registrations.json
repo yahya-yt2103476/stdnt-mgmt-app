@@ -1,32 +1,37 @@
-{
-    "registrations": [
-      {
-        "studentId": "S001",
-        "sectionId": "SEC001",
-        "status": "In-Progress",
-        "Grade": ""
-        
-      },
-      {
-        "studentId": "S001",
-        "sectionId": "SEC001",
-        "status": "Passed",
-        "Grade": "A"
-      },
-      {
-        "studentId": "S001",
-        "sectionId": "SEC001",
-        "status": "Failed"
-      },
-      {
-        "studentId": "S002",
-        "sectionId": "SEC002",
-        "status": "Approved"
-      },
-      {
-        "studentId": "S003",
-        "sectionId": "SEC003",
-        "status": "Pending"
-      }
-    ]
+[
+  {
+    "id": "REG001",
+    "studentId": "S001",
+    "sectionId": "SEC001",
+    "status": "approved",
+    "Grade": ""
+  },
+  {
+    "id": "REG002",
+    "studentId": "S001",
+    "sectionId": "SEC001",
+    "status": "approved",
+    "Grade": ""
+  },
+  {
+    "id": "REG003",
+    "studentId": "S001",
+    "sectionId": "SEC001",
+    "status": "cancelled",
+    "Grade": ""
+  },
+  {
+    "id": "REG004",
+    "studentId": "S002",
+    "sectionId": "SEC002",
+    "status": "pending",
+    "Grade": ""
+  },
+  {
+    "id": "REG005",
+    "studentId": "S003",
+    "sectionId": "SEC003",
+    "status": "pending",
+    "Grade": ""
   }
+]

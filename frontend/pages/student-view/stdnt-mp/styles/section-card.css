@@ -11,10 +11,11 @@
   border-radius: 10px;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3), 3px 3px 3px rgba(0, 0, 0, 0.2);
   width: 400px;
-  height: 200px;
+  height: 200ram;
   margin: 10px;
   padding: 10px;
   display: grid;
+  gap: 0.15rem;
 }
 .section-id {
   display: flex;
@@ -22,9 +23,9 @@
   font-weight: bold;
 }
 
-/* #Register-sections {
+#Register-sections {
   align-self: center;
   display: flex;
   width: 50%;
   justify-content: center;
-} */
+}
