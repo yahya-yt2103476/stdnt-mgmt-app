@@ -1,16 +1,15 @@
 const CoursesContainer = document.querySelector(".CoursesContainer");
 
 async function main() {
-  async function fetchCourses() {
-    const data = await fetch("http://127.0.0.1:5500/database/courses.json")
-      .then((r) => r.json())
-      .then((d) => {
-        return d;
-      });
-    return data;
-  }
   const data = await fetchCourses();
   console.log(data);
+  
+  const CurrentUserID = sessionStorage.getItem("authenticated_user_id")
+  const CurrentUserInfo = await fetchUserInfo(CurrentUserID);
+  console.log("current user is:");
+  console.log(CurrentUserInfo);
+  
+  
 
   data.forEach((course) => {
     CoursesContainer.innerHTML += `
@@ -30,7 +29,26 @@ async function main() {
         </div>
         `;
   });
+
+
 }
+
+  async function fetchUserInfo(userid) {
+    let users = []
+    users = await fetch("http://127.0.0.1:5500/database/users.json").then((r=>r.json())).then(d=>{
+      return d;
+    })
+    return users.find((u)=>u.id == userid);
+  }
+
+  async function fetchCourses() {
+    const data = await fetch("http://127.0.0.1:5500/database/courses.json")
+      .then((r) => r.json())
+      .then((d) => {
+        return d;
+      });
+    return data;
+  }
 
 async function loadsections(courseid) {
   const sectionsContainer = document.getElementById(`sections-${courseid}`);
@@ -74,6 +92,10 @@ async function loadsections(courseid) {
 
   // Update button text after showing sections
   toggleButton.textContent = "Hide Sections";
+
+
 }
 
 main();
+
+

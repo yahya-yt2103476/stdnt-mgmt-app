@@ -99,24 +99,8 @@ async function main() {
 
 main();
 
-/*
-Mahmoud added this function
-currently this function isn't complete it's just a trail
-*/
-async function loadPage(user, page) {
-  const mainContent = document.querySelector("html");
-  const response = await fetch(page);
-  const result = await response.text();
-  mainContent.innerHTML = result;
 
-  // try {
-  //     const response = await fetch(page);
-  //     if (!response.ok) {
-  //         throw new Error(`Failed to load page: ${response.status} ${response.statusText}`);
-  //     }
-  //     const htmlContent = await response.text(); // Use .text() for HTML files
-  //     mainContent.innerHTML = htmlContent; // Insert the HTML content into the DOM
-  // } catch (error) {
-  //     console.error("Error loading page:", error);
-  // }
+async function loadPage(user, page) {
+  window.location.href = page;
+  sessionStorage.setItem("authenticated_user_id", `${user.id}`);
 }
