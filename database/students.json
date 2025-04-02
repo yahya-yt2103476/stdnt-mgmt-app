@@ -1,6 +1,7 @@
 [
   {
-    "id": "S001",
+    "userId": 2,
+    "studentId": "S001",
     "name": "Ahmed Al-Mansoori",
     "completedCourses": [{ "courseId": "CMPS101", "grade": "A" }],
     "registeredCourses": ["CMPS201"],
@@ -8,7 +9,8 @@
     "major": "Computer Science"
   },
   {
-    "id": "S002",
+    "userId": 6,
+    "studentId": "S002",
     "name": "Fatima Al-Kuwari",
     "completedCourses": [{ "courseId": "CMPS101", "grade": "B+" }],
     "registeredCourses": ["CMPS202"],
@@ -16,7 +18,8 @@
     "major": "Computer Science"
   },
   {
-    "id": "S003",
+    "userId": 7,
+    "studentId": "S003",
     "name": "Omar Al-Sulaiti",
     "completedCourses": [""],
     "registeredCourses": [""],
