@@ -238,5 +238,31 @@
     "Time": "07:00 07:50",
     "Days": ["Monday,Wednesday"],
     "courseContent": []
+  },
+
+  {
+    "id": "SEC026",
+    "courseId": "CMPS 210",
+    "instructorName": "Dr. Khalid Al-Naimi",
+    "capacity": 20,
+    "enrolledStudents": [],
+    "isOpenForRegistration": true,
+    "semester": "Spring 2023",
+    "Time": "07:00 07:50",
+    "Days": ["Monday,Wednesday"],
+    "courseContent": []
+  },
+
+  {
+    "id": "SEC025",
+    "courseId": "CMPS 209",
+    "instructorName": "Dr. Khalid Al-Naimi",
+    "capacity": 25,
+    "enrolledStudents": [],
+    "isOpenForRegistration": true,
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Sunday,Tuesday,Thursday"],
+    "courseContent": []
   }
 ]
