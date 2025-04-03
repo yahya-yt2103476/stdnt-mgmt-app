@@ -48,50 +48,6 @@ async function fetchCourses() {
   return data;
 }
 
-// old
-// async function loadsections(courseid) {
-//   const sectionsContainer = document.getElementById(`sections-${courseid}`);
-//   const toggleButton = document.getElementById(`toggle-${courseid}`);
-
-//   // If sections are already visible, hide them and return
-//   if (sectionsContainer.innerHTML.trim() !== "") {
-//     sectionsContainer.innerHTML = "";
-//     toggleButton.textContent = "View Sections";
-//     return;
-//   }
-
-//   let data = [];
-//   data = await fetch("http://127.0.0.1:5500/database/sections.json")
-//     .then((r) => r.json())
-//     .then((d) => {
-//       return d;
-//     });
-
-//   const sections = data.filter((s) => s.courseId == courseid);
-//   const sectionsArray = Array.isArray(sections) ? sections : [sections];
-
-//   if (sectionsArray.length === 0) {
-//     sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
-//   } else {
-//     sectionsArray.forEach((sec) => {
-//       sectionsContainer.innerHTML += `
-//         <div class="sectionsCard">
-//           <p class="section-id">Section ID: ${sec.id}</p>
-//           <p>Instructor: ${sec.instructorName}</p>
-//           <p>Semester: ${sec.semester}</p>
-//           <p>capacity: ${sec.capacity}</p>
-//           <p>remaining seats: 18</p>
-//           <p>Time: ${sec.Time}</p>
-//           <p>Days: ${sec.Days}</p>
-//           <button id="Register-sections">Register</button>
-//         </div>
-//       `;
-//     });
-//   }
-
-//   // Update button text after showing sections
-//   toggleButton.textContent = "Hide Sections";
-// }
 
 // Modified loadsections function
 async function loadsections(courseid) {
@@ -113,10 +69,10 @@ async function loadsections(courseid) {
   ]);
 
   const sections = sectionsData.filter((s) => s.courseId == courseid);
-  // const studentId = sessionStorage.getItem("authenticated_user_id");
-  // const currentStudentInfo = await fetchStudentInfo(studentId);
+  const studentId = sessionStorage.getItem("authenticated_user_id");
+  const currentStudentInfo = await fetchStudentInfo(studentId);
 
-  if (sections.length === 0) {
+  if (sections.length === 0 || sections == null) {
     sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
   } else {
     for (const sec of sections) {
@@ -129,7 +85,7 @@ async function loadsections(courseid) {
       // check if student is already registered (approved or pending)
       const isRegistered = registrationsData.some(
         (r) =>
-          r.studentId === currentStudentInfo.studentId &&
+          r.studentId == currentStudentInfo.studentId &&
           r.sectionId === sec.id &&
           r.status !== "cancelled"
       );
@@ -165,7 +121,14 @@ async function loadsections(courseid) {
   toggleButton.textContent = "Hide Sections";
 }
 
+
+
+
+
 async function registerForSection(sectionId, courseId) {
+  const studentId = sessionStorage.getItem("authenticated_user_id");
+  const currentStudentInfo = await fetchStudentInfo(studentId);
+  let enrolledCount;
   // fetch all needed data
   const [registrations, sections, courses] = await Promise.all([
     fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
@@ -178,14 +141,22 @@ async function registerForSection(sectionId, courseId) {
   // condition 1 - student already logged in, fetched his respective information
 
   // condition 2 - check section availability
-  const sectionIndex = sections.findIndex((s) => s.id === sectionId);
+
+  const sectionIndex = sections.findIndex((s) => s.id == sectionId);
+
   if (sectionIndex === -1 || !sections[sectionIndex].isOpenForRegistration) {
     alert("Registration is closed for this section!");
     return;
+  }else{
+    enrolledCount = sections[sectionIndex].enrolledStudents ? sections[sectionIndex].enrolledStudents.length : 0;
   }
+  console.log("testing");
+  console.log(enrolledCount);
+  
+  
 
   // check remaining seats
-  const enrolledCount = sec.enrolledStudents ? sec.enrolledStudents.length : 0;
+
   if (enrolledCount >= sections[sectionIndex].capacity) {
     alert("This section is already full!");
     return;
@@ -206,7 +177,7 @@ async function registerForSection(sectionId, courseId) {
   // condition 3 - check prerequisites
   const course = courses.find((c) => c.id === courseId);
   const hasPrerequisites = course.prerequisites.every((prereq) =>
-    studentInfo.completedCourses?.some((c) => c.courseId === prereq)
+    currentStudentInfo.completedCourses?.some((c) => c.courseId === prereq)
   );
   if (!hasPrerequisites) {
     alert(`You haven't completed all prerequisites for this course!
@@ -225,7 +196,17 @@ Required: ${course.prerequisites.join(", ")}`);
 
   // update local copies of data
   registrations.push(newRegistration);
+
+  //-----------------------------------------
+  // json update logic
+  //StudentsRepo.AddRegistration(newRegistartion);
+  //-----------------------------------------
+  
   console.log("new registeration: ", newRegistration);
+  console.log("new registartion list:\n");
+
+  console.log(registrations);
+  
 
   // add student to enrolledStudents
   if (!sections[sectionIndex].enrolledStudents) {
@@ -235,14 +216,14 @@ Required: ${course.prerequisites.join(", ")}`);
   console.log("section updated");
 
   // updated student's registeredCourses
-  if (!student.registeredCourses) {
-    student.registeredCourses = [];
+  if (!currentStudentInfo.registeredCourses) {
+    currentStudentInfo.registeredCourses = [];
   }
-  student.registeredCourses.push(courseId);
+  currentStudentInfo.registeredCourses.push(courseId);
+  console.log("finished");
+  
 
-  //-----------------------------------------
-  // json update logic
-  //-----------------------------------------
+  
 }
 
 main();

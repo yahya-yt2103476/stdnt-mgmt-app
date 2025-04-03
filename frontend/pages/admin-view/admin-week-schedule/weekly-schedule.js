@@ -14,7 +14,7 @@
 //
 document.addEventListener("DOMContentLoaded", async () => {
   const classes = await fetchClasses();
-  //   let classes = [];
+    // let classes = [];
 
   const classesByDay = groupClassesByDay(classes);
 
@@ -55,7 +55,10 @@ function groupClassesByDay(classes) {
       });
     }
   });
-
+  
+  let classesInArray = [classesByDay]
+  classesInArray.forEach((c)=>console.log(c)
+  )
   return classesByDay;
 }
 
