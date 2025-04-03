@@ -4,18 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Main Dashboard</title>
-    <link rel="stylesheet" href="stdnt-new-mp.css" />
+    <link rel="stylesheet" href="stdnt-main-dashboard.css" />
   </head>
   <body>
     <header>
       <nav>
-        <input
-          type="search"
-          name="searchBar"
-          id="searchBar"
-          class="searchBar"
-          placeholder="Search by course or category (SHOULD THIS BE REMOVED ?)"
-        />
         <button class="log-out-btn">
           <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -30,7 +23,7 @@
       <h1>Welcome to Your Student Dashboard</h1>
       <div class="options">
         <section>
-          <div class="optionCard">
+          <div class="optionCard" id="coursesRegistration">
             <h2>Courses Registration</h2>
             <p>
               Browse and register for available courses that match your academic
@@ -41,7 +34,7 @@
           </div>
         </section>
         <section>
-          <div class="optionCard">
+          <div class="optionCard" id="learningPath">
             <h2>Learning Path</h2>
             <p>
               Track your academic journey through this personalized dashboard.
@@ -56,14 +49,14 @@
       <div class="footer-content">
         <div class="footer-section">
           <h3>QU Student Portal</h3>
-          <!-- <p>Qatar University Computer Science Department</p> -->
+          <p>Qatar University - CSE Department</p>
         </div>
         <div class="footer-section">
           <h3>Quick Links</h3>
           <ul>
             <li><a href="#">Academic Calendar</a></li>
             <li><a href="#">University Website</a></li>
-            <!-- <li><a href="#">CSE Department</a></li> -->
+            <li><a href="#">CSE Department</a></li>
           </ul>
         </div>
         <div class="footer-section">
@@ -76,6 +69,6 @@
         <p>&copy; 2024 Qatar University. All rights reserved.</p>
       </div>
     </footer>
-    <script src="stdnt-new-mp.js"></script>
+    <script src="stdnt-main-dashboard.js"></script>
   </body>
 </html>
