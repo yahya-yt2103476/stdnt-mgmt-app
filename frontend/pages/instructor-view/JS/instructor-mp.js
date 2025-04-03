@@ -1,10 +1,60 @@
 //hard set variable
-let instructor_Id = "I001";
-let instructorName = "Dr. Khalid Al-Naimi";
+// let instructor_Id = "I001";
+// let instructorName = "Dr. Khalid Al-Naimi";
 // let instructorName = 'Lucas Adams'; // another test value
  // this value should be sent from the login page delete later testing values
 //remove this variable later
 
+
+let instructor_Id = sessionStorage.getItem('authenticated_user_id');
+var instructorName;
+
+async function initializeInstructorName() {
+  if (instructor_Id) {
+    instructorName = await getInstructorName(instructor_Id);
+    main(instructorName);// main call
+    console.log(instructorName);
+  } else {
+    console.error("Instructor ID not found in URL.");
+  }
+}
+
+async function getInstructorName(instructorId) {
+  const path = "http://127.0.0.1:5500/database/instructors.json";
+  try {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json(); // Get the object
+    const instructors = data.instructors; // Access the instructors array
+
+    const instructor = instructors.find(inst => inst.id === instructorId);
+    console.log(instructor);
+    
+    if (instructor) {
+      return instructor.name;
+    } else {
+      console.error(`Instructor with ID ${instructorId} not found.`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching instructors:", error);
+    return null;
+  }
+}
+
+initializeInstructorName();
+console.log("Instructor Name:", instructorName);// it evaluates as undefined otherwise
+
+function main(instructorName){
+  console.log("Instructor Name:", instructorName);
+  const backButton = document.querySelector("#backBtn");
+    if (backButton) {
+        backButton.addEventListener("click", () => {
+            window.history.back();
+        });
+    }
 
 let sectionsLink = "http://127.0.0.1:5500/database/sections.json";
 let coursesLink = "http://127.0.0.1:5500/database/courses.json";
@@ -12,9 +62,7 @@ let coursesLink = "http://127.0.0.1:5500/database/courses.json";
 let courseList = localStorage.getItem("course_list");
 let sectionList = localStorage.getItem("section_list");
 
-
 // let courseList = null, sectionList =null; //tests delete later
-
 
 if(!courseList || !sectionList)
     loadList(sectionsLink,coursesLink);
@@ -31,11 +79,9 @@ async function loadList(sec,cor){
   
 }
 
-function main(){
-
   const mainContent = document.querySelector(".container");
   courseList = JSON.parse(localStorage.getItem("course_list"));
-  sectionList = JSON.parse(localStorage.getItem("section_list"));
+  sectionList = JSON.parse(localStorage.getItem("section_list"));  
 
   const instructorSections = sectionList.filter(
     section => section.instructorName === instructorName
@@ -44,6 +90,8 @@ function main(){
   const instructorCourses = courseList.filter(course => 
   instructorCourseIds.includes(course.id)
   );  
+
+  console.log(instructorSections);
   
   let neededInfo = filterIntoOne(instructorCourses,instructorSections)
 
@@ -109,9 +157,6 @@ function renderCourses(courses,instructorCourses,instructorSections) {
   const mainContent = document.querySelector(".container");
   mainContent.innerHTML = loadCourses(courses,instructorCourses, instructorSections).join(" ");
 }
-
-
-main();
 
 
 /*
