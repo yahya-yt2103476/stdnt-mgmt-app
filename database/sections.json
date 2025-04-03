@@ -270,9 +270,9 @@
     "Days": ["Sunday,Tuesday,Thursday"],
     "location":"H07-BL206",
     "courseContent": [
-      {"assignment":"assignment1","deadline":"Feb 21, 2025","status":"open"},
-      {"Midterm Exam":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
-      {"Final Project":"Final Project","deadline":"May 5, 2025","status":"open"}
+      {"title":"assignment1","deadline":"Feb 21, 2025","status":"open"},
+      {"title":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
+      {"title":"Final Project","deadline":"May 5, 2025","status":"open"}
   ]
   }
 ]

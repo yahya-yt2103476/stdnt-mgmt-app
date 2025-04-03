@@ -33,5 +33,19 @@
     "sectionId": "SEC003",
     "status": "pending",
     "Grade": ""
+  },
+  {
+    "id": "REG006",
+    "studentId": "S004",
+    "sectionId": "SEC025",
+    "status": "pending",
+    "Grade": ""
+  },
+  {
+    "id": "REG007",
+    "studentId": "S005",
+    "sectionId": "SEC025",
+    "status": "pending",
+    "Grade": ""
   }
 ]
