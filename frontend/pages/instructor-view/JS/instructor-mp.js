@@ -5,19 +5,13 @@ let instructorName = "Dr. Khalid Al-Naimi";
  // this value should be sent from the login page delete later testing values
 //remove this variable later
 
-/*
-async () => {
-const response =  await fetch(BASE_URL);
-const data = await response.json();
-localStorage.setItem("recipeList",JSON.stringify(data));
-}
-*/ 
 
 let sectionsLink = "http://127.0.0.1:5500/database/sections.json";
 let coursesLink = "http://127.0.0.1:5500/database/courses.json";
 
 let courseList = localStorage.getItem("course_list");
 let sectionList = localStorage.getItem("section_list");
+
 
 // let courseList = null, sectionList =null; //tests delete later
 
@@ -53,10 +47,10 @@ function main(){
   
   let neededInfo = filterIntoOne(instructorCourses,instructorSections)
 
-  mainContent.innerHTML = loadCourses(neededInfo).join(" ");
+  mainContent.innerHTML = loadCourses(neededInfo,instructorCourses,instructorSections).join(" ");
 
   const searchBar = document.querySelector("#searchBar");
-  searchBar.addEventListener("input", () => handleSearch(neededInfo));
+  searchBar.addEventListener("input", () => handleSearch(neededInfo,instructorCourses,instructorSections));
 }
 
 
@@ -82,62 +76,23 @@ function filterIntoOne(corList, secList) {
   return newList;
 }
 
-//original
-// function loadCourses(courseData) {
-//   return courseData.map((course) => {
-//     return `
-//       <div class="course-card">
-//         <h3>${course.name}</h3>
-//         <p>Category: ${course.category}</p>
-//         <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-//         <a href="#" class="view-course-btn">View Course</a>
-//       </div>
-//     `;
-//   });
-// }
-
-// use this most likely
-// function loadCourses(courseData) {
-//   return courseData.map((course) => {
-//     return `
-//       <div class="course-card">
-//         <h3>${course.name}</h3>
-//         <p>Category: ${course.category}</p>
-//         <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-//         <a href="../instructor-detail-page/instructor_course_details.html?courseId=${course.courseId}" class="view-course-btn">View Course</a>
-//       </div>
-//     `;
-//   });
-// }
-
-function loadCourses(courseData) {
+function loadCourses(courseData, instructorCourses, instructorSections) {
   return courseData.map((course) => {
+    const matchingCourse = instructorCourses.find((ic) => ic.name === course.name)
+    const matchingSection = instructorSections.find((is) => is.courseId === matchingCourse.id);
     return `
       <div class="course-card">
         <h3>${course.name}</h3>
         <p>Category: ${course.category}</p>
         <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-        <a href="../instructor-detail-page/instructor_course_details.html?courseId=${course.courseId}&sectionId=${course.sectionId}" class="view-course-btn">View Course</a>
+        <a href="../instructor-detail-page/instructor_course_details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}" class="view-course-btn">View Course</a>
       </div>
     `;
   });
 }
 
-// text example delete later
-// function loadCourses(courseData) {
-//   return courseData.map((course) => {
-//     return `
-//       <div class="course-card">
-//         <h3>${course.name}</h3>
-//         <p>Category: ${course.category}</p>
-//         <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-//         <a href="../instructor-detail-page/instructor_course_details.html" class="view-course-btn">View Course</a>
-//       </div>
-//     `;
-//   });
-// }
 
-function handleSearch(courseData) {
+function handleSearch(courseData,instructorCourses,instructorSections) {
   const searchBar = document.querySelector("#searchBar");
   const inputSearch = searchBar.value.toLowerCase();
 
@@ -147,25 +102,12 @@ function handleSearch(courseData) {
     return courseName.includes(inputSearch) || courseCategory.includes(inputSearch);
   });
 
-  renderCourses(searchedCourses);
+  renderCourses(searchedCourses,instructorCourses,instructorSections);
 }
 
-function renderCourses(courses) {
+function renderCourses(courses,instructorCourses,instructorSections) {
   const mainContent = document.querySelector(".container");
-  mainContent.innerHTML = loadCourses(courses).join(" ");
-
-  // const courseCards = document.querySelectorAll(".course-card");
-  // courseCards.forEach((card) => {
-  //   card.addEventListener("click", () => {
-  //     const courseId = card.dataset.courseId;
-  //     if (courseId) {
-  //       // Redirect to instructor_course_details.html with courseId as a query parameter
-  //       // window.location.href = `instructor_course_details.html?courseId=${courseId}`;
-  //       window.location.href = instructor_course_details.html;
-  //     }
-  //   });
-  // });
-
+  mainContent.innerHTML = loadCourses(courses,instructorCourses, instructorSections).join(" ");
 }
 
 

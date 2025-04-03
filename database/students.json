@@ -25,5 +25,25 @@
     "registeredCourses": [""],
     "gpa": 3.6,
     "major": "Computer Engineering"
+  },
+  {
+    "userId": 8,
+    "studentId": "S004",
+    "name": "mahmoud Al-Qudeimat",
+    "completedCourses": [""],
+    "registeredCourses": ["CMPS 209"],
+    "gpa": 3.6,
+    "major": "Computer Engineering"
+  },
+
+  {
+    "userId": 9,
+    "studentId": "S005",
+    "name": "Omar Hamdon",
+    "completedCourses": [""],
+    "registeredCourses": ["CMPS 209"],
+    "gpa": 3.6,
+    "major": "Computer Engineering"
   }
+
 ]
