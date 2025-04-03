@@ -13,5 +13,5 @@ learningPathCard.addEventListener("click", function () {
 const logoutBtn = document.querySelector(".log-out-btn");
 logoutBtn.addEventListener("click", function () {
   sessionStorage.removeItem("authenticated_user_id");
-  window.location.href = "../login/login_page.html"; // fix
+  window.location.href = "http://127.0.0.1:5500/frontend/login/login_page.html"; // fix
 });
