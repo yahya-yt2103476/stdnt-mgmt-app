@@ -250,11 +250,23 @@
     "semester": "Spring 2023",
     "Time": "07:00 07:50",
     "Days": ["Monday,Wednesday"],
-    "location":"Location: H07-BL204",
+    "location": "Location: H07-BL204",
     "courseContent": [
-      {"assignment":"assignment1","deadline":"Feb 21, 2025","status":"open"},
-      {"Midterm Exam":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
-      {"Final Project":"Final Project","deadline":"May 5, 2025","status":"open"}
+      {
+        "assignment": "assignment1",
+        "deadline": "Feb 21, 2025",
+        "status": "open"
+      },
+      {
+        "Midterm Exam": "Midterm Exam",
+        "deadline": "March 12, 2025",
+        "status": "open"
+      },
+      {
+        "Final Project": "Final Project",
+        "deadline": "May 5, 2025",
+        "status": "open"
+      }
     ]
   },
 
@@ -263,16 +275,20 @@
     "courseId": "CMPS 209",
     "instructorName": "Dr. Khalid Al-Naimi",
     "capacity": 25,
-    "enrolledStudents": ["S004","S005"],
+    "enrolledStudents": ["S004", "S005"],
     "isOpenForRegistration": true,
     "semester": "Spring 2023",
     "Time": "05:00 05:50",
     "Days": ["Sunday,Tuesday,Thursday"],
-    "location":"H07-BL206",
+    "location": "H07-BL206",
     "courseContent": [
-      {"title":"assignment1","deadline":"Feb 21, 2025","status":"open"},
-      {"title":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
-      {"title":"Final Project","deadline":"May 5, 2025","status":"open"}
-  ]
+      { "title": "assignment1", "deadline": "Feb 21, 2025", "status": "open" },
+      {
+        "title": "Midterm Exam",
+        "deadline": "March 12, 2025",
+        "status": "open"
+      },
+      { "title": "Final Project", "deadline": "May 5, 2025", "status": "open" }
+    ]
   }
 ]

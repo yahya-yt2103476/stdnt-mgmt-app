@@ -1,25 +1,23 @@
 const CoursesContainer = document.querySelector(".CoursesContainer");
 
 async function main() {
-  const data = await fetchCourses();
-  console.log(data);
-  
-  const CurrentUserID = sessionStorage.getItem("authenticated_user_id")
-  const CurrentUserInfo = await fetchUserInfo(CurrentUserID);
-  console.log("current user is:");
-  console.log(CurrentUserInfo);
-  
-  
+  const coursesData = await fetchCourses();
+  console.log("courses data: ", coursesData);
 
-  data.forEach((course) => {
+  const currentUserID = sessionStorage.getItem("authenticated_user_id");
+  const currentStudentInfo = await fetchStudentInfo(currentUserID);
+  console.log("current student user is:");
+  console.log(currentStudentInfo);
+
+  coursesData.forEach((course) => {
     CoursesContainer.innerHTML += `
         <div class="container" id="course-${course.id}">
-            <div class="header">${course.id} (${course.name})</div>
+            <div class="header"><b>${course.id} (${course.name})</b></div>
             <div class="courseDetails">
                 <b>Course Details:</b>
-                <p>Title: ${course.name}</p>
-                <p>Category: ${course.category}</p>
-                <p>Crediet Hours: ${course.creditHours}</p>
+                <p><b>Title:</b> ${course.name}</p>
+                <p><b>Category:</b> ${course.category}</p>
+                <p><b>Crediet Hours:</b> ${course.creditHours}</p>
             </div>
             <div class="description">
                 <p>${course.Description}</p>
@@ -29,73 +27,222 @@ async function main() {
         </div>
         `;
   });
-
-
 }
 
-  async function fetchUserInfo(userid) {
-    let users = []
-    users = await fetch("http://127.0.0.1:5500/database/users.json").then((r=>r.json())).then(d=>{
+async function fetchStudentInfo(userId) {
+  let students = [];
+  students = await fetch("http://127.0.0.1:5500/database/students.json")
+    .then((r) => r.json())
+    .then((d) => {
       return d;
-    })
-    return users.find((u)=>u.id == userid);
-  }
+    });
+  return students.find((students) => students.userId == userId);
+}
 
-  async function fetchCourses() {
-    const data = await fetch("http://127.0.0.1:5500/database/courses.json")
-      .then((r) => r.json())
-      .then((d) => {
-        return d;
-      });
-    return data;
-  }
+async function fetchCourses() {
+  const data = await fetch("http://127.0.0.1:5500/database/courses.json")
+    .then((r) => r.json())
+    .then((d) => {
+      return d;
+    });
+  return data;
+}
 
+// old
+// async function loadsections(courseid) {
+//   const sectionsContainer = document.getElementById(`sections-${courseid}`);
+//   const toggleButton = document.getElementById(`toggle-${courseid}`);
+
+//   // If sections are already visible, hide them and return
+//   if (sectionsContainer.innerHTML.trim() !== "") {
+//     sectionsContainer.innerHTML = "";
+//     toggleButton.textContent = "View Sections";
+//     return;
+//   }
+
+//   let data = [];
+//   data = await fetch("http://127.0.0.1:5500/database/sections.json")
+//     .then((r) => r.json())
+//     .then((d) => {
+//       return d;
+//     });
+
+//   const sections = data.filter((s) => s.courseId == courseid);
+//   const sectionsArray = Array.isArray(sections) ? sections : [sections];
+
+//   if (sectionsArray.length === 0) {
+//     sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
+//   } else {
+//     sectionsArray.forEach((sec) => {
+//       sectionsContainer.innerHTML += `
+//         <div class="sectionsCard">
+//           <p class="section-id">Section ID: ${sec.id}</p>
+//           <p>Instructor: ${sec.instructorName}</p>
+//           <p>Semester: ${sec.semester}</p>
+//           <p>capacity: ${sec.capacity}</p>
+//           <p>remaining seats: 18</p>
+//           <p>Time: ${sec.Time}</p>
+//           <p>Days: ${sec.Days}</p>
+//           <button id="Register-sections">Register</button>
+//         </div>
+//       `;
+//     });
+//   }
+
+//   // Update button text after showing sections
+//   toggleButton.textContent = "Hide Sections";
+// }
+
+// Modified loadsections function
 async function loadsections(courseid) {
   const sectionsContainer = document.getElementById(`sections-${courseid}`);
   const toggleButton = document.getElementById(`toggle-${courseid}`);
 
-  // If sections are already visible, hide them and return
   if (sectionsContainer.innerHTML.trim() !== "") {
     sectionsContainer.innerHTML = "";
     toggleButton.textContent = "View Sections";
     return;
   }
 
-  let data = [];
-  data = await fetch("http://127.0.0.1:5500/database/sections.json")
-    .then((r) => r.json())
-    .then((d) => {
-      return d;
-    });
+  // get all needed data
+  const [sectionsData, registrationsData] = await Promise.all([
+    fetch("http://127.0.0.1:5500/database/sections.json").then((r) => r.json()),
+    fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
+      r.json()
+    ),
+  ]);
 
-  const sections = data.filter((s) => s.courseId == courseid);
-  const sectionsArray = Array.isArray(sections) ? sections : [sections];
+  const sections = sectionsData.filter((s) => s.courseId == courseid);
+  // const studentId = sessionStorage.getItem("authenticated_user_id");
+  // const currentStudentInfo = await fetchStudentInfo(studentId);
 
-  if (sectionsArray.length === 0) {
+  if (sections.length === 0) {
     sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
   } else {
-    sectionsArray.forEach((sec) => {
+    for (const sec of sections) {
+      // calculate remaining seats
+      const enrolledCount = sec.enrolledStudents
+        ? sec.enrolledStudents.length
+        : 0;
+      const remainingSeats = sec.capacity - enrolledCount;
+
+      // check if student is already registered (approved or pending)
+      const isRegistered = registrationsData.some(
+        (r) =>
+          r.studentId === currentStudentInfo.studentId &&
+          r.sectionId === sec.id &&
+          r.status !== "cancelled"
+      );
+
+      // determine register button state
+      let registerButton;
+      if (isRegistered) {
+        registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
+      } else if (!sec.isOpenForRegistration) {
+        registerButton = `<button class="register-btn" disabled>Registration Closed</button>`;
+      } else if (remainingSeats <= 0) {
+        registerButton = `<button class="register-btn" disabled>Section Full</button>`;
+      } else {
+        registerButton = `<button onclick="registerForSection('${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
+      }
+
       sectionsContainer.innerHTML += `
         <div class="sectionsCard">
           <p class="section-id">Section ID: ${sec.id}</p>
           <p>Instructor: ${sec.instructorName}</p>
           <p>Semester: ${sec.semester}</p>
-          <p>capacity: ${sec.capacity}</p>
-          <p>remaining seats: 18</p>
+          <p>Capacity: ${sec.capacity}</p>
+          <p>Enrolled: ${enrolledCount}</p>
+          <p>Remaining seats: ${remainingSeats}</p>
           <p>Time: ${sec.Time}</p>
-          <p>Days: ${sec.Days}</p>
-          <button id="Register-sections">Register</button>
+          <p>Days: ${sec.Days.join(", ")}</p>
+          <p>Status: ${sec.isOpenForRegistration ? "Open" : "Closed"}</p>
+          ${registerButton}
         </div>
       `;
-    });
+    }
+  }
+  toggleButton.textContent = "Hide Sections";
+}
+
+async function registerForSection(sectionId, courseId) {
+  // fetch all needed data
+  const [registrations, sections, courses] = await Promise.all([
+    fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
+      r.json()
+    ),
+    fetch("http://127.0.0.1:5500/database/sections.json").then((r) => r.json()),
+    fetch("http://127.0.0.1:5500/database/courses.json").then((r) => r.json()),
+  ]);
+
+  // condition 1 - student already logged in, fetched his respective information
+
+  // condition 2 - check section availability
+  const sectionIndex = sections.findIndex((s) => s.id === sectionId);
+  if (sectionIndex === -1 || !sections[sectionIndex].isOpenForRegistration) {
+    alert("Registration is closed for this section!");
+    return;
   }
 
-  // Update button text after showing sections
-  toggleButton.textContent = "Hide Sections";
+  // check remaining seats
+  const enrolledCount = sec.enrolledStudents ? sec.enrolledStudents.length : 0;
+  if (enrolledCount >= sections[sectionIndex].capacity) {
+    alert("This section is already full!");
+    return;
+  }
 
+  // check existing registrations
+  const existingRegistration = registrations.find(
+    (r) =>
+      r.studentId === currentStudentInfo.studentId &&
+      r.sectionId === sectionId &&
+      r.status !== "cancelled"
+  );
+  if (existingRegistration) {
+    alert("You are already registered for this section!");
+    return;
+  }
 
+  // condition 3 - check prerequisites
+  const course = courses.find((c) => c.id === courseId);
+  const hasPrerequisites = course.prerequisites.every((prereq) =>
+    studentInfo.completedCourses?.some((c) => c.courseId === prereq)
+  );
+  if (!hasPrerequisites) {
+    alert(`You haven't completed all prerequisites for this course!
+Required: ${course.prerequisites.join(", ")}`);
+    return;
+  }
+
+  // create new registration
+  const newRegistration = {
+    id: `REG${Date.now().toString().slice(-6)}`,
+    studentId,
+    sectionId,
+    status: "pending",
+    Grade: "",
+  };
+
+  // update local copies of data
+  registrations.push(newRegistration);
+  console.log("new registeration: ", newRegistration);
+
+  // add student to enrolledStudents
+  if (!sections[sectionIndex].enrolledStudents) {
+    sections[sectionIndex].enrolledStudents = [];
+  }
+  sections[sectionIndex].enrolledStudents.push(studentId);
+  console.log("section updated");
+
+  // updated student's registeredCourses
+  if (!student.registeredCourses) {
+    student.registeredCourses = [];
+  }
+  student.registeredCourses.push(courseId);
+
+  //-----------------------------------------
+  // json update logic
+  //-----------------------------------------
 }
 
 main();
-
-

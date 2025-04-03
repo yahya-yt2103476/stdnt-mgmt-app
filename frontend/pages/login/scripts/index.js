@@ -99,7 +99,6 @@ async function main() {
 
 main();
 
-
 async function loadPage(user, page) {
   window.location.href = page;
   sessionStorage.setItem("authenticated_user_id", `${user.id}`);
