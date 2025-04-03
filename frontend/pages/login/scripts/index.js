@@ -78,7 +78,7 @@ async function main() {
 
       switch (user.userType) {
         case "Student":
-          loadPage(user, "../student-view/stdnt-mp/stdnt-mp.html");
+          loadPage(user, "../student-view/stdnt-main-dashboard/stdnt-main-dashboard.html");
           break;
         case "Instructor":
           loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");

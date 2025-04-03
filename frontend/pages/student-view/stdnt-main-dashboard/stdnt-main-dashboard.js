@@ -1,4 +1,6 @@
 const coursesRegistrationCard = document.getElementById("coursesRegistration");
+
+
 const learningPathCard = document.getElementById("learningPath");
 
 coursesRegistrationCard.addEventListener("click", function () {
@@ -10,8 +12,11 @@ learningPathCard.addEventListener("click", function () {
 });
 
 // logout button functionality
-const logoutBtn = document.querySelector(".log-out-btn");
-logoutBtn.addEventListener("click", function () {
-  sessionStorage.removeItem("authenticated_user_id");
-  window.location.href = "http://127.0.0.1:5500/frontend/login/login_page.html"; // fix
-});
+const logoutBtn = document.querySelector("#log-out-btn");
+logoutBtn.addEventListener("click", handleDelete);
+
+function handleDelete(){
+  sessionStorage.removeItem("authenticated_user_id")
+  window.location.href = "http://127.0.0.1:5500/frontend/pages/login/login_page.html";
+  
+}
