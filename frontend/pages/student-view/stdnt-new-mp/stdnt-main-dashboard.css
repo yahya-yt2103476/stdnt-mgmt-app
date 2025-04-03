@@ -38,7 +38,7 @@ header nav {
   padding: 0.3rem 0.5rem;
 }
 
-.searchBar {
+/* .searchBar {
   width: 100%;
   max-width: 100%;
   height: 2.5rem;
@@ -51,7 +51,7 @@ header nav {
 
 .searchBar:focus {
   border: #4da8da solid 0.15rem;
-}
+} */
 
 .log-out-btn {
   width: fit-content;
@@ -181,11 +181,11 @@ footer {
     padding: 0.25rem 0.6rem;
   }
 
-  .searchBar {
+  /* .searchBar {
     grid-column: 2;
     width: 30rem;
     justify-self: center;
-  }
+  } */
 
   .log-out-btn {
     grid-column: 3;
