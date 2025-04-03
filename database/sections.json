@@ -250,6 +250,7 @@
     "semester": "Spring 2023",
     "Time": "07:00 07:50",
     "Days": ["Monday,Wednesday"],
+    "location":"Location: H07-BL204",
     "courseContent": [
       {"assignment":"assignment1","deadline":"Feb 21, 2025","status":"open"},
       {"Midterm Exam":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
@@ -267,6 +268,7 @@
     "semester": "Spring 2023",
     "Time": "05:00 05:50",
     "Days": ["Sunday,Tuesday,Thursday"],
+    "location":"H07-BL206",
     "courseContent": [
       {"assignment":"assignment1","deadline":"Feb 21, 2025","status":"open"},
       {"Midterm Exam":"Midterm Exam","deadline":"March 12, 2025","status":"open"},
