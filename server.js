@@ -5,6 +5,8 @@ import usersRepo from './repos/usersRepo.js';
 import studentRepo from './repos/studentRepo.js';
 import instructorRepo from './repos/instructorRepo.js'
 import adminRepo from './repos/adminRepo.js'
+import coursesRepo from './repos/coursesRepo.js'
+import sectionsRepo from './repos/sectionsRepo.js'
 
 
 
@@ -136,27 +138,148 @@ app.post("/api/admins", async (request, res) => {
 });
 
 
+//endpoints for courses
+
+//receive all courses
+app.get("/api/courses/", async (request, res) => {
+    const users = await coursesRepo.GetCourses()
+    res.json(users)
+})
+
+//send an id to the endpoint, u receive an object of course
+app.get("/api/courses/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await coursesRepo.GetCourse(id)
+    res.json(user)
+})
+
+//send an object to the endpoint, u receive a message whether modified or not
+app.post("/api/courses", async (request, res) => {
+    const course = request.body;
+    try {
+        const result = await coursesRepo.UpdateCourse(course);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating course:", error);
+    }
+});
+
+//send an id to the endpoint, u receive a message whether deleted or not
+app.delete("/api/courses:id", async (request, res) => {
+    const course = request.params.id;
+    try {
+        const result = await coursesRepo.DeleteCourse(course);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating course:", error);
+    }
+});
+
+
+//endpoints for sections
+
+//receive all sections
+app.get("/api/sections/", async (request, res) => {
+    const users = await sectionsRepo.GetSections()
+    res.json(users)
+})
+
+
+//send an id to the endpoint, u receive an object of section
+app.get("/api/sections/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await sectionsRepo.GetSection(id)
+    res.json(user)
+})
+
+//send an object to the endpoint, u receive a message whether modified or not
+app.post("/api/sections", async (request, res) => {
+    const section = request.body;
+    try {
+        const result = await sectionsRepo.UpdateSection(section);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating section:", error);
+    }
+});
+
+//send an id to the endpoint, u receive a message whether deleted or not
+app.delete("/api/sections:id", async (request, res) => {
+    const section = request.params.id;
+    try {
+        const result = await sectionsRepo.DeleteSection(section);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating section:", error);
+    }
+});
+
+//send an object to the endpoint, u receive a message whether added or not
+app.post("/api/sections", async (request, res) => {
+    const section = request.body;
+    try {
+        const result = await sectionsRepo.AddSection(section);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating section:", error);
+    }
+});
+
+//send a course id to the endpoint, u receive the sections of that specific course
+app.get("/api/sections/course/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await sectionsRepo.GetSectionsOfCourse(id)
+    res.json(user)
+})
+
+//send a specific semester to the endpoint, u receive the sections of that specific semester
+app.get("/api/sections/semester/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await sectionsRepo.SectionsOfSpecificSem(id)
+    res.json(user)
+})
+
 
 
 
 app.listen(PORT, () => {
     console.log(`Student Managament System server is running on http://localhost:${PORT}\n base url is http://localhost:${PORT}/api/ ✅\n`);
     console.log("Endpoints are:\n");
+
+    console.log("user related endpoints:");
     console.log("GET /api/users");
     console.log("GET /api/users/:id for a specific user\n");
 
+    console.log("student related endpoints:");
     console.log("GET /api/students");
     console.log("GET /api/students/:id for a specific student");
     console.log("POST /api/students to update a student");
     console.log("DELETE /api/students:id to delete a student\n");
 
+    console.log("instructor related endpoints:");
     console.log("GET /api/instructors");
     console.log("GET /api/instructors/:id for a specific instructor");
     console.log("POST /api/instructors to update an instructor");
     console.log("DELETE /api/instructors:id to delete an instructor\n");
 
+    console.log("admin related endpoints:");
     console.log("GET /api/admins");
     console.log("GET /api/admins/:id for a specific admin");
     console.log("POST /api/admins to update an admin");
+
+    console.log("course related endpoints:");
+    console.log("GET /api/courses");
+    console.log("GET /api/courses/:id for a specific course");
+    console.log("POST /api/courses to update a course");
+    console.log("DELETE /api/courses:id to delete a course\n");
+
+    console.log("section related endpoints:");
+    console.log("GET /api/sections");
+    console.log("GET /api/sections/:id for a specific section");
+    console.log("POST /api/sections to update a section");
+    console.log("DELETE /api/sections:id to delete a section");
+    console.log("POST /api/sections to add a section");
+    console.log("GET /api/sections/course/:id to get sections of a specific course");
+    console.log("GET /api/sections/semester/:id to get sections of a specific semester\n");
 
 });

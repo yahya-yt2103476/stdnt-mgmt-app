@@ -30,13 +30,8 @@ async function main() {
 }
 
 async function fetchStudentInfo(userId) {
-  let students = [];
-  students = await fetch("http://127.0.0.1:5500/database/students.json")
-    .then((r) => r.json())
-    .then((d) => {
-      return d;
-    });
-  return students.find((students) => students.userId == userId);
+  const student = await fetch(`http://localhost:3001/api/students/${userId}`)
+  return student
 }
 
 async function fetchCourses() {
