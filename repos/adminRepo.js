@@ -15,7 +15,8 @@ class adminRepo{
     //Get a specific Admin. Pass the Admin Id
     async getAdmin(AdminID){
         const adminId= parseInt(AdminID)
-        const admins = this.getAdmins()
+        const admins = await this.getAdmins()
+        
         const desiredAdmin = admins.find((a)=>a.id==adminId)
         if (desiredAdmin) {
             return desiredAdmin

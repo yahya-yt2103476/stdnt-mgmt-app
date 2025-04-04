@@ -15,7 +15,7 @@ class usersRepo{
     // Get a specific User. Pass the User id
     async getUser(UserID){
         const users = await fs.readJSON(this.UsersFilePath);
-        const DesiredUser = users.find((Student) => Student.id == StudID);
+        const DesiredUser = users.find((User) => User.id == UserID);
         if (DesiredUser != null) {
             return DesiredUser;
         } else {

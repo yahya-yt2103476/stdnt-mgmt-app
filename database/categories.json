@@ -1,3 +1,10 @@
-{
-    "categories": ["Cybersecurity","AI","Data Science","Math","Physics","General Programming"]
-}
+[
+  [
+    "Cybersecurity",
+    "AI",
+    "Data Science",
+    "Math",
+    "Physics",
+    "General Programming"
+  ]
+]

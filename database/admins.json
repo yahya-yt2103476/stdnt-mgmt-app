@@ -1,16 +1,14 @@
-{
-    "admins": [
-      {
-        "id": 1,
-        "name": "Ahmad Al-Thani"
-      },
-      {
-        "id": 4,
-        "name": "mohammed Al-Mutawa"
-      },
-      {
-        "id": 8,
-        "name": "Yousef khalid"
-      }
-    ]
+[
+  {
+    "id": 1,
+    "name": "Ahmad Al-Thani"
+  },
+  {
+    "id": 4,
+    "name": "mohammed Al-Mutawa"
+  },
+  {
+    "id": 8,
+    "name": "Yousef khalid"
   }
+]

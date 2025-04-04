@@ -7,7 +7,6 @@ import instructorRepo from './repos/instructorRepo.js'
 import adminRepo from './repos/adminRepo.js'
 
 
-const studentInfo = await fetch(`http://localhost:3001/api/students/${123}`).then(r=>r.json()).then(d=>d);
 
 
 const app = express()
