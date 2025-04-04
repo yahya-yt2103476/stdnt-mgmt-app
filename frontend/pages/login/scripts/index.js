@@ -1,8 +1,5 @@
-import usersRepo from "../../../../repos/usersRepo.js";
-
 async function main() {
   const icons = [];
-  let users = [];
 
   const form = document.querySelector("#form");
   const std_icn = document.querySelector("#Student-icon");
@@ -13,15 +10,13 @@ async function main() {
   icons.push(Admin_icn);
   const indicator = document.querySelector("#indicator");
   const userType = document.querySelector("#usertype");
-
-  console.log("will print users in a min");
-
-  users = await usersRepo.getUsers()
-  users.forEach((u) => console.log(u));
-  console.log("printed");
+  let usertype;
   
 
-  let usertype;
+
+  
+
+  
 
   std_icn.addEventListener("click", () => handleUserType("Student"));
   Inst_icn.addEventListener("click", () => handleUserType("Instructor"));
@@ -29,6 +24,7 @@ async function main() {
   form.addEventListener("submit", handleLoginUser);
 
   function handleUserType(e) {
+    
     icons.forEach((i) => {
       i.style.transform = "scale(1)";
       i.style.color = "grey";
@@ -53,7 +49,9 @@ async function main() {
       document.body.style.background =
         "linear-gradient(to right,rgba(255, 65, 75, 0.8),rgba(255, 75, 43, 0.5))";
     }
+
   }
+
 
   async function handleLoginUser(e) {
     e.preventDefault();
@@ -64,8 +62,10 @@ async function main() {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
-
-    var user = users.find((u) => {
+    let users = await fetch("http://localhost:3001/api/users").then(r=>r.json()).then(d=>{
+      return d
+    });
+    let user = users.find((u) => {
       return u.email == formObject.email && u.password == formObject.password;
     });
     if (user && usertype != undefined && user.userType == usertype) {
@@ -94,11 +94,13 @@ async function main() {
     }
     form.reset();
   }
-}
+  
+  async function loadPage(user, page) {
+    window.location.href = page;
+    sessionStorage.setItem("authenticated_user_id", `${user.id}`);
+  }
+  }
 
-async function loadPage(user, page) {
-  window.location.href = page;
-  sessionStorage.setItem("authenticated_user_id", `${user.id}`);
-}
+
 
 main();
