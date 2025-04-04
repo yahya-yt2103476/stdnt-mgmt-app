@@ -7,6 +7,7 @@ import instructorRepo from './repos/instructorRepo.js'
 import adminRepo from './repos/adminRepo.js'
 import coursesRepo from './repos/coursesRepo.js'
 import sectionsRepo from './repos/sectionsRepo.js'
+import registrationsRepo from './repos/registrationsRepo.js'
 
 
 
@@ -241,6 +242,55 @@ app.get("/api/sections/semester/:id", async (request, res) => {
 
 
 
+//endpoints for registrations
+
+//receive all registrations
+app.get("/api/registration/", async (request, res) => {
+    const users = await registrationsRepo.GetRegistrations()
+    res.json(users)
+})
+
+//send an id to the endpoint, u receive an object of registration
+app.get("/api/registration/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await registrationsRepo.GetRegistration(id)
+    res.json(user)
+})
+
+//send an object to the endpoint, u receive a message whether modified or not
+app.post("/api/registration", async (request, res) => {
+    const registration = request.body;
+    try {
+        const result = await registrationsRepo.UpdateRegistration(registration);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating registration:", error);
+    }
+});
+
+//send an id to the endpoint, u receive a message whether deleted or not
+app.delete("/api/registration:id", async (request, res) => {
+    const registrationId = request.params.id;
+    try {
+        const result = await registrationsRepo.DeleteRegistration(registrationId);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating registration:", error);
+    }
+});
+
+//send an object to the endpoint, u receive a message whether added or not
+app.post("/api/registration", async (request, res) => {
+    const registration = request.body;
+    try {
+        const result = await registrationsRepo.CreateRegistration(registration);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating registration:", error);
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Student Managament System server is running on http://localhost:${PORT}\n base url is http://localhost:${PORT}/api/ ✅\n`);
@@ -281,5 +331,13 @@ app.listen(PORT, () => {
     console.log("POST /api/sections to add a section");
     console.log("GET /api/sections/course/:id to get sections of a specific course");
     console.log("GET /api/sections/semester/:id to get sections of a specific semester\n");
+
+    console.log("registration related endpoints:");
+    console.log("GET /api/registration");
+    console.log("GET /api/registration/:id for a specific registration");
+    console.log("POST /api/registration to update a registration");
+    console.log("DELETE /api/registration:id to delete a registration");
+    console.log("POST /api/registration to add a registration\n");
+    console.log("this is a simple server to handle the reading and writing requests, created by Ayoub(:");
 
 });

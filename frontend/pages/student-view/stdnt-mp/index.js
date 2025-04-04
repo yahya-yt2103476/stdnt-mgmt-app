@@ -30,16 +30,13 @@ async function main() {
 }
 
 async function fetchStudentInfo(userId) {
-  const student = await fetch(`http://localhost:3001/api/students/${userId}`)
+  const student = await fetch(`http://localhost:3001/api/students/${userId}`).then(r=>r.json())
   return student
 }
 
 async function fetchCourses() {
-  const data = await fetch("http://127.0.0.1:5500/database/courses.json")
-    .then((r) => r.json())
-    .then((d) => {
-      return d;
-    });
+  const data = await fetch("localhost:3001/api/courses")
+    .then((response) => response.json());
   return data;
 }
 
@@ -57,7 +54,7 @@ async function loadsections(courseid) {
 
   // get all needed data
   const [sectionsData, registrationsData] = await Promise.all([
-    fetch("http://127.0.0.1:5500/database/sections.json").then((r) => r.json()),
+    fetch("localhost:3001/api/sections").then((r) => r.json()),
     fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
       r.json()
     ),

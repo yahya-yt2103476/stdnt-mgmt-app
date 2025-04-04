@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-//this is a dedicated file to deal with students info. Created by Ayoub
 
 class studentRepo {
     constructor(parameters) {
