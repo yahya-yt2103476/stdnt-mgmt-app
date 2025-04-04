@@ -315,7 +315,7 @@ app.listen(PORT, () => {
     console.log("admin related endpoints:");
     console.log("GET /api/admins");
     console.log("GET /api/admins/:id for a specific admin");
-    console.log("POST /api/admins to update an admin");
+    console.log("POST /api/admins to update an admin\n");
 
     console.log("course related endpoints:");
     console.log("GET /api/courses");

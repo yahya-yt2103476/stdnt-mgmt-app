@@ -55,7 +55,7 @@ async function loadsections(courseid) {
   // get all needed data
   const [sectionsData, registrationsData] = await Promise.all([
     fetch("localhost:3001/api/sections").then((r) => r.json()),
-    fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
+    fetch("localhost:3001/api/registration").then((r) =>
       r.json()
     ),
   ]);
@@ -123,11 +123,11 @@ async function registerForSection(sectionId, courseId) {
   let enrolledCount;
   // fetch all needed data
   const [registrations, sections, courses] = await Promise.all([
-    fetch("http://127.0.0.1:5500/database/registrations.json").then((r) =>
+    fetch("localhost:3001/api/registration").then((r) =>
       r.json()
     ),
-    fetch("http://127.0.0.1:5500/database/sections.json").then((r) => r.json()),
-    fetch("http://127.0.0.1:5500/database/courses.json").then((r) => r.json()),
+    fetch("localhost:3001/api/sections").then((r) => r.json()),
+    fetch("localhost:3001/api/courses").then((r) => r.json()),
   ]);
 
   // condition 1 - student already logged in, fetched his respective information
