@@ -1,3 +1,5 @@
+import usersRepo from "../../../../repos/usersRepo.js";
+
 async function main() {
   const icons = [];
   let users = [];
@@ -14,14 +16,10 @@ async function main() {
 
   console.log("will print users in a min");
 
-  const path = "http://127.0.0.1:5500/database/users.json";
-
-  users = await fetch(path)
-    .then((e) => e.json())
-    .then((data) => {
-      return data;
-    });
+  users = await usersRepo.getUsers()
   users.forEach((u) => console.log(u));
+  console.log("printed");
+  
 
   let usertype;
 
@@ -74,17 +72,18 @@ async function main() {
       console.log(`user have been found`);
       indicator.style.display = "none";
 
-      //Mahmoud added the following function
-
       switch (user.userType) {
         case "Student":
           loadPage(user, "../student-view/stdnt-main-dashboard/stdnt-main-dashboard.html");
           break;
         case "Instructor":
           loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");
+          break;
 
         case "Admin":
-          loadPage(user, "../admin-view/admin-mp/admin-mp.html");
+          //the admin page is temporarly removed by alyaman i beleive,
+          // loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");
+          break;
       }
     } else if (usertype == undefined) {
       userType.style.display = "block";
@@ -97,9 +96,9 @@ async function main() {
   }
 }
 
-main();
-
 async function loadPage(user, page) {
   window.location.href = page;
   sessionStorage.setItem("authenticated_user_id", `${user.id}`);
 }
+
+main();

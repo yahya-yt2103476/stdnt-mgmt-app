@@ -1,20 +1,16 @@
-{
-    "instructors": [
+[
+
       {
-        "id": "I001",
-        "name": "Dr. Khalid Al-Naimi"
+        "id": 2,
+        "name": "Dr. Omar Hassan"
       },
       {
-        "id": "I002",
-        "name": "Dr. Layla Hassan"
+        "id": 5,
+        "name": "Dr. Layla Mohamed"
       },
       {
-        "id": "I003",
-        "name": "Dr. Saif Al-Muraikhi"
-      },
-      {
-        "id": "I004",
-        "name": "Lucas Adams"
+        "id": 9,
+        "name": "Dr. aisha Al-Muraikhi"
       }
+    
     ]
-  }

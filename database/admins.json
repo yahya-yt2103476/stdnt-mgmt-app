@@ -1,12 +1,16 @@
 {
     "admins": [
       {
-        "id": "A001",
-        "name": "Mariam Al-Thani"
+        "id": 1,
+        "name": "Ahmad Al-Thani"
       },
       {
-        "id": "A002",
-        "name": "Hassan Al-Mutawa"
+        "id": 4,
+        "name": "mohammed Al-Mutawa"
+      },
+      {
+        "id": 8,
+        "name": "Yousef khalid"
       }
     ]
   }

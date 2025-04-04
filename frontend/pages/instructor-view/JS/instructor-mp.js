@@ -26,10 +26,10 @@ async function getInstructorName(instructorId) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json(); // Get the object
-    const instructors = data.instructors; // Access the instructors array
+    const instructors = await response.json(); // Get the object
 
-    const instructor = instructors.find(inst => inst.id === instructorId);
+
+    const instructor = instructors.find(inst => inst.id == parseInt(instructorId));
     console.log(instructor);
     
     if (instructor) {
