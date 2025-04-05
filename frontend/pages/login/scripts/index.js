@@ -64,7 +64,10 @@ async function main() {
     });
     let users = await fetch("http://localhost:3001/api/users").then(r=>r.json()).then(d=>{
       return d
-    });
+    }).catch((error)=>{
+      console.log(error);
+      return [];
+    })
     let user = users.find((u) => {
       return u.email == formObject.email && u.password == formObject.password;
     });

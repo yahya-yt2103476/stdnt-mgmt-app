@@ -14,7 +14,10 @@ import registrationsRepo from './repos/registrationsRepo.js'
 
 const app = express()
 const PORT = 3001;
-app.use(cors())
+
+app.use(cors({
+
+}))
 app.use(express.json())
 
 //entry
@@ -48,7 +51,7 @@ app.get("/api/students/:id", async (request, res) => {
         const id = request.params.id;
         const user = await studentRepo.GetStudent(id)
         res.json(user)
-    }catch(e){
+    } catch (e) {
         console.error(`error happened ${e}`)
     }
 })
@@ -65,7 +68,7 @@ app.post("/api/students", async (request, res) => {
 });
 
 //send an id to the endpoint, u receive a message whether delted or not
-app.delete("/api/students:id", async (request, res) => {
+app.delete("/api/students/:id", async (request, res) => {
     const student = request.params.id;
     try {
         const result = await studentRepo.DeleteStudent(student);
@@ -103,7 +106,7 @@ app.post("/api/instructors", async (request, res) => {
 });
 
 //send an id to the endpoint, u receive a message whether deleted or not
-app.delete("/api/instructors:id", async (request, res) => {
+app.delete("/api/instructors/:id", async (request, res) => {
     const instructor = request.params.id;
     try {
         const result = await instructorRepo.DeleteInstructor(instructor);
@@ -166,7 +169,7 @@ app.post("/api/courses", async (request, res) => {
 });
 
 //send an id to the endpoint, u receive a message whether deleted or not
-app.delete("/api/courses:id", async (request, res) => {
+app.delete("/api/courses/:id", async (request, res) => {
     const course = request.params.id;
     try {
         const result = await coursesRepo.DeleteCourse(course);
@@ -205,7 +208,7 @@ app.post("/api/sections", async (request, res) => {
 });
 
 //send an id to the endpoint, u receive a message whether deleted or not
-app.delete("/api/sections:id", async (request, res) => {
+app.delete("/api/sections/:id", async (request, res) => {
     const section = request.params.id;
     try {
         const result = await sectionsRepo.DeleteSection(section);
@@ -269,7 +272,7 @@ app.post("/api/registration", async (request, res) => {
 });
 
 //send an id to the endpoint, u receive a message whether deleted or not
-app.delete("/api/registration:id", async (request, res) => {
+app.delete("/api/registration/:id", async (request, res) => {
     const registrationId = request.params.id;
     try {
         const result = await registrationsRepo.DeleteRegistration(registrationId);
