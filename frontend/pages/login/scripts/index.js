@@ -11,10 +11,9 @@ async function main() {
   const indicator = document.querySelector("#indicator");
   const userType = document.querySelector("#usertype");
   let usertype;
-  
-
 
   
+
 
   
 
@@ -68,9 +67,11 @@ async function main() {
       console.log(error);
       return [];
     })
+
     let user = users.find((u) => {
       return u.email == formObject.email && u.password == formObject.password;
     });
+
     if (user && usertype != undefined && user.userType == usertype) {
       console.log(`user have been found`);
       indicator.style.display = "none";

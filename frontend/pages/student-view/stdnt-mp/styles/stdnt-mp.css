@@ -95,6 +95,7 @@ main {
 
 /*card container desgin*/
 .container {
+  min-height: 300px;
   max-width: 800px;
   background-color: rgba(255, 255, 255, 0.8);
   margin: 10px;
@@ -106,7 +107,7 @@ main {
   grid-template-areas:
     "header header header"
     "courseDetails description description"
-    "- - btn-container";
+    "courseDetails - btn-container";
   background-image: url("assets/background.jpg");
   background-size: cover;
   background-position: center;
@@ -118,7 +119,6 @@ main {
 
 .header {
   grid-area: header;
-  background-color: aliceblue;
 }
 
 .courseDetails {
@@ -127,7 +127,8 @@ main {
   flex-direction: column;
   text-align: start;
   grid-area: courseDetails;
-  background-color: antiquewhite;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
 }
 
 .btn-container {
@@ -139,12 +140,14 @@ main {
   align-items: center;
 }
 .btn-container > button {
+  background-color: #4da8da;
+  color: whitesmoke;
   border: none;
   border-radius: 15px;
   width: 75%;
   height: 40px;
   font-weight: bold;
-  font-style: italic;
+
   transition: ease-in-out 0.2s;
 }
 .btn-container > button:hover {
@@ -154,7 +157,6 @@ main {
   padding: 5px;
   text-align: start;
   grid-area: description;
-  background-color: bisque;
 }
 
 footer {

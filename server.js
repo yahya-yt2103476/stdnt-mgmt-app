@@ -307,13 +307,13 @@ app.listen(PORT, () => {
     console.log("GET /api/students");
     console.log("GET /api/students/:id for a specific student");
     console.log("POST /api/students to update a student");
-    console.log("DELETE /api/students:id to delete a student\n");
+    console.log("DELETE /api/students/:id to delete a student\n");
 
     console.log("instructor related endpoints:");
     console.log("GET /api/instructors");
     console.log("GET /api/instructors/:id for a specific instructor");
     console.log("POST /api/instructors to update an instructor");
-    console.log("DELETE /api/instructors:id to delete an instructor\n");
+    console.log("DELETE /api/instructors/:id to delete an instructor\n");
 
     console.log("admin related endpoints:");
     console.log("GET /api/admins");
@@ -324,13 +324,13 @@ app.listen(PORT, () => {
     console.log("GET /api/courses");
     console.log("GET /api/courses/:id for a specific course");
     console.log("POST /api/courses to update a course");
-    console.log("DELETE /api/courses:id to delete a course\n");
+    console.log("DELETE /api/courses/:id to delete a course\n");
 
     console.log("section related endpoints:");
     console.log("GET /api/sections");
     console.log("GET /api/sections/:id for a specific section");
     console.log("POST /api/sections to update a section");
-    console.log("DELETE /api/sections:id to delete a section");
+    console.log("DELETE /api/sections/:id to delete a section");
     console.log("POST /api/sections to add a section");
     console.log("GET /api/sections/course/:id to get sections of a specific course");
     console.log("GET /api/sections/semester/:id to get sections of a specific semester\n");
@@ -339,7 +339,7 @@ app.listen(PORT, () => {
     console.log("GET /api/registration");
     console.log("GET /api/registration/:id for a specific registration");
     console.log("POST /api/registration to update a registration");
-    console.log("DELETE /api/registration:id to delete a registration");
+    console.log("DELETE /api/registration/:id to delete a registration");
     console.log("POST /api/registration to add a registration\n");
     console.log("this is a simple server to handle the reading and writing requests, created by Ayoub(:");
 
