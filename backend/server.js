@@ -1,13 +1,13 @@
 //this is a simple express server to serve the frontend
 import express from 'express';
 import cors from 'cors'
-import usersRepo from './backend/repos/usersRepo.js';
-import studentRepo from './backend/repos/studentRepo.js';
-import instructorRepo from './backend/repos/instructorRepo.js'
-import adminRepo from './backend/repos/adminRepo.js'
-import coursesRepo from './backend/repos/coursesRepo.js'
-import sectionsRepo from './backend/repos/sectionsRepo.js'
-import registrationsRepo from './backend/repos/registrationsRepo.js'
+import usersRepo from './repos/usersRepo.js';
+import studentRepo from './repos/studentRepo.js';
+import instructorRepo from './repos/instructorRepo.js'
+import adminRepo from './repos/adminRepo.js'
+import coursesRepo from './repos/coursesRepo.js'
+import sectionsRepo from './repos/sectionsRepo.js'
+import registrationsRepo from './repos/registrationsRepo.js'
 
 
 
