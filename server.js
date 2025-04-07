@@ -1,13 +1,13 @@
 //this is a simple express server to serve the frontend
 import express from 'express';
 import cors from 'cors'
-import usersRepo from './repos/usersRepo.js';
-import studentRepo from './repos/studentRepo.js';
-import instructorRepo from './repos/instructorRepo.js'
-import adminRepo from './repos/adminRepo.js'
-import coursesRepo from './repos/coursesRepo.js'
-import sectionsRepo from './repos/sectionsRepo.js'
-import registrationsRepo from './repos/registrationsRepo.js'
+import usersRepo from './backend/repos/usersRepo.js';
+import studentRepo from './backend/repos/studentRepo.js';
+import instructorRepo from './backend/repos/instructorRepo.js'
+import adminRepo from './backend/repos/adminRepo.js'
+import coursesRepo from './backend/repos/coursesRepo.js'
+import sectionsRepo from './backend/repos/sectionsRepo.js'
+import registrationsRepo from './backend/repos/registrationsRepo.js'
 
 
 
@@ -157,14 +157,22 @@ app.get("/api/courses/:id", async (request, res) => {
     res.json(user)
 })
 
-//send an object to the endpoint, u receive a message whether modified or not
+// Handle creating or updating courses
 app.post("/api/courses", async (request, res) => {
     const course = request.body;
     try {
-        const result = await coursesRepo.UpdateCourse(course);
-        res.status(200).json({ message: result });
+        // If no ID is provided, create a new course
+        if (!course.id) {
+            const newCourse = await coursesRepo.CreateCourse(course);
+            res.status(201).json({ message: "Course created successfully", course: newCourse });
+        } else {
+            // Otherwise update existing course
+            const result = await coursesRepo.UpdateCourse(course);
+            res.status(200).json({ message: result, course: course });
+        }
     } catch (error) {
-        console.error("Error updating course:", error);
+        console.error("Error processing course:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -175,7 +183,25 @@ app.delete("/api/courses/:id", async (request, res) => {
         const result = await coursesRepo.DeleteCourse(course);
         res.status(200).json({ message: result });
     } catch (error) {
+        console.error("Error deleting course:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Update specific course by ID
+app.post("/api/courses/:id", async (request, res) => {
+    const courseId = request.params.id;
+    const courseData = request.body;
+    
+    // Ensure the ID in the URL matches the one in the body
+    courseData.id = parseInt(courseId);
+    
+    try {
+        const result = await coursesRepo.UpdateCourse(courseData);
+        res.status(200).json({ message: result, course: courseData });
+    } catch (error) {
         console.error("Error updating course:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -196,14 +222,19 @@ app.get("/api/sections/:id", async (request, res) => {
     res.json(user)
 })
 
-//send an object to the endpoint, u receive a message whether modified or not
 app.post("/api/sections", async (request, res) => {
     const section = request.body;
     try {
-        const result = await sectionsRepo.UpdateSection(section);
-        res.status(200).json({ message: result });
+        if (!section.id) {
+            const result = await sectionsRepo.AddSection(section);
+            res.status(201).json(result);
+        } else {
+            const result = await sectionsRepo.UpdateSection(section);
+            res.status(200).json(result);
+        }
     } catch (error) {
-        console.error("Error updating section:", error);
+        console.error("Error processing section:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -212,17 +243,6 @@ app.delete("/api/sections/:id", async (request, res) => {
     const section = request.params.id;
     try {
         const result = await sectionsRepo.DeleteSection(section);
-        res.status(200).json({ message: result });
-    } catch (error) {
-        console.error("Error updating section:", error);
-    }
-});
-
-//send an object to the endpoint, u receive a message whether added or not
-app.post("/api/sections", async (request, res) => {
-    const section = request.body;
-    try {
-        const result = await sectionsRepo.AddSection(section);
         res.status(200).json({ message: result });
     } catch (error) {
         console.error("Error updating section:", error);
@@ -260,14 +280,22 @@ app.get("/api/registration/:id", async (request, res) => {
     res.json(user)
 })
 
-//send an object to the endpoint, u receive a message whether modified or not
+// Handle creating or updating registrations
 app.post("/api/registration", async (request, res) => {
     const registration = request.body;
     try {
-        const result = await registrationsRepo.UpdateRegistration(registration);
-        res.status(200).json({ message: result });
+        // If no ID is provided, create a new registration
+        if (!registration.id) {
+            const result = await registrationsRepo.CreateRegistration(registration);
+            res.status(201).json({ message: result });
+        } else {
+            // Otherwise update existing registration
+            const result = await registrationsRepo.UpdateRegistration(registration);
+            res.status(200).json({ message: result });
+        }
     } catch (error) {
-        console.error("Error updating registration:", error);
+        console.error("Error processing registration:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -276,17 +304,6 @@ app.delete("/api/registration/:id", async (request, res) => {
     const registrationId = request.params.id;
     try {
         const result = await registrationsRepo.DeleteRegistration(registrationId);
-        res.status(200).json({ message: result });
-    } catch (error) {
-        console.error("Error updating registration:", error);
-    }
-});
-
-//send an object to the endpoint, u receive a message whether added or not
-app.post("/api/registration", async (request, res) => {
-    const registration = request.body;
-    try {
-        const result = await registrationsRepo.CreateRegistration(registration);
         res.status(200).json({ message: result });
     } catch (error) {
         console.error("Error updating registration:", error);
@@ -331,7 +348,6 @@ app.listen(PORT, () => {
     console.log("GET /api/sections/:id for a specific section");
     console.log("POST /api/sections to update a section");
     console.log("DELETE /api/sections:id to delete a section");
-    console.log("POST /api/sections to add a section");
     console.log("GET /api/sections/course/:id to get sections of a specific course");
     console.log("GET /api/sections/semester/:id to get sections of a specific semester\n");
 

@@ -25,15 +25,15 @@ class adminRepo{
         }
     }
 
-    //ypdating an admin info. Pass the Admin Object
+    //updating an admin info. Pass the Admin Object
     async UpdateAdmin(Admin){
         const adminId = parseInt(Admin.id)
-        const admins = this.getAdmins()
+        const admins = await this.getAdmins()
         const desiredAdminIndex = admins.findIndex((a)=>a.id==adminId)
-        if (desiredAdminIndex) {
+        if (desiredAdminIndex != null) {
             admins.splice(desiredAdminIndex,1)
             admins.push(Admin)
-            fs.writeJSON(admins)
+            await fs.writeJSON(this.AdminsFilePath, admins)
             return "Admin updated successfully"
         }else{
             return "No admin with specified Id"

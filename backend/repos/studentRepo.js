@@ -24,7 +24,7 @@ class studentRepo {
         const studs = await this.GetStudents();
 
 
-        const DesiredStudent = studs.find((Student) => Student.id == StudID);
+        const DesiredStudent = studs.find((student) => student.id == StudID);
         if (DesiredStudent != null) {
             return DesiredStudent;
         } else {
@@ -33,13 +33,13 @@ class studentRepo {
     }
 
     //Updating a Student Information. Pass the *Student Object*
-    async UpdateStudent(Student) {
+    async UpdateStudent(studentData) {
         const studs = await this.GetStudents();
-        const DesiredStudentIndex = studs.findIndex((Student) => Student.id == Student.id);
+        const DesiredStudentIndex = studs.findIndex((student) => student.id == studentData.id);
 
         if (DesiredStudentIndex != null) {
             studs.splice(DesiredStudentIndex, 1)
-            studs.push(Student)
+            studs.push(studentData)
             await fs.writeJSON(this.StudentsFilePath, studs)
             return "student updated Successfully"
         } else {
@@ -50,7 +50,7 @@ class studentRepo {
     //Delete a Student entirly. Pass the student Id
     async DeleteStudent(studentID) {
         const studs = await this.GetStudents()
-        const DesiredStudentIndex = studs.findIndex((Student) => Student.id == studentID);
+        const DesiredStudentIndex = studs.findIndex((student) => student.id == studentID);
         
         if (DesiredStudentIndex != null) {
             studs.splice(DesiredStudentIndex, 1)

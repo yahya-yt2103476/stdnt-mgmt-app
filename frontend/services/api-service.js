@@ -1,0 +1,45 @@
+const API_BASE_URL = 'http://localhost:3001/api';
+
+// Send a GET request to the API
+async function fetchDataFromApi(endpoint) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching data: ${error}`);
+    return null;
+  }
+}
+
+async function saveDataToApi(endpoint, data) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error posting data: ${error}`);
+    return null;
+  }
+}
+
+async function deleteDataFromApi(endpoint) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error deleting data: ${error}`);
+    return null;
+  }
+}
+
+export { fetchDataFromApi, saveDataToApi, deleteDataFromApi }; 

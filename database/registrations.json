@@ -1,51 +1,51 @@
 [
   {
-    "id": "REG001",
-    "studentId": "S001",
-    "sectionId": "SEC001",
+    "id": 1,
+    "studentId": 1,
+    "sectionId": 1,
     "status": "approved",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG002",
-    "studentId": "S001",
-    "sectionId": "SEC001",
+    "id": 2,
+    "studentId": 1,
+    "sectionId": 1,
     "status": "approved",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG003",
-    "studentId": "S001",
-    "sectionId": "SEC001",
+    "id": 3,
+    "studentId": 1,
+    "sectionId": 1,
     "status": "cancelled",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG004",
-    "studentId": "S002",
-    "sectionId": "SEC002",
+    "id": 4,
+    "studentId": 2,
+    "sectionId": 2,
     "status": "pending",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG005",
-    "studentId": "S003",
-    "sectionId": "SEC003",
+    "id": 5,
+    "studentId": 3,
+    "sectionId": 3,
     "status": "pending",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG006",
-    "studentId": "S004",
-    "sectionId": "SEC025",
+    "id": 6,
+    "studentId": 4,
+    "sectionId": 25,
     "status": "pending",
-    "Grade": ""
+    "grade": 91
   },
   {
-    "id": "REG007",
-    "studentId": "S005",
-    "sectionId": "SEC025",
+    "id": 7,
+    "studentId": 5,
+    "sectionId": 25,
     "status": "pending",
-    "Grade": ""
+    "grade": 91
   }
 ]

@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-    <link rel="stylesheet" href="../styles/courses-view.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Management</title>
+  <link rel="stylesheet" href="../styles/admin-styles.css">
+  <link rel="stylesheet" href="../styles/courses-styles.css">
+  <link rel="stylesheet" href="../styles/course-card.css">
 </head>
 <body>
-    <div class="view-header">
-        <h1>Courses</h1>
-    </div>
+  <div class="container">
+    <h1>Course Management</h1>
 
-    <div class="courses-container" id="coursesContainer">
-        <!-- Course cards will be loaded here -->
+    <div class="view-toggle">
+      <button id="listViewBtn">List View</button>
+      <button id="calendarViewBtn">Calendar View</button>
     </div>
-
-    <script type="module" src="../scripts/controllers/admin-controller.js"></script>
+    
+    <div class="actions">
+      <button id="addCourseBtn">Add Course</button>
+    </div>
+    
+    <div id="coursesContainer" class="list-view">
+      <div id="loadingIndicator">Loading courses...</div>
+    </div>
+  </div>
+  <script type="module" src="../scripts/controllers/courses-controller.js"></script>
 </body>
 </html>

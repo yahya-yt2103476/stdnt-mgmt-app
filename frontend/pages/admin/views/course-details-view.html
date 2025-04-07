@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details</title>
+  <link rel="stylesheet" href="../styles/admin-styles.css">
+  <link rel="stylesheet" href="../styles/course-details-styles.css">
+</head>
+<body>
+  <div class="container">
+    <button id="backButton">Back to Courses</button>
+    
+    <div id="viewMode">
+      <div id="courseDetails"></div>
+      <h3>Sections</h3>
+      <div id="sectionsList"></div>
+      <div class="button-group">
+        <button id="editButton">Edit Course</button>
+        <button id="addSectionButton">Add Section</button>
+      </div>
+    </div>
+    
+    <div id="editMode" class="hidden">
+      <h2>Edit Course</h2>
+      <form id="courseForm">
+        <div class="form-group">
+          <label for="shortName">Short Name:</label>
+          <input type="text" id="shortName" name="shortName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="name">Course Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="creditHours">Credit Hours:</label>
+          <input type="number" id="creditHours" name="creditHours" min="1" max="6">
+        </div>
+        
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select id="category" name="category">
+            <option value="programming">Programming</option>
+            <option value="math">Math</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Prerequisites:</label>
+          <div id="prerequisitesContainer"></div>
+          <button type="button" id="addPrereqBtn">Add Prerequisite</button>
+        </div>
+        
+        <button type="button" id="cancelBtn">Cancel</button>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+  
+  <script type="module" src="../scripts/controllers/course-details-controller.js"></script>
+</body>
+</html>

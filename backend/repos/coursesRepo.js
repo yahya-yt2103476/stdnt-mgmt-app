@@ -25,18 +25,35 @@ class coursesRepo {
         }
     }
 
-    //Updating a Course Information. Pass the *Course Object*
-    async UpdateCourse(course) {
+    async CreateCourse(newCourse) {
         const courses = await this.GetCourses();
-        const DesiredCourseIndex = courses.findIndex((course) => course.id == course.id);
+        
+        // Find the maximum id to assign a new id
+        const maxId = courses.reduce((max, course) => Math.max(max, course.id), 0);
+        newCourse.id = maxId + 1;
+        
+        courses.push(newCourse);
+        await fs.writeJSON(this.CoursesFilePath, courses);
+        return newCourse;
+    }
 
-        if (DesiredCourseIndex != null) {
+    async UpdateCourse(updatedCourse) {
+        const courses = await this.GetCourses();
+        const DesiredCourseIndex = courses.findIndex((course) => course.id == updatedCourse.id);
+        
+        console.log('Updating course - ID:', updatedCourse.id);
+        console.log('Found at index:', DesiredCourseIndex);
+        console.log('Course data:', updatedCourse);
+
+        if (DesiredCourseIndex !== -1) {
             courses.splice(DesiredCourseIndex, 1)
-            courses.push(course)
+            courses.push(updatedCourse)
             await fs.writeJSON(this.CoursesFilePath, courses)
-            return "course updated Successfully"
+            console.log('Course updated successfully');
+            return updatedCourse
         } else {
-            return "No course with specified Id"
+            console.log('No course found with ID:', updatedCourse.id);
+            return null
         }
     }
 
@@ -52,10 +69,7 @@ class coursesRepo {
         } else {
             return "No course with specified Id"
         }
-
     }
-
-
 }
 
 export default new coursesRepo();
