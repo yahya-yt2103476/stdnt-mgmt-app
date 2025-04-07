@@ -1,6 +1,6 @@
 import { fetchDataFromApi, saveDataToApi } from './api-service.js';
 
-async function createAndSaveAdmin(data) {
+async function createAdmin(data) {
   const admins = await fetchAllAdmins();
   const maxId = admins.reduce((max, admin) => Math.max(max, admin.id), 0);
   
@@ -10,6 +10,14 @@ async function createAndSaveAdmin(data) {
   };
   
   return await saveDataToApi('/admins', newAdmin);
+}
+
+async function updateAdmin(adminData) {
+  if (!adminData.id) {
+    throw new Error('Admin ID is required for updating');
+  }
+  
+  return await saveDataToApi(`/admins/${adminData.id}`, adminData, 'PUT');
 }
 
 async function fetchAllAdmins() {
@@ -23,7 +31,8 @@ async function fetchAdminById(adminId) {
 }
 
 export { 
-  createAndSaveAdmin, 
+  createAdmin,
+  updateAdmin,
   fetchAllAdmins, 
   fetchAdminById 
 }; 

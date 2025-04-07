@@ -1,6 +1,5 @@
 const API_BASE_URL = 'http://localhost:3001/api';
 
-// Send a GET request to the API
 async function fetchDataFromApi(endpoint) {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`);
