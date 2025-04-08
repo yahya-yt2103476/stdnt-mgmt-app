@@ -30,16 +30,18 @@ async function main() {
 }
 
 async function fetchStudentInfo(userId) {
-  const student = await fetch(`http://localhost:3001/api/students/${userId}`).then(r=>r.json())
-  return student
+  const student = await fetch(
+    `http://localhost:3001/api/students/${userId}`
+  ).then((r) => r.json());
+  return student;
 }
 
 async function fetchCourses() {
-  const data = await fetch("http://localhost:3001/api/courses")
-    .then((response) => response.json());
+  const data = await fetch("http://localhost:3001/api/courses").then(
+    (response) => response.json()
+  );
   return data;
 }
-
 
 // Modified loadsections function
 async function loadsections(courseid) {
@@ -55,9 +57,7 @@ async function loadsections(courseid) {
   // get all needed data
   const [sectionsData, registrationsData] = await Promise.all([
     fetch("http://localhost:3001/api/sections").then((r) => r.json()),
-    fetch("http://localhost:3001/api/registration").then((r) =>
-      r.json()
-    ),
+    fetch("http://localhost:3001/api/registration").then((r) => r.json()),
   ]);
 
   const sections = sectionsData.filter((s) => s.courseId == courseid);
@@ -113,19 +113,13 @@ async function loadsections(courseid) {
   toggleButton.textContent = "Hide Sections";
 }
 
-
-
-
-
 async function registerForSection(sectionId, courseId) {
   const studentId = sessionStorage.getItem("authenticated_user_id");
   const currentStudentInfo = await fetchStudentInfo(studentId);
   let enrolledCount;
   // fetch all needed data
   const [registrations, sections, courses] = await Promise.all([
-    fetch("http://localhost:3001/api/registration").then((r) =>
-      r.json()
-    ),
+    fetch("http://localhost:3001/api/registration").then((r) => r.json()),
     fetch("http://localhost:3001/api/sections").then((r) => r.json()),
     fetch("http://localhost:3001/api/courses").then((r) => r.json()),
   ]);
@@ -139,13 +133,13 @@ async function registerForSection(sectionId, courseId) {
   if (sectionIndex === -1 || !sections[sectionIndex].isOpenForRegistration) {
     alert("Registration is closed for this section!");
     return;
-  }else{
-    enrolledCount = sections[sectionIndex].enrolledStudents ? sections[sectionIndex].enrolledStudents.length : 0;
+  } else {
+    enrolledCount = sections[sectionIndex].enrolledStudents
+      ? sections[sectionIndex].enrolledStudents.length
+      : 0;
   }
   console.log("testing");
   console.log(enrolledCount);
-  
-  
 
   // check remaining seats
 
@@ -193,12 +187,11 @@ Required: ${course.prerequisites.join(", ")}`);
   // json update logic
   //StudentsRepo.AddRegistration(newRegistartion);
   //-----------------------------------------
-  
+
   console.log("new registeration: ", newRegistration);
   console.log("new registartion list:\n");
 
   console.log(registrations);
-  
 
   // add student to enrolledStudents
   if (!sections[sectionIndex].enrolledStudents) {
@@ -213,9 +206,6 @@ Required: ${course.prerequisites.join(", ")}`);
   }
   currentStudentInfo.registeredCourses.push(courseId);
   console.log("finished");
-  
-
-  
 }
 
 main();
