@@ -61,7 +61,18 @@ async function main() {
       return;
     }
 
+    // TODO: display the prerequisites' names instead of their ids
     coursesToRender.forEach((course) => {
+      const prerequisiteNames =
+        course.prerequisites && course.prerequisites.length > 0
+          ? course.prerequisites
+              .map((prereqId) => {
+                const prereqCourse = courses.find((c) => c.id == prereqId);
+                return `${prereqCourse.shortName}`;
+              })
+              .join(", ")
+          : "None";
+
       coursesContainer.innerHTML += `
       <div class="course-card" id="course-${course.id}">
         <div class="card-header">
@@ -69,15 +80,11 @@ async function main() {
         </div>
         <div class="card-body">
           <div class="card-section">
+            <p class="category">${course.category}</p>
             <p><strong>Title:</strong> ${course.name}</p>
-            <p><strong>Category:</strong> ${course.category}</p>
             <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
             <p><strong>Prerequisites:</strong> 
-              ${
-                course.prerequisites && course.prerequisites.length > 0
-                  ? course.prerequisites.join(", ")
-                  : "None"
-              }
+              ${prerequisiteNames}
             </p>
           </div>
 
@@ -86,9 +93,7 @@ async function main() {
           </div>
 
           <div class="card-footer">
-            <button onclick="loadsections('${course.id}')" id="toggle-${
-        course.id
-      }">View Sections</button>
+            <button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button>
           </div>
         </div>
         <div class="sectionsContainer" id="sections-${course.id}"></div>
@@ -96,6 +101,7 @@ async function main() {
       `;
     });
   }
+  //done
 
   async function loadsections(courseid) {
     // get sections for this specific course
@@ -121,7 +127,7 @@ async function main() {
 
     // display each section
     for (const sec of courseSections) {
-      // Calculate remaining seats
+      // calculate remaining seats
       const enrolledCount = sec.enrolledStudents
         ? sec.enrolledStudents.length
         : 0;
@@ -176,6 +182,7 @@ async function main() {
     toggleButton.textContent = "Hide Sections";
   }
   window.loadsections = loadsections;
+  //done
 
   async function registerForSection(sectionId, courseId) {
     let enrolledCount;
@@ -259,8 +266,6 @@ async function main() {
     console.log("finished");
   }
   window.registerForSection = registerForSection;
-
-  async function FilterCourses(query) {}
 }
 
 main();

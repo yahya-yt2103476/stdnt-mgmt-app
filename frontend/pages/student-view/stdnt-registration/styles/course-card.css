@@ -2,30 +2,37 @@
   width: 90vw;
   margin: 20px auto;
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 7px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  font-family: "Segoe UI", sans-serif;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s;
 }
 
 .course-card:hover {
-  transform: scale(1.01);
+  transform: scale(1.004);
 }
 
 .card-header {
   background-color: #4da8da;
   color: white;
-  padding: 16px 24px;
+  padding: 7px;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
 .card-body {
-  padding: 20px 24px;
+  padding: 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.category {
+  padding: 7px;
+  background: rgb(238, 238, 238);
+  border-radius: 9px;
+  border-bottom: 4px solid #4da8da;
+  width: max-content;
 }
 
 .card-section {
