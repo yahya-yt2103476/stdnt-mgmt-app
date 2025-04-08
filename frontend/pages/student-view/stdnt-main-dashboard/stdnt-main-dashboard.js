@@ -4,7 +4,7 @@ const coursesRegistrationCard = document.getElementById("coursesRegistration");
 const learningPathCard = document.getElementById("learningPath");
 
 coursesRegistrationCard.addEventListener("click", function () {
-  window.location.href = "../stdnt-mp/stdnt-mp.html";
+  window.location.href = '../stdnt-registration/stdnt-registration.html';
 });
 
 learningPathCard.addEventListener("click", function () {

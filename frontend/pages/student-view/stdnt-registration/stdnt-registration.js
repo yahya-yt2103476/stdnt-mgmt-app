@@ -1,6 +1,8 @@
 const CoursesContainer = document.querySelector(".CoursesContainer");
 
 async function main() {
+  console.log("testing");
+  
   const coursesData = await fetchCourses();
   console.log("courses data: ", coursesData);
 
