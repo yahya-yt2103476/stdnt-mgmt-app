@@ -10,6 +10,7 @@ var currentInstructor = await fetchInstructorById(instructor_Id);
 let instructorName = currentInstructor.name;
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
+
 let instructorSections = () => {
   return allSections.filter(section => section.instructorName === instructorName);
 };
@@ -54,6 +55,7 @@ function filterIntoOne(corList, secList) {
       matchingSections.forEach((section) => {
         newList.push({
           name: course.name,
+          shortName: course.shortName,
           category: course.category,
           totalEnrolled: section.enrolledStudents.length,
         });
@@ -73,7 +75,7 @@ function loadCourses(courseData, instructorCourses, instructorSections) {
         <h3>${course.name}</h3>
         <p>Category: ${course.category}</p>
         <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-        <a href="../instructor-detail-page/instructor_course_details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}" class="view-course-btn">View Course</a>
+        <a href="../instructor-detail-page/instructor_course_details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
       </div>
     `;
   });
