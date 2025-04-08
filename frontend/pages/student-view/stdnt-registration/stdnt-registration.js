@@ -5,51 +5,84 @@ import {
   fetchSectionById,
   fetchSectionsByCourseId,
   fetchSectionsBySemester,
-  deleteSectionById
-} from '../../../services/section-service.js'
+  deleteSectionById,
+} from "../../../services/section-service.js";
 
-
-import { fetchUserById } from '../../../services/user-service.js'
+import { fetchUserById } from "../../../services/user-service.js";
 
 import {
   fetchAllCourses,
   fetchCourseById,
-} from '../../../services/course-service.js'
+} from "../../../services/course-service.js";
 
 import {
   createAndSaveRegistration,
   fetchAllRegistrations,
   fetchRegistrationById,
   updateRegistrationData,
-  deleteRegistrationById
-} from '../../../services/registration-service.js'
-
-
-
-
-
-
+  deleteRegistrationById,
+} from "../../../services/registration-service.js";
 
 async function main() {
-
-
-  const searchBar = document.querySelector("#searchBar")
-  searchBar.addEventListener(
-    'input', (event) => renderCourses(event.target.value),)
-  const CoursesContainer = document.querySelector(".CoursesContainer");
+  const searchBar = document.querySelector("#searchBar");
+  const coursesContainer = document.querySelector(".CoursesContainer");
   const currentUserID = sessionStorage.getItem("authenticated_user_id");
 
-  //fetch all the data required
   let courses = await fetchAllCourses();
   let sections = await fetchAllSections();
   let registrations = await fetchAllRegistrations();
   let currentStudentInfo = await fetchUserById(currentUserID);
-  renderCourses()
 
+  renderCourses(courses);
 
+  searchBar.addEventListener("input", handleSearch);
+  function handleSearch() {
+    const inputSearch = searchBar.value.toLowerCase();
+    if (inputSearch == "") {
+      renderCourses(courses);
+      return;
+    }
+    const searchResults = courses.filter(
+      (course) =>
+        course.name.toLowerCase().includes(inputSearch) ||
+        course.shortName.toLowerCase().includes(inputSearch) ||
+        course.category.toLowerCase().includes(inputSearch)
+    );
+    renderCourses(searchResults);
+  }
+
+  function renderCourses(coursesToRender) {
+    // clear the container first
+    coursesContainer.innerHTML = "";
+
+    if (!coursesToRender || coursesToRender.length === 0) {
+      coursesContainer.innerHTML =
+        "<p><b>No courses found matching your search.</b></p>";
+      return;
+    }
+
+    coursesToRender.forEach((course) => {
+      coursesContainer.innerHTML += `
+        <div class="container" id="course-${course.id}">
+          <div class="header"><b>${course.id} (${course.name})</b></div>
+          <div class="courseDetails">
+            <b>Course Details:</b>
+            <p><b>Title:</b> ${course.name}</p>
+            <p><b>Category:</b> ${course.category}</p>
+            <p><b>Credit Hours:</b> ${course.creditHours}</p>
+          </div>
+          <div class="description">
+            <p>${course.description}</p>
+          </div>
+          <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
+          <div class="sectionsContainer" id="sections-${course.id}"></div>
+        </div>
+      `;
+    });
+  }
 
   async function loadsections(courseid) {
-    let sections = await fetchSectionsByCourseId(courseid)
+    let sections = await fetchSectionsByCourseId(courseid);
     const sectionsContainer = document.getElementById(`sections-${courseid}`);
     const toggleButton = document.getElementById(`toggle-${courseid}`);
 
@@ -58,7 +91,6 @@ async function main() {
       toggleButton.textContent = "View Sections";
       return;
     }
-
 
     if (sections.length === 0 || sections == null) {
       sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
@@ -111,9 +143,7 @@ async function main() {
   }
   window.loadsections = loadsections;
 
-
   async function registerForSection(sectionId, courseId) {
-
     let enrolledCount;
 
     const sectionIndex = sections.findIndex((s) => s.id == sectionId);
@@ -178,14 +208,13 @@ async function main() {
 
     console.log("new registeration: ", newRegistration);
     console.log("new registartion list:\n");
-
     console.log(registrations);
 
     // add student to enrolledStudents
     if (!sections[sectionIndex].enrolledStudents) {
       sections[sectionIndex].enrolledStudents = [];
     }
-    sections[sectionIndex].enrolledStudents.push(currentUserID);
+    sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
     console.log("section updated");
 
     // updated student's registeredCourses
@@ -197,68 +226,7 @@ async function main() {
   }
   window.registerForSection = registerForSection;
 
-  async function renderCourses(query) {
-    const searchBar = document.querySelector("#searchBar")
-
-    if (query) {
-      let coursesAlias = courses.filter((c) => c.shortName.includes(query) )
-      console.log(coursesAlias);
-      coursesAlias.forEach((course) => {
-        CoursesContainer.innerHTML += `
-            <div class="container" id="course-${course.id}">
-                <div class="header"><b>${course.id} (${course.name})</b></div>
-                <div class="courseDetails">
-                    <b>Course Details:</b>
-                    <p><b>Title:</b> ${course.name}</p>
-                    <p><b>Category:</b> ${course.category}</p>
-                    <p><b>Crediet Hours:</b> ${course.creditHours}</p>
-                </div>
-                <div class="description">
-                    <p>${course.Description}</p>
-                </div>
-                <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
-                <div class="sectionsContainer" id="sections-${course.id}"></div>
-            </div>
-            `;
-      });
-
-
-    } else {
-      courses.forEach((course) => {
-        CoursesContainer.innerHTML += `
-            <div class="container" id="course-${course.id}">
-                <div class="header"><b>${course.id} (${course.name})</b></div>
-                <div class="courseDetails">
-                    <b>Course Details:</b>
-                    <p><b>Title:</b> ${course.name}</p>
-                    <p><b>Category:</b> ${course.category}</p>
-                    <p><b>Crediet Hours:</b> ${course.creditHours}</p>
-                </div>
-                <div class="description">
-                    <p>${course.Description}</p>
-                </div>
-                <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
-                <div class="sectionsContainer" id="sections-${course.id}"></div>
-            </div>
-            `;
-      });
-    }
-
-  }
-
-  async function FilterCourses(query) {
-
-  }
+  async function FilterCourses(query) {}
 }
-
-
-
-
-
-
-
-
-
-
 
 main();
