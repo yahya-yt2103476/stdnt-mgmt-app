@@ -54,5 +54,20 @@
     "location": "",
     "courseContent": [],
     "id": 7
+  },
+  {
+    "courseId": 7,
+    "courseShortName": "CMPS 208",
+    "instructorName": "Ava Halla",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "open",
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday"],
+    "location": "",
+    "courseContent": [],
+    "id": 7
   }
+
 ]

@@ -1,51 +1,26 @@
-//hard set variable
-// let instructor_Id = "I001";
-// let instructorName = "Dr. Khalid Al-Naimi";
-// let instructorName = 'Lucas Adams'; // another test value
- // this value should be sent from the login page delete later testing values
-//remove this variable later
+import {fetchAllInstructors, fetchInstructorById} from '../../../services/instructor-service.js'
+import {fetchAllCourses, fetchCourseById,updateCourse} from '../../../services/course-service.js'
+import {updateSection, fetchAllSections,fetchSectionById,fetchSectionsByCourseId} from '../../../services/section-service.js'
 
+// test value for instructor ID
+let instructor_Id = 2
 
-let instructor_Id = sessionStorage.getItem('authenticated_user_id');
-var instructorName;
+// let instructor_Id = sessionStorage.getItem('authenticated_user_id');
+var currentInstructor = await fetchInstructorById(instructor_Id);
+let instructorName = currentInstructor.name;
+
+console.log(currentInstructor);
+
 
 async function initializeInstructorName() {
-  if (instructor_Id) {
-    instructorName = await getInstructorName(instructor_Id);
-    main(instructorName);// main call
-    console.log(instructorName);
-  } else {
-    console.error("Instructor ID not found in URL.");
-  }
+
 }
 
 async function getInstructorName(instructorId) {
-  const path = "http://127.0.0.1:5500/database/instructors.json";
-  try {
-    const response = await fetch(path);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const instructors = await response.json(); // Get the object
-
-
-    const instructor = instructors.find(inst => inst.id == parseInt(instructorId));
-    console.log(instructor);
-    
-    if (instructor) {
-      return instructor.name;
-    } else {
-      console.error(`Instructor with ID ${instructorId} not found.`);
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching instructors:", error);
-    return null;
-  }
+  
 }
 
-initializeInstructorName();
-console.log("Instructor Name:", instructorName);// it evaluates as undefined otherwise
+
 
 function main(instructorName){
   console.log("Instructor Name:", instructorName);
@@ -55,9 +30,6 @@ function main(instructorName){
             window.history.back();
         });
     }
-
-let sectionsLink = "http://127.0.0.1:5500/database/sections.json";
-let coursesLink = "http://127.0.0.1:5500/database/courses.json";
 
 let courseList = localStorage.getItem("course_list");
 let sectionList = localStorage.getItem("section_list");
