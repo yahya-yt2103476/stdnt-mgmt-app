@@ -3,7 +3,7 @@ import path from 'path';
 
 class registrationsRepo {
     constructor(parameters) {
-        this.RegistrationFilePath = path.join(process.cwd(), "database/registrations.json")
+        this.RegistrationFilePath = path.join(process.cwd(), "backend/database/registrations.json")
     }
 
     //get all registrations

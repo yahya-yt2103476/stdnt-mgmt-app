@@ -4,7 +4,7 @@ import path from 'path';
 
 class studentRepo {
     constructor(parameters) {
-        this.StudentsFilePath = path.join(process.cwd(), "database/students.json")
+        this.StudentsFilePath = path.join(process.cwd(), "backend/database/students.json")
         
         
     }

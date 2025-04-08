@@ -3,7 +3,9 @@ import path from 'path';
 
 class adminRepo{
     constructor(params){
-        this.AdminsFilePath = path.join(process.cwd(), "database/admins.json")
+        
+        
+        this.AdminsFilePath = path.join(process.cwd(), "backend/database/admins.json")
     }
 
     //get all admins

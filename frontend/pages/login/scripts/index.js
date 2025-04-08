@@ -1,4 +1,9 @@
+import {createUser, updateUser, fetchAllUsers, fetchUserById } from '../../../services/user-service.js'
+
 async function main() {
+  
+  
+
   const icons = [];
 
   const form = document.querySelector("#form");
@@ -61,12 +66,11 @@ async function main() {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
-    let users = await fetch("http://localhost:3001/api/users").then(r=>r.json()).then(d=>{
-      return d
-    }).catch((error)=>{
-      console.log(error);
-      return [];
-    })
+    let users = await fetchAllUsers()
+    console.log("used the new method");
+    console.log(users);
+    
+    
 
     let user = users.find((u) => {
       return u.email == formObject.email && u.password == formObject.password;

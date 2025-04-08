@@ -3,7 +3,7 @@ import path from 'path';
 
 class usersRepo{
     constructor(parameters){
-        this.UsersFilePath = path.join(process.cwd(),"database/users.json")
+        this.UsersFilePath = path.join(process.cwd(),"backend/database/users.json")
     }
 
     //get all the users

@@ -4,7 +4,7 @@ import path from 'path';
 
 class sectionsRepo {
     constructor(parameters) {
-        this.SectionsFilePath = path.join(process.cwd(), "database/sections.json")
+        this.SectionsFilePath = path.join(process.cwd(), "backend/database/sections.json")
     }
 
     //get all sections
