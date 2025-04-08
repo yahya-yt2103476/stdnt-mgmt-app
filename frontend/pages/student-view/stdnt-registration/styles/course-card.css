@@ -1,64 +1,72 @@
-.cardContainer {
-  min-height: 300px;
-  max-width: 800px;
-  background-color: rgba(255, 255, 255, 0.8);
-  margin: 10px;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 2fr 4fr auto;
-  grid-template-rows: auto auto auto auto;
-  gap: 5px;
-  grid-template-areas:
-    "header header header"
-    "courseDetails description description"
-    "courseDetails - btn-container";
-  background-image: url("assets/background.jpg");
-  background-size: cover;
-  background-position: center;
-  height: auto;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+.course-card {
+  width: 90vw;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+  transition: transform 0.2s ease-in-out;
 }
 
-.courseCardHeader {
-  grid-area: header;
+.course-card:hover {
+  transform: scale(1.01);
 }
 
-.courseDetails {
-  padding: 5px;
+.card-header {
+  background-color: #4da8da;
+  color: white;
+  padding: 16px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  text-align: start;
-  grid-area: courseDetails;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
+  gap: 16px;
 }
 
-.btn-container {
-  display: flex;
-  width: 180px;
-  grid-area: btn-container;
-  justify-content: center;
-  display: flex;
-  align-items: center;
+.card-section {
+  line-height: 1.6;
 }
-.btn-container > button {
+
+.card-section p {
+  margin: 4px 0;
+}
+
+.description {
+  padding: 12px;
+  background-color: #f5f8fa;
+  border-left: 4px solid #4da8da;
+  border-radius: 8px;
+  font-style: italic;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.card-footer button {
   background-color: #4da8da;
-  color: whitesmoke;
+  color: white;
+  padding: 10px 20px;
   border: none;
-  border-radius: 15px;
-  width: 75%;
-  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
 
-  transition: ease-in-out 0.2s;
+.card-footer button:hover {
+  background-color: #0077b6;
 }
-.btn-container > button:hover {
-  scale: 1.05;
-}
-.courseDescription {
-  padding: 5px;
-  text-align: start;
-  grid-area: description;
+
+@media screen and (min-width: 768px) {
+  .course-card {
+    width: 50vw;
+  }
 }

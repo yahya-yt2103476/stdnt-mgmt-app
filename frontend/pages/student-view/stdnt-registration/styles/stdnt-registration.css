@@ -1,5 +1,3 @@
-/* <!-- 🔹 Primary Colors: #007BFF, #4DA8DA, #a2b9cf --> */
-/* ------------------------------------------------------- */
 * {
   color: black;
   /* reset */
@@ -12,11 +10,11 @@
 /* mobile view */
 body {
   /* background-color: #101827; */
-  background: linear-gradient(
+  /* background: linear-gradient(
     to right,
     rgba(107, 17, 203, 0.5),
     rgba(37, 116, 252, 0.5)
-  );
+  ); */
   display: grid;
   grid-template-areas: "header" "main" "footer";
   grid-template-columns: 1fr;

@@ -63,20 +63,36 @@ async function main() {
 
     coursesToRender.forEach((course) => {
       coursesContainer.innerHTML += `
-        <div class="cardContainer" id="course-${course.id}">
-          <div class="courseCardHeader"><b>${course.shortName}-${course.id}</b></div>
-          <div class="courseDetails">
-            <b>Course Details:</b>
-            <p><b>Title:</b> ${course.name}</p>
-            <p><b>Category:</b> ${course.category}</p>
-            <p><b>Credit Hours:</b> ${course.creditHours}</p>
+      <div class="course-card" id="course-${course.id}">
+        <div class="card-header">
+          <h4>${course.shortName} - ${course.id}</h2>
+        </div>
+        <div class="card-body">
+          <div class="card-section">
+            <p><strong>Title:</strong> ${course.name}</p>
+            <p><strong>Category:</strong> ${course.category}</p>
+            <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
+            <p><strong>Prerequisites:</strong> 
+              ${
+                course.prerequisites && course.prerequisites.length > 0
+                  ? course.prerequisites.join(", ")
+                  : "None"
+              }
+            </p>
           </div>
-          <div class="courseDescription">
+
+          <div class="card-section description">
             <p>${course.description}</p>
           </div>
-          <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
-          <div class="sectionsContainer" id="sections-${course.id}"></div>
+
+          <div class="card-footer">
+            <button onclick="loadsections('${course.id}')" id="toggle-${
+        course.id
+      }">View Sections</button>
+          </div>
         </div>
+        <div class="sectionsContainer" id="sections-${course.id}"></div>
+      </div>
       `;
     });
   }
@@ -119,7 +135,7 @@ async function main() {
           r.status !== "cancelled"
       );
 
-      // determine registration availability
+      // registration availability
       let registerButton;
       if (isRegistered) {
         registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
@@ -132,18 +148,29 @@ async function main() {
       }
 
       sectionsContainer.innerHTML += `
-        <div class="sectionsCard">
-          <p class="section-id">Section ID: ${sec.id}</p>
-          <p>Course: ${sec.courseShortName}</p>
-          <p>Instructor: ${sec.instructorName}</p>
-          <p>Semester: ${sec.semester}</p>
-          <p>Capacity: ${sec.capacity}</p>
-          <p>Enrolled: ${enrolledCount}</p>
-          <p>Remaining seats: ${remainingSeats}</p>
-          <p>Time: ${sec.Time}</p>
-          <p>Days: ${sec.Days.join(", ")}</p>
+      <div class="sectionsCard">
+        <div class="sectionHeader">
+          <p class="section-id">Section ${sec.id}</p>
+          <p class="section-instructor">${sec.instructorName}</p>
+        </div>
+
+        <div class="sectionInfo">
+          <p><strong>Course:</strong> ${sec.courseShortName}</p>
+          <p><strong>Semester:</strong> ${sec.semester}</p>
+          <p><strong>Time:</strong> ${sec.Time}</p>
+          <p><strong>Days:</strong> ${sec.Days.join(", ")}</p>
+        </div>
+
+        <div class="sectionCapacity">
+          <p><strong>Capacity:</strong> ${sec.capacity}</p>
+          <p><strong>Enrolled:</strong> ${enrolledCount}</p>
+          <p><strong>Remaining:</strong> ${remainingSeats}</p>
+        </div>
+
+        <div class="registerContainer">
           ${registerButton}
         </div>
+      </div>
       `;
     }
     toggleButton.textContent = "Hide Sections";

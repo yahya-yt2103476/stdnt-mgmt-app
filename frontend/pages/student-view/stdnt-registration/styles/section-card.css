@@ -1,31 +1,76 @@
 .sectionsCard {
-  display: flex;
-  background: linear-gradient(
-    145deg,
-    rgba(245, 222, 179, 0.8),
-    rgba(245, 222, 179, 0.5),
-    rgba(245, 222, 179, 0.45)
-  );
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3), 3px 3px 3px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  height: 200ram;
-  margin: 10px;
-  padding: 10px;
   display: grid;
-  gap: 0.15rem;
-}
-.section-id {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
+  grid-template-areas:
+    "header header"
+    "info capacity"
+    "register register";
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  /* -webkit-backdrop-filter: blur(12px); */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  border-radius: 15px;
+  padding: 16px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  margin: 12px auto;
+  font-family: "Segoe UI", sans-serif;
 }
 
-#Register-sections {
-  align-self: center;
+.sectionHeader {
+  grid-area: header;
   display: flex;
-  width: 50%;
-  justify-content: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 4px;
+}
+
+.sectionInfo {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+
+.sectionCapacity {
+  grid-area: capacity;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+
+.registerContainer {
+  grid-area: register;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.register-btn {
+  background-color: #4da8da;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.register-btn:hover:enabled {
+  background-color: #0077b6;
+}
+
+.register-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
