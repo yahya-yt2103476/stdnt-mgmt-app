@@ -42,25 +42,8 @@ async function main() {
   let sections = await fetchAllSections();
   let registrations = await fetchAllRegistrations();
   let currentStudentInfo = await fetchUserById(currentUserID);
+  renderCourses()
 
-  courses.forEach((course) => {
-    CoursesContainer.innerHTML += `
-        <div class="container" id="course-${course.id}">
-            <div class="header"><b>${course.id} (${course.name})</b></div>
-            <div class="courseDetails">
-                <b>Course Details:</b>
-                <p><b>Title:</b> ${course.name}</p>
-                <p><b>Category:</b> ${course.category}</p>
-                <p><b>Crediet Hours:</b> ${course.creditHours}</p>
-            </div>
-            <div class="description">
-                <p>${course.Description}</p>
-            </div>
-            <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
-            <div class="sectionsContainer" id="sections-${course.id}"></div>
-        </div>
-        `;
-  });
 
 
   async function loadsections(courseid) {
@@ -210,11 +193,30 @@ async function main() {
     currentStudentInfo.registeredCourses.push(courseId);
     console.log("finished");
   }
-
-
-
   window.registerForSection = registerForSection;
+
+  async function renderCourses(){
+    courses.forEach((course) => {
+      CoursesContainer.innerHTML += `
+          <div class="container" id="course-${course.id}">
+              <div class="header"><b>${course.id} (${course.name})</b></div>
+              <div class="courseDetails">
+                  <b>Course Details:</b>
+                  <p><b>Title:</b> ${course.name}</p>
+                  <p><b>Category:</b> ${course.category}</p>
+                  <p><b>Crediet Hours:</b> ${course.creditHours}</p>
+              </div>
+              <div class="description">
+                  <p>${course.Description}</p>
+              </div>
+              <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
+              <div class="sectionsContainer" id="sections-${course.id}"></div>
+          </div>
+          `;
+    });
+  }
 }
+
 
 
 
