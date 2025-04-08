@@ -33,7 +33,9 @@ import {
 async function main() {
 
 
-
+  const searchBar = document.querySelector("#searchBar")
+  searchBar.addEventListener(
+    'input', (event) => renderCourses(event.target.value),)
   const CoursesContainer = document.querySelector(".CoursesContainer");
   const currentUserID = sessionStorage.getItem("authenticated_user_id");
 
@@ -80,7 +82,7 @@ async function main() {
         let registerButton;
         if (isRegistered) {
           registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
-        } else if (sec.statues != "approved" ) {
+        } else if (sec.statues != "approved") {
           registerButton = `<button class="register-btn" disabled>Registration Closed</button>`;
         } else if (remainingSeats <= 0) {
           registerButton = `<button class="register-btn" disabled>Section Full</button>`;
@@ -113,9 +115,9 @@ async function main() {
   async function registerForSection(sectionId, courseId) {
 
     let enrolledCount;
-  
+
     const sectionIndex = sections.findIndex((s) => s.id == sectionId);
-  
+
     if (sectionIndex === -1 || !sections[sectionIndex].isOpenForRegistration) {
       alert("Registration is closed for this section!");
       return;
@@ -126,14 +128,14 @@ async function main() {
     }
     console.log("testing");
     console.log(enrolledCount);
-  
+
     // check remaining seats
-  
+
     if (enrolledCount >= sections[sectionIndex].capacity) {
       alert("This section is already full!");
       return;
     }
-  
+
     // check existing registrations
     const existingRegistration = registrations.find(
       (r) =>
@@ -145,7 +147,7 @@ async function main() {
       alert("You are already registered for this section!");
       return;
     }
-  
+
     // condition 3 - check prerequisites
     const course = courses.find((c) => c.id === courseId);
     const hasPrerequisites = course.prerequisites.every((prereq) =>
@@ -156,7 +158,7 @@ async function main() {
   Required: ${course.prerequisites.join(", ")}`);
       return;
     }
-  
+
     // create new registration
     const newRegistration = {
       id: `REG${Date.now().toString().slice(-6)}`,
@@ -165,27 +167,27 @@ async function main() {
       status: "pending",
       Grade: "",
     };
-  
+
     // update local copies of data
     registrations.push(newRegistration);
-  
+
     //-----------------------------------------
     // json update logic
     //StudentsRepo.AddRegistration(newRegistartion);
     //-----------------------------------------
-  
+
     console.log("new registeration: ", newRegistration);
     console.log("new registartion list:\n");
-  
+
     console.log(registrations);
-  
+
     // add student to enrolledStudents
     if (!sections[sectionIndex].enrolledStudents) {
       sections[sectionIndex].enrolledStudents = [];
     }
     sections[sectionIndex].enrolledStudents.push(currentUserID);
     console.log("section updated");
-  
+
     // updated student's registeredCourses
     if (!currentStudentInfo.registeredCourses) {
       currentStudentInfo.registeredCourses = [];
@@ -195,25 +197,57 @@ async function main() {
   }
   window.registerForSection = registerForSection;
 
-  async function renderCourses(){
-    courses.forEach((course) => {
-      CoursesContainer.innerHTML += `
-          <div class="container" id="course-${course.id}">
-              <div class="header"><b>${course.id} (${course.name})</b></div>
-              <div class="courseDetails">
-                  <b>Course Details:</b>
-                  <p><b>Title:</b> ${course.name}</p>
-                  <p><b>Category:</b> ${course.category}</p>
-                  <p><b>Crediet Hours:</b> ${course.creditHours}</p>
-              </div>
-              <div class="description">
-                  <p>${course.Description}</p>
-              </div>
-              <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
-              <div class="sectionsContainer" id="sections-${course.id}"></div>
-          </div>
-          `;
-    });
+  async function renderCourses(query) {
+    const searchBar = document.querySelector("#searchBar")
+
+    if (query) {
+      let coursesAlias = courses.filter((c) => c.shortName.includes(query) )
+      console.log(coursesAlias);
+      coursesAlias.forEach((course) => {
+        CoursesContainer.innerHTML += `
+            <div class="container" id="course-${course.id}">
+                <div class="header"><b>${course.id} (${course.name})</b></div>
+                <div class="courseDetails">
+                    <b>Course Details:</b>
+                    <p><b>Title:</b> ${course.name}</p>
+                    <p><b>Category:</b> ${course.category}</p>
+                    <p><b>Crediet Hours:</b> ${course.creditHours}</p>
+                </div>
+                <div class="description">
+                    <p>${course.Description}</p>
+                </div>
+                <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
+                <div class="sectionsContainer" id="sections-${course.id}"></div>
+            </div>
+            `;
+      });
+
+
+    } else {
+      courses.forEach((course) => {
+        CoursesContainer.innerHTML += `
+            <div class="container" id="course-${course.id}">
+                <div class="header"><b>${course.id} (${course.name})</b></div>
+                <div class="courseDetails">
+                    <b>Course Details:</b>
+                    <p><b>Title:</b> ${course.name}</p>
+                    <p><b>Category:</b> ${course.category}</p>
+                    <p><b>Crediet Hours:</b> ${course.creditHours}</p>
+                </div>
+                <div class="description">
+                    <p>${course.Description}</p>
+                </div>
+                <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
+                <div class="sectionsContainer" id="sections-${course.id}"></div>
+            </div>
+            `;
+      });
+    }
+
+  }
+
+  async function FilterCourses(query) {
+
   }
 }
 
