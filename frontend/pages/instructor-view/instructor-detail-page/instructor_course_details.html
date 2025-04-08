@@ -121,16 +121,8 @@
         <div class="studentFinalGrade">
           <h3>Submit Students Final Grade</h3>
           <form action="" method="POST" enctype="multipart/form-data" class="finalGradeFOrm">
-            <label>Student QUID</label>
-            <select>
-              <option selected disabled>-Select-</option>
-              <option>QUID1</option>
-              <option>QUID2</option>
-              <option>QUID3</option>
-            </select>
-            <label>Final Grade</label>
-            <input type="number" min="0" max="110" />
-            <button type="submit">Submit</button>
+            <!-- HTML Injection -->
+            <button type="submit" class="finalGradeSubmitBtn">Submit</button>
           </form>
         </div>
       </main>
