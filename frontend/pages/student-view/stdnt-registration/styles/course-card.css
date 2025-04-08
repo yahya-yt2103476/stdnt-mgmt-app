@@ -1,0 +1,64 @@
+.cardContainer {
+  min-height: 300px;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin: 10px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 2fr 4fr auto;
+  grid-template-rows: auto auto auto auto;
+  gap: 5px;
+  grid-template-areas:
+    "header header header"
+    "courseDetails description description"
+    "courseDetails - btn-container";
+  background-image: url("assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  height: auto;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.courseCardHeader {
+  grid-area: header;
+}
+
+.courseDetails {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  grid-area: courseDetails;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+
+.btn-container {
+  display: flex;
+  width: 180px;
+  grid-area: btn-container;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.btn-container > button {
+  background-color: #4da8da;
+  color: whitesmoke;
+  border: none;
+  border-radius: 15px;
+  width: 75%;
+  height: 40px;
+  font-weight: bold;
+
+  transition: ease-in-out 0.2s;
+}
+.btn-container > button:hover {
+  scale: 1.05;
+}
+.courseDescription {
+  padding: 5px;
+  text-align: start;
+  grid-area: description;
+}

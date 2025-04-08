@@ -25,7 +25,7 @@ import {
 
 async function main() {
   const searchBar = document.querySelector("#searchBar");
-  const coursesContainer = document.querySelector(".CoursesContainer");
+  const coursesContainer = document.querySelector(".coursesContainer");
   const currentUserID = sessionStorage.getItem("authenticated_user_id");
 
   let courses = await fetchAllCourses();
@@ -63,15 +63,15 @@ async function main() {
 
     coursesToRender.forEach((course) => {
       coursesContainer.innerHTML += `
-        <div class="container" id="course-${course.id}">
-          <div class="header"><b>${course.id} (${course.name})</b></div>
+        <div class="cardContainer" id="course-${course.id}">
+          <div class="courseCardHeader"><b>${course.shortName}-${course.id}</b></div>
           <div class="courseDetails">
             <b>Course Details:</b>
             <p><b>Title:</b> ${course.name}</p>
             <p><b>Category:</b> ${course.category}</p>
             <p><b>Credit Hours:</b> ${course.creditHours}</p>
           </div>
-          <div class="description">
+          <div class="courseDescription">
             <p>${course.description}</p>
           </div>
           <div class="btn-container"><button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button></div>
@@ -82,63 +82,70 @@ async function main() {
   }
 
   async function loadsections(courseid) {
-    let sections = await fetchSectionsByCourseId(courseid);
+    // get sections for this specific course
+    const courseSections = sections.filter(
+      (section) => section.courseId == courseid
+    );
     const sectionsContainer = document.getElementById(`sections-${courseid}`);
     const toggleButton = document.getElementById(`toggle-${courseid}`);
 
+    // toggle visibility
     if (sectionsContainer.innerHTML.trim() !== "") {
       sectionsContainer.innerHTML = "";
       toggleButton.textContent = "View Sections";
       return;
     }
 
-    if (sections.length === 0 || sections == null) {
-      sectionsContainer.innerHTML = `<p>No available Sections for this course...</p>`;
-    } else {
-      for (const sec of sections) {
-        // calculate remaining seats
-        const enrolledCount = sec.enrolledStudents
-          ? sec.enrolledStudents.length
-          : 0;
-        const remainingSeats = sec.capacity - enrolledCount;
-
-        // check if student is already registered (approved or pending)
-        const isRegistered = registrations.some(
-          (r) =>
-            r.studentId == currentStudentInfo.studentId &&
-            r.sectionId === sec.id &&
-            r.status !== "cancelled"
-        );
-
-        // determine register button state
-        let registerButton;
-        if (isRegistered) {
-          registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
-        } else if (sec.statues != "approved") {
-          registerButton = `<button class="register-btn" disabled>Registration Closed</button>`;
-        } else if (remainingSeats <= 0) {
-          registerButton = `<button class="register-btn" disabled>Section Full</button>`;
-        } else {
-          registerButton = `<button onclick="registerForSection('${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
-        }
-
-        sectionsContainer.innerHTML += `
-          <div class="sectionsCard">
-            <p class="section-id">Section ID: ${sec.id}</p>
-            <p>Instructor: ${sec.instructorName}</p>
-            <p>Semester: ${sec.semester}</p>
-            <p>Capacity: ${sec.capacity}</p>
-            <p>Enrolled: ${enrolledCount}</p>
-            <p>Remaining seats: ${remainingSeats}</p>
-            <p>Time: ${sec.Time}</p>
-            <p>Days: ${sec.Days.join(", ")}</p>
-            <p>Status: ${sec.isOpenForRegistration ? "Open" : "Closed"}</p>
-            ${registerButton}
-          </div>
-        `;
-      }
+    // handle no sections available
+    if (courseSections.length === 0) {
+      sectionsContainer.innerHTML = `<p>No available sections for this course...</p>`;
+      toggleButton.textContent = "View Sections";
+      return;
     }
 
+    // display each section
+    for (const sec of courseSections) {
+      // Calculate remaining seats
+      const enrolledCount = sec.enrolledStudents
+        ? sec.enrolledStudents.length
+        : 0;
+      const remainingSeats = sec.capacity - enrolledCount;
+
+      // check if student is already registered
+      const isRegistered = registrations.some(
+        (r) =>
+          r.studentId == currentStudentInfo.studentId &&
+          r.sectionId === sec.id &&
+          r.status !== "cancelled"
+      );
+
+      // determine registration availability
+      let registerButton;
+      if (isRegistered) {
+        registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
+      } else if (sec.status !== "approved") {
+        registerButton = `<button class="register-btn" disabled>Registration Closed</button>`;
+      } else if (remainingSeats <= 0) {
+        registerButton = `<button class="register-btn" disabled>Section Full</button>`;
+      } else {
+        registerButton = `<button onclick="registerForSection('${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
+      }
+
+      sectionsContainer.innerHTML += `
+        <div class="sectionsCard">
+          <p class="section-id">Section ID: ${sec.id}</p>
+          <p>Course: ${sec.courseShortName}</p>
+          <p>Instructor: ${sec.instructorName}</p>
+          <p>Semester: ${sec.semester}</p>
+          <p>Capacity: ${sec.capacity}</p>
+          <p>Enrolled: ${enrolledCount}</p>
+          <p>Remaining seats: ${remainingSeats}</p>
+          <p>Time: ${sec.Time}</p>
+          <p>Days: ${sec.Days.join(", ")}</p>
+          ${registerButton}
+        </div>
+      `;
+    }
     toggleButton.textContent = "Hide Sections";
   }
   window.loadsections = loadsections;
