@@ -1,4 +1,9 @@
+
+.coursesContainer>div{
+  min-width: 500px;
+}
 .course-card {
+  min-width: 300px;
   width: 90vw;
   margin: 20px auto;
   background: #ffffff;

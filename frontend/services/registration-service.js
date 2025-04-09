@@ -1,6 +1,9 @@
 import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
 
+
+
 async function createAndSaveRegistration(data = {}) {
+  
   const validStatuses = ['pending', 'approved', 'cancelled'];
   
   if (data.status && !validStatuses.includes(data.status)) {

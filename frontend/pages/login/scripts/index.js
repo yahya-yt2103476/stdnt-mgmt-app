@@ -5,6 +5,8 @@ import {
   fetchUserById,
 } from "../../../services/user-service.js";
 
+
+
 async function main() {
   const icons = [];
 
@@ -29,25 +31,19 @@ async function main() {
       i.style.transform = "scale(1)";
       i.style.color = "grey";
     });
-    console.log(e);
-    if (e === "Student") {
+
+    if (e === "Student") {      
       usertype = e;
       std_icn.style.transform = "scale(1.05)";
       std_icn.style.color = "Black";
-      document.body.style.backgroundImage =
-        "url('../../assets/purple-background.jpg')";
     } else if (e === "Instructor") {
       usertype = e;
       Inst_icn.style.transform = "scale(1.05)";
       Inst_icn.style.color = "Black";
-      document.body.style.backgroundImage =
-        "url('../../assets/Green-background.png')";
     } else if (e === "Admin") {
       usertype = e;
       Admin_icn.transform = "scale(1.05)";
       Admin_icn.style.color = "Black";
-      document.body.style.backgroundImage =
-        "url('../../assets/red-background.jpg')";
     }
   }
 
@@ -68,6 +64,8 @@ async function main() {
       return u.email == formObject.email && u.password == formObject.password;
     });
 
+
+
     if (user && usertype != undefined && user.userType == usertype) {
       console.log(`user have been found`);
       indicator.style.display = "none";
@@ -84,6 +82,7 @@ async function main() {
           break;
 
         case "Admin":
+
           // Ayoub: Working now
           loadPage(user, "../admin/views/courses-view.html");
           break;

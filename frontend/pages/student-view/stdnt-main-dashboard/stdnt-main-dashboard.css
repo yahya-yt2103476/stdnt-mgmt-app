@@ -1,3 +1,4 @@
+
 * {
   color: black;
   /* reset */
@@ -8,12 +9,8 @@
 }
 
 body {
-  background: linear-gradient(
-    to right,
-    rgba(107, 17, 203, 0.5),
-    rgba(37, 116, 252, 0.5)
-  );
   display: grid;
+  background-image: url('/frontend/assets/purple-background.jpg');
   grid-template-areas:
     "header"
     "main"

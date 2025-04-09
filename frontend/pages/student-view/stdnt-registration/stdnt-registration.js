@@ -6,6 +6,7 @@ import {
   fetchSectionsByCourseId,
   fetchSectionsBySemester,
   deleteSectionById,
+  addStudentToSection
 } from "../../../services/section-service.js";
 
 import { fetchUserById } from "../../../services/user-service.js";
@@ -31,7 +32,7 @@ import {
   deleteStudentById,
 } from "../../../services/student-service.js";
 
-async function main() {
+
   const searchBar = document.querySelector("#searchBar");
   const coursesContainer = document.querySelector(".coursesContainer");
   const currentUserID = sessionStorage.getItem("authenticated_user_id");
@@ -39,9 +40,7 @@ async function main() {
   let courses = await fetchAllCourses();
   let sections = await fetchAllSections();
   let registrations = await fetchAllRegistrations();
-  let currentStudentUserInfo = await fetchUserById(currentUserID);
   let currentStudentInfo = await fetchStudentById(currentUserID);
-  console.log("user info: ", currentStudentUserInfo);
   console.log("student info: ", currentStudentInfo);
   renderCourses(courses);
 
@@ -110,9 +109,10 @@ async function main() {
       `;
     });
   }
-  //done
+
 
   async function loadsections(courseid) {
+    let sections = await fetchSectionsByCourseId(courseid);
     // get sections for this specific course
     const courseSections = sections.filter(
       (section) => section.courseId == courseid
@@ -136,17 +136,16 @@ async function main() {
 
     // display each section
     for (const sec of courseSections) {
+
       // calculate remaining seats
-      const enrolledCount = sec.enrolledStudents
-        ? sec.enrolledStudents.length
-        : 0;
+      const enrolledCount = sec.enrolledStudents.length
       const remainingSeats = sec.capacity - enrolledCount;
 
       // check if student is already registered
       const isRegistered = registrations.some(
         (r) =>
-          r.studentId == currentStudentInfo.studentId &&
-          r.sectionId === sec.id &&
+          r.studentId == currentStudentInfo.id &&
+          r.sectionId == sec.id &&
           r.status !== "cancelled"
       );
 
@@ -154,12 +153,12 @@ async function main() {
       let registerButton;
       if (isRegistered) {
         registerButton = `<button class="register-btn" disabled>Already Registered</button>`;
-      } else if (sec.status !== "approved") {
+      } else if ((sec.status == "cancelled")) {
         registerButton = `<button class="register-btn" disabled>Registration Closed</button>`;
-      } else if (remainingSeats <= 0) {
+      } else if (remainingSeats == 0) {
         registerButton = `<button class="register-btn" disabled>Section Full</button>`;
       } else {
-        registerButton = `<button onclick="registerForSection('${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
+        registerButton = `<button type="button" onclick="registerForSection(event,'${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
       }
 
       sectionsContainer.innerHTML += `
@@ -191,45 +190,22 @@ async function main() {
     toggleButton.textContent = "Hide Sections";
   }
   window.loadsections = loadsections;
-  //done
 
-  async function registerForSection(sectionId, courseId) {
-    let enrolledCount;
 
-    const sectionIndex = sections.findIndex((s) => s.id == sectionId);
+  async function registerForSection(event,sectionId, courseId) {    
+    event.preventDefault();
+    console.log(event);
+    
+    parseInt(sectionId)
+    parseInt(courseId)
+    console.log("sectionId: ", sectionId);
+    console.log("courseId: ", courseId);
+    
 
-    if (sectionIndex === -1 || !sections[sectionIndex].isOpenForRegistration) {
-      alert("Registration is closed for this section!");
-      return;
-    } else {
-      enrolledCount = sections[sectionIndex].enrolledStudents
-        ? sections[sectionIndex].enrolledStudents.length
-        : 0;
-    }
-    console.log("testing");
-    console.log(enrolledCount);
 
-    // check remaining seats
 
-    if (enrolledCount >= sections[sectionIndex].capacity) {
-      alert("This section is already full!");
-      return;
-    }
-
-    // check existing registrations
-    const existingRegistration = registrations.find(
-      (r) =>
-        r.studentId === currentStudentInfo.studentId &&
-        r.sectionId === sectionId &&
-        r.status !== "cancelled"
-    );
-    if (existingRegistration) {
-      alert("You are already registered for this section!");
-      return;
-    }
-
-    // condition 3 - check prerequisites
-    const course = courses.find((c) => c.id === courseId);
+    // condition  - check prerequisites
+    const course = courses.find((c) => c.id == courseId);
     const hasPrerequisites = course.prerequisites.every((prereq) =>
       currentStudentInfo.completedCourses?.some((c) => c.courseId === prereq)
     );
@@ -241,40 +217,44 @@ async function main() {
 
     // create new registration
     const newRegistration = {
-      id: `REG${Date.now().toString().slice(-6)}`,
-      studentId: currentUserID,
-      sectionId,
+      id: registrations.length + 1,
+      studentId: parseInt(currentUserID),
+      sectionId: parseInt(sectionId),
       status: "pending",
       Grade: "",
     };
 
-    // update local copies of data
-    registrations.push(newRegistration);
 
-    //-----------------------------------------
-    // json update logic
-    //StudentsRepo.AddRegistration(newRegistartion);
-    //-----------------------------------------
 
-    console.log("new registeration: ", newRegistration);
-    console.log("new registartion list:\n");
-    console.log(registrations);
+  //   //-----------------------------------------
+    try{
+      await createAndSaveRegistration(newRegistration);
+    }catch(err){
+      console.error("Error creating registration: ", err);
 
-    // add student to enrolledStudents
-    if (!sections[sectionIndex].enrolledStudents) {
-      sections[sectionIndex].enrolledStudents = [];
     }
-    sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
-    console.log("section updated");
+    
+  //   //-----------------------------------------
 
-    // updated student's registeredCourses
-    if (!currentStudentInfo.registeredCourses) {
-      currentStudentInfo.registeredCourses = [];
-    }
-    currentStudentInfo.registeredCourses.push(courseId);
-    console.log("finished");
+
+
+  //   let sectionIndex = sections.findIndex(
+  //     (section) => section.id == sectionId
+  //   );
+  //   sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
+    
+  //   console.log("section updated");
+  //   await addStudentToSection(parseInt(sectionId), currentStudentInfo.id);
+
+
+
+  //   // updated student's registeredCourses
+  //   if (!currentStudentInfo.registeredCourses) {
+  //     currentStudentInfo.registeredCourses = [];
+  //   }
+  //   currentStudentInfo.registeredCourses.push(courseId);
+  //   console.log("finished");
+    
   }
   window.registerForSection = registerForSection;
-}
 
-main();
