@@ -182,50 +182,98 @@ function toggleStatus(event, instructorSection) {
 this one was weird too most of the new used techniques i learned from an ai since working with 
 select boxes is different from regular HTML injections we've been using
 */
-function populateStudentSelect(registrations,enrolledStudentsList) {    
+// function populateStudentSelect(registrations,enrolledStudentsList) {    
     
+//     const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
+//     if (!studentFinalGradeDiv) {
+//         console.error("Error: .studentFinalGrade div not found in the HTML.");
+//         return;
+//     }
+
+//     // studentFinalGradeDiv.innerHTML = '<h3>Submit Students Final Grade</h3>';
+
+//     if (registrations && registrations.length > 0) {
+//         const table = document.createElement('table');
+//         table.innerHTML = `
+//         <thead>
+//             <tr>
+//             <th>Student ID</th>
+//             <th>Student Name</th>
+//             <th>Final Grade</th>
+//             </tr>
+//         </thead>
+//         <tbody></tbody>
+//         `;
+//         const tbody = table.querySelector('tbody');
+
+//         enrolledStudentsList.map(student => {
+//           const row = document.createElement('tr');
+//           row.innerHTML = `
+//             <td>${student.id}</td>
+//             <td>${student.name}</td>
+//             <td><input type="number class="grade"" min="0" max="110" data-student-id="${student.id}" /></td>
+//           `;
+//           return row;
+//         }).forEach(row => tbody.appendChild(row));
+
+//         // Append the table to the div
+//         studentFinalGradeDiv.appendChild(table);
+
+//         const submitButton = studentFinalGradeDiv.querySelector('.finalGradeSubmitBtn');
+//     if (submitButton) {
+//       studentFinalGradeDiv.insertBefore(table, submitButton);
+//     } else {
+//       studentFinalGradeDiv.appendChild(table);
+//     }
+//     submitButton.addEventListener('click', (e) => {handleFinalGradeSubmit(e,allRegistrations)});
+//     } else {
+//         studentFinalGradeDiv.innerHTML += '<p>No students registered for this section.</p>';
+//     }
+// }
+
+
+
+function populateStudentSelect(registrations, enrolledStudentsList) {
+
     const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
     if (!studentFinalGradeDiv) {
         console.error("Error: .studentFinalGrade div not found in the HTML.");
         return;
     }
-
-    // studentFinalGradeDiv.innerHTML = '<h3>Submit Students Final Grade</h3>';
-
+    
     if (registrations && registrations.length > 0) {
         const table = document.createElement('table');
         table.innerHTML = `
-        <thead>
-            <tr>
-            <th>Student ID</th>
-            <th>Student Name</th>
-            <th>Final Grade</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
+            <thead>
+                <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Final Grade</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         `;
         const tbody = table.querySelector('tbody');
 
         enrolledStudentsList.map(student => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${student.id}</td>
-            <td>${student.name}</td>
-            <td><input type="number class="grade"" min="0" max="110" data-student-id="${student.id}" /></td>
-          `;
-          return row;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${student.id}</td>
+                <td>${student.name}</td>
+                <td><input type="number" class="grade" min="0" max="110" data-student-id="${student.id}" /></td>
+            `;
+            tbody.appendChild(row);
+            return row;
         }).forEach(row => tbody.appendChild(row));
 
-        // Append the table to the div
+        
         studentFinalGradeDiv.appendChild(table);
 
         const submitButton = studentFinalGradeDiv.querySelector('.finalGradeSubmitBtn');
-    if (submitButton) {
-      studentFinalGradeDiv.insertBefore(table, submitButton);
-    } else {
-      studentFinalGradeDiv.appendChild(table);
-    }
-    submitButton.addEventListener('click', (e) => {handleFinalGradeSubmit(e,registrations)});
+        if (submitButton) {
+            submitButton.addEventListener('click', (e) => { handleFinalGradeSubmit(e, allRegistrations); });
+            studentFinalGradeDiv.insertBefore(table, submitButton);
+        } 
     } else {
         studentFinalGradeDiv.innerHTML += '<p>No students registered for this section.</p>';
     }
@@ -234,12 +282,42 @@ function populateStudentSelect(registrations,enrolledStudentsList) {
 
 function handleFinalGradeSubmit(e, registrations) {
     e.preventDefault();
+
+    const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
+    if (!studentFinalGradeDiv) {
+        console.error("Error: .studentFinalGrade div not found in the HTML.");
+        return;
+    }
+
+    const gradeInputs = studentFinalGradeDiv.querySelectorAll('input.grade'); //input.grade will select all inpuys with class grades
+    console.log("Found grade input elements:", gradeInputs);
+
+    gradeInputs.forEach(input => {
+        const studentId = parseInt(input.dataset.studentId);
+        const finalGrade = parseInt(input.value);
+        console.log(`Processing student ID: ${studentId}, Final Grade entered: ${finalGrade}`);
+
+        // Find the matching registration and update the grade
+        const registrationToUpdate = registrations.find(reg => reg.studentId === studentId);
+
+        if (registrationToUpdate) {
+            registrationToUpdate.grade = finalGrade;
+            console.log(`Updated grade for student ID ${studentId} to ${finalGrade} in registrations.`);//testing
+        } else {
+            console.warn(`No matching registration found for student ID ${studentId}.`);
+        }
+    });
+
+    console.log("Updated registrations:", registrations);
+    updateRegistrationList(registrations);
+    
 }
   
 
 // this uses the same logic as the one we used in updateSectionList
 async function updateRegistrationList(registrations) {
     updateRegistrationData(registrations)
+    alert("Grades have been submitted");
 }
 
 // /*
