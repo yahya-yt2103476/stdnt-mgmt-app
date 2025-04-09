@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Main Dashboard</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <button id="log-out-btn" >
+          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M27,3V29a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V27H7v1H25V4H7V7H5V3A1,1,0,0,1,6,2H26A1,1,0,0,1,27,3ZM10.71,20.29,7.41,17H18V15H7.41l3.3-3.29L9.29,10.29l-5,5a1,1,0,0,0,0,1.42l5,5Z"
+              fill="#000"
+            />
+          </svg>
+        </button>
+      </nav>
+    </header>
+    <main>
+      <h1>Welcome to Your Instructor Dashboard</h1>
+      <div class="options">
+        <section>
+          <div class="optionCard" id="courses">
+            <h2>View Your Courses</h2>
+            <p>
+              Instructors can view the courses they are currently teaching and the list of students 
+              registered for each of their courses.
+            </p>
+          </div>
+        </section>
+        <section>
+          <div class="optionCard" id="learningPath">
+            <h2>Course Interests </h2>
+            <p>
+              Classes are assigned to instructors as follows. The administrator should publish the list of
+              courses to be open. The instructors should able to express their interests in courses. Once the
+              deadline of submitting interests / preferences, the administrator should be able to select the
+              instructors for the courses / classes to be open for registration.              
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>QU Instructor Portal</h3>
+          <p>Qatar University - CSE Department</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">University Website</a></li>
+            <li><a href="#">CSE Department</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: cse-support@qu.edu.qa</p>
+          <p>Phone: +974 4403-5555</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Qatar University. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="stdnt-main-dashboard.js" type="module"></script>
+  </body>
+</html>
