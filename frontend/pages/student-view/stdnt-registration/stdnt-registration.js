@@ -61,7 +61,6 @@ async function main() {
       return;
     }
 
-    // TODO: display the prerequisites' names instead of their ids
     coursesToRender.forEach((course) => {
       const prerequisiteNames =
         course.prerequisites && course.prerequisites.length > 0

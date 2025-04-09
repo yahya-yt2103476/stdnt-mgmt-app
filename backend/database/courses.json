@@ -20,7 +20,7 @@
   {
     "shortName": "CMPS 212",
     "name": "Artificial Intelligence 25",
-    "description": "yes",
+    "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 3,
     "category": "programming",
     "prerequisites": ["8"],

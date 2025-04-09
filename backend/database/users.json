@@ -62,8 +62,7 @@
   {
     "id": 11,
     "email": "Hamdon@example.com",
-    "password":"pass123",
+    "password": "pass123",
     "userType": "Student"
-
   }
 ]

@@ -1,9 +1,11 @@
-import {createUser, updateUser, fetchAllUsers, fetchUserById } from '../../../services/user-service.js'
+import {
+  createUser,
+  updateUser,
+  fetchAllUsers,
+  fetchUserById,
+} from "../../../services/user-service.js";
 
 async function main() {
-  
-  
-
   const icons = [];
 
   const form = document.querySelector("#form");
@@ -17,18 +19,12 @@ async function main() {
   const userType = document.querySelector("#usertype");
   let usertype;
 
-  
-
-
-  
-
   std_icn.addEventListener("click", () => handleUserType("Student"));
   Inst_icn.addEventListener("click", () => handleUserType("Instructor"));
   Admin_icn.addEventListener("click", () => handleUserType("Admin"));
   form.addEventListener("submit", handleLoginUser);
 
   function handleUserType(e) {
-    
     icons.forEach((i) => {
       i.style.transform = "scale(1)";
       i.style.color = "grey";
@@ -53,9 +49,7 @@ async function main() {
       document.body.style.background =
         "linear-gradient(to right,rgba(255, 65, 75, 0.8),rgba(255, 75, 43, 0.5))";
     }
-
   }
-
 
   async function handleLoginUser(e) {
     e.preventDefault();
@@ -66,11 +60,9 @@ async function main() {
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
-    let users = await fetchAllUsers()
+    let users = await fetchAllUsers();
     console.log("used the new method");
     console.log(users);
-    
-    
 
     let user = users.find((u) => {
       return u.email == formObject.email && u.password == formObject.password;
@@ -82,15 +74,18 @@ async function main() {
 
       switch (user.userType) {
         case "Student":
-          loadPage(user, "../student-view/stdnt-main-dashboard/stdnt-main-dashboard.html");
+          loadPage(
+            user,
+            "../student-view/stdnt-main-dashboard/stdnt-main-dashboard.html"
+          );
           break;
         case "Instructor":
           loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");
           break;
 
         case "Admin":
-          //the admin page is temporarly removed by alyaman i beleive,
-          // loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");
+          // yahya: change path to main view page of admin (still needs to be created)
+          loadPage(user, "../admin/views/course-details-view.html");
           break;
       }
     } else if (usertype == undefined) {
@@ -102,13 +97,11 @@ async function main() {
     }
     form.reset();
   }
-  
+
   async function loadPage(user, page) {
     window.location.href = page;
     sessionStorage.setItem("authenticated_user_id", `${user.id}`);
   }
-  }
-
-
+}
 
 main();

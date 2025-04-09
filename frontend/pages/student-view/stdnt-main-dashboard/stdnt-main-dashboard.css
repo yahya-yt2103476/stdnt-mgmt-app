@@ -111,7 +111,7 @@ h1 {
 
 .optionCard:hover {
   cursor: pointer;
-  transform: scale(1.02);
+  transform: scale(1.008);
   text-decoration: underline rgba(107, 17, 203, 0.8) 1.3px;
 }
 
