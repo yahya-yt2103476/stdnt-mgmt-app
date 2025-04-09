@@ -2,40 +2,40 @@
   {
     "id": 6,
     "name": "kareem Al-Kuwari",
-    "completedCourses": [{ "courseId": "CMPS101", "grade": "B+" }],
-    "registeredCourses": ["CMPS202","CMPS208"],
+    "completedCourses": [{ "courseId": 6, "sectionId": 20, "grade": "B+" }],
+    "registeredCourses": [{"courseId": 7, "sectionId": 5}],
     "gpa": 1.9,
     "major": "Computer Science"
   },
   {
     "id": 7,
     "name": "zainab Al-Sulaiti",
-    "completedCourses": [""],
-    "registeredCourses": ["CMPS208"],
+    "completedCourses": [],
+    "registeredCourses": [{"courseId": 7, "sectionId": 5}],
     "gpa": 3.6,
     "major": "Computer Engineering"
   },
   {
     "id": 10,
     "name": "mahmoud Al-Qudeimat",
-    "completedCourses": [""],
-    "registeredCourses": ["CMPS209","CMPS208"],
+    "completedCourses": [],
+    "registeredCourses": [{"courseId": 8, "sectionId": 4}, {"courseId": 7, "sectionId": 7}],
     "gpa": 3.6,
     "major": "Computer Engineering"
   },
   {
     "id": 11,
     "name": "Hamdon Omar",
-    "completedCourses": [""],
-    "registeredCourses": ["CMPS209"],
+    "completedCourses": [],
+    "registeredCourses": [{"courseId": 8, "sectionId": 4}],
     "gpa": 3.6,
     "major": "Computer Engineering"
   },
   {
     "id": 3,
     "name": "fatima Al-Mansoori",
-    "completedCourses": [{ "courseId": "CMPS101", "grade": "A" }],
-    "registeredCourses": ["CMPS201"],
+    "completedCourses": [{ "courseId": 6, "sectionId": 20, "grade": "A" }],
+    "registeredCourses": [{"courseId": 7, "sectionId": 5}, {"courseId": 8, "sectionId": 30}],
     "gpa": 2.8,
     "major": "Computer Science"
   }

@@ -14,6 +14,34 @@
     "courseContent": []
   },
   {
+    "id":30,
+    "courseId": 8,
+    "courseShortName": "CMPS209",
+    "instructorName": "Isabella King",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2026",
+    "Time": "05:00 05:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": []
+  },
+  {
+    "id": 20,
+    "courseId": 6,
+    "courseShortName": "CMPS101",
+    "instructorName": "Isabella King",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": []
+  },
+  {
     "id": 5,
     "courseId": 7,
     "courseShortName": "CMPS208",
@@ -21,7 +49,7 @@
     "capacity": 30,
     "enrolledStudents": [],
     "status": "cancelled",
-    "semester": "Spring 2023",
+    "semester": "Spring 2025",
     "Time": "04:00 04:50",
     "Days": ["Monday", "Tuesday"],
     "location": "",
@@ -42,6 +70,7 @@
     "courseContent": []
   },
   {
+    "id": 7,
     "courseId": 7,
     "courseShortName": "CMPS208",
     "instructorName": "Ava Halla",
@@ -52,22 +81,7 @@
     "Time": "05:00 05:50",
     "Days": ["Monday"],
     "location": "",
-    "courseContent": [],
-    "id": 7
-  },
-  {
-    "courseId": 7,
-    "courseShortName": "CMPS208",
-    "instructorName": "Ava Halla",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "open",
-    "semester": "Spring 2023",
-    "Time": "05:00 05:50",
-    "Days": ["Monday"],
-    "location": "",
-    "courseContent": [],
-    "id": 7
+    "courseContent": []
   },
   {
     "id": 12,
@@ -126,7 +140,7 @@
     "courseContent": []
   },
   {
-    "id": "16",
+    "id": 16,
     "courseId": 7,
     "courseShortName": "CMPS208",
     "instructorName": "Dr. Omar Hassan",
@@ -142,7 +156,7 @@
     ]
   },
   {
-    "id": "17",
+    "id": 17,
     "courseId": 9,
     "courseShortName": "CMPS212",
     "instructorName": "Dr. Omar Hassan",

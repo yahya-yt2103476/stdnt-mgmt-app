@@ -1,8 +1,17 @@
 [
   {
+    "id": 6,
+    "shortName": "CMPS101",
+    "name": "Introduction to Computer Science",
+    "description": "Fundamental concepts of computer science and programming",
+    "creditHours": 3,
+    "category": "programming",
+    "prerequisites": []
+  },
+  {
     "id": 7,
     "shortName": "CMPS208",
-    "name": "Artificial Intelligence ",
+    "name": "Artificial Intelligence",
     "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 5,
     "category": "programming",
@@ -18,13 +27,13 @@
     "prerequisites": ["7"]
   },
   {
+    "id": 9,
     "shortName": "CMPS212",
     "name": "Artificial Intelligence 25",
     "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 3,
     "category": "programming",
-    "prerequisites": ["8"],
-    "id": 9
+    "prerequisites": ["8"]
   },
   {
     "id": 10,

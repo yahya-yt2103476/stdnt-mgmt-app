@@ -1,0 +1,146 @@
+.course-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 1.25rem;
+    width: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.status-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+}
+
+/* Status-specific colors for the indicator bar */
+.course-card[data-status="completed"] .status-indicator {
+    background: linear-gradient(90deg, #4CAF50, #4CAF5088);
+}
+
+.course-card[data-status="in-progress"] .status-indicator {
+    background: linear-gradient(90deg, #2196F3, #2196F388);
+}
+
+.course-card[data-status="pending"] .status-indicator {
+    background: linear-gradient(90deg, #FFC107, #FFC10788);
+}
+
+.course-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0.8rem 0;
+    color: #333;
+    line-height: 1.3;
+}
+
+.status {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 16px;
+    font-weight: 600;
+    margin: 0.4rem 0;
+    font-size: 0.85rem;
+}
+
+/* Status-specific colors for status badge */
+.course-card[data-status="completed"] .status {
+    background: linear-gradient(135deg, #4CAF5022, #4CAF5044);
+    color: #4CAF50;
+}
+
+.course-card[data-status="in-progress"] .status {
+    background: linear-gradient(135deg, #2196F322, #2196F344);
+    color: #2196F3;
+}
+
+.course-card[data-status="pending"] .status {
+    background: linear-gradient(135deg, #FFC10722, #FFC10744);
+    color: #FFC107;
+}
+
+.grade-section {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.8rem 0;
+    text-align: center;
+}
+
+.grade-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.grade-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.card-footer {
+    margin-top: auto;
+    border-top: 1px solid #eee;
+    padding-top: 0.8rem;
+}
+
+.semester {
+    color: #666;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.semester-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* Status-specific colors for semester icon */
+.course-card[data-status="completed"] .semester-icon {
+    fill: #4CAF50;
+}
+
+.course-card[data-status="in-progress"] .semester-icon {
+    fill: #2196F3;
+}
+
+.course-card[data-status="pending"] .semester-icon {
+    fill: #FFC107;
+}
+
+.category-tag {
+    padding: 0.4rem 0.8rem;
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #666;
+    margin-left: auto;
+}
+
+@media (max-width: 768px) {
+    .course-card {
+        width: calc(100% - 2rem);
+        margin: 1rem;
+    }
+}

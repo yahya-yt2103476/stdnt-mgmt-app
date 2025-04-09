@@ -13,7 +13,7 @@ coursesRegistrationCard.addEventListener("click", function () {
 });
 
 learningPathCard.addEventListener("click", function () {
-  window.location.href = "../learning-path/learning-path-page.html";
+  window.location.href = "../learning-path/pages/learning-path-page.html";
 });
 
 

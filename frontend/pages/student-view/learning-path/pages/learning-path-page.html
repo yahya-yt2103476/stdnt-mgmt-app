@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path</title>
+    <link rel="stylesheet" href="../../student-view.css">
+    <link rel="stylesheet" href="../styles/learning-path-page.css">
+    <link rel="stylesheet" href="../styles/course-card.css">
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <div>
+                <button name="userBtn" id="userBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z"/>
+                        <path d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="nav-links">
+                <a href="../../stdnt-main-dashboard/stdnt-main-dashboard.html">Dashboard</a>
+                <a href="learning-path-page.html"> Learning Path</a>
+                <a href="../../../student-view/stdnt-registration/stdnt-registration.html">Course Registration</a>
+            </div>
+            <button class="log-out-btn" id="logOutBtn">
+                <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M27,3V29a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V27H7v1H25V4H7V7H5V3A1,1,0,0,1,6,2H26A1,1,0,0,1,27,3ZM10.71,20.29,7.41,17H18V15H7.41l3.3-3.29L9.29,10.29l-5,5a1,1,0,0,0,0,1.42l5,5Z" fill="#000"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+    
+    <div class="Filter_Courses">
+        <h2>Filter courses</h2>
+        <label>Search by name</label> 
+        <input type="search" id="course-search">
+        <div></div>
+        <label>Search by category</label>
+        <select id="category-filter">
+            <option selected>All</option>
+            <option>Math</option>
+            <option>Programming</option>
+        </select>
+    </div>
+
+    <div class="learning-path-container">
+        <div class="status-columns-container">
+            <!-- In Progress Column -->
+            <section class="course-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59-8-8 8z"/>
+                        </svg>
+                        In Progress
+                    </h2>
+                    <button class="toggle-section" data-section="in-progress">
+                        <svg class="toggle-icon" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M10 17l5-5-5-5v10z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="in-progress-courses" class="courses-grid"></div>
+            </section>
+
+            <section class="course-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        Pending Courses
+                    </h2>
+                    <button class="toggle-section" data-section="pending">
+                        <svg class="toggle-icon" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M10 17l5-5-5-5v10z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="pending-courses" class="courses-grid"></div>
+            </section>
+
+            
+            <section class="course-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        Completed Courses
+                    </h2>
+                    <button class="toggle-section" data-section="completed">
+                        <svg class="toggle-icon" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M10 17l5-5-5-5v10z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="completed-courses" class="courses-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="..\scripts\components\course-card.js"></script>
+    <script type="module" src="..\scripts\learning-path.js"></script>
+</body>
