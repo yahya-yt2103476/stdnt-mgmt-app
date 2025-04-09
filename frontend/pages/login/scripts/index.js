@@ -34,20 +34,20 @@ async function main() {
       usertype = e;
       std_icn.style.transform = "scale(1.05)";
       std_icn.style.color = "Black";
-      document.body.style.background =
-        "linear-gradient(to right,rgba(107, 17, 203, 0.5),rgba(37, 116, 252, 0.5))";
+      document.body.style.backgroundImage =
+        "url('../../assets/purple-background.jpg')";
     } else if (e === "Instructor") {
       usertype = e;
       Inst_icn.style.transform = "scale(1.05)";
       Inst_icn.style.color = "Black";
-      document.body.style.background =
-        "linear-gradient(to right,rgba(17, 153, 142, 0.5),rgba(56, 239, 126, 0.5))";
+      document.body.style.backgroundImage =
+        "url('../../assets/Green-background.png')";
     } else if (e === "Admin") {
       usertype = e;
       Admin_icn.transform = "scale(1.05)";
       Admin_icn.style.color = "Black";
-      document.body.style.background =
-        "linear-gradient(to right,rgba(255, 65, 75, 0.8),rgba(255, 75, 43, 0.5))";
+      document.body.style.backgroundImage =
+        "url('../../assets/red-background.jpg')";
     }
   }
 

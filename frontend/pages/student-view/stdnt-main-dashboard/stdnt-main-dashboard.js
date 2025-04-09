@@ -1,4 +1,9 @@
+import { LogoutCurrentUser } from "../../../services/logout.js";
 const coursesRegistrationCard = document.getElementById("coursesRegistration");
+
+//logout functionality
+const logoutbtn = document.querySelector("#log-out-btn")
+logoutbtn.addEventListener("click", LogoutCurrentUser);
 
 
 const learningPathCard = document.getElementById("learningPath");
@@ -11,12 +16,10 @@ learningPathCard.addEventListener("click", function () {
   window.location.href = "../learning-path/learning-path-page.html";
 });
 
-// logout button functionality
-const logoutBtn = document.querySelector("#log-out-btn");
-logoutBtn.addEventListener("click", handleDelete);
 
-function handleDelete(){
+
+function handleDelete() {
   sessionStorage.removeItem("authenticated_user_id")
   window.location.href = "http://127.0.0.1:5500/frontend/pages/login/login_page.html";
-  
+
 }
