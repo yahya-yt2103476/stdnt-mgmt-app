@@ -126,7 +126,23 @@
     "courseContent": []
   },
   {
-    "id": 17,
+    "id": "16",
+    "courseId": 7,
+    "courseShortName": "CMPS208",
+    "instructorName": "Dr. Omar Hassan",
+    "capacity": 30,
+    "enrolledStudents": [6, 7, 10],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "H07-BL024",
+    "courseContent": [
+      { "title": "Assignment 1", "deadline": "2025-04-10", "status": "Open" }
+    ]
+  },
+  {
+    "id": "17",
     "courseId": 9,
     "courseShortName": "CMPS212",
     "instructorName": "Dr. Omar Hassan",
@@ -137,22 +153,12 @@
     "Time": "13:00 13:50",
     "Days": ["Monday", "Wednesday"],
     "location": "",
-    "courseContent": []
-  },
-  {
-    "id": "16",
-    "courseId": 7,
-    "courseShortName": "CMPS208",
-    "instructorName": "Dr. Omar Hassan",
-    "capacity": 30,
-    "enrolledStudents": [6,7,10],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "05:00 05:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "H07-BL024",
     "courseContent": [
-      { "title": "Assignment 1", "deadline": "2025-04-10", "status": "Open" }
+      {
+        "title": "a testing assignmenr",
+        "deadline": "2025-04-30",
+        "status": "Open"
+      }
     ]
   }
 ]

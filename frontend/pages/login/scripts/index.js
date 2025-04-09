@@ -84,8 +84,8 @@ async function main() {
           break;
 
         case "Admin":
-          // yahya: change path to main view page of admin (still needs to be created)
-          loadPage(user, "../admin/views/course-details-view.html");
+          // Ayoub: Working now
+          loadPage(user, "../admin/views/courses-view.html");
           break;
       }
     } else if (usertype == undefined) {

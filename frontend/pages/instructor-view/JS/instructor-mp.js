@@ -7,6 +7,9 @@ let instructor_Id = 2
 
 // let instructor_Id = sessionStorage.getItem('authenticated_user_id');
 var currentInstructor = await fetchInstructorById(instructor_Id);
+
+
+
 let instructorName = currentInstructor.name;
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
