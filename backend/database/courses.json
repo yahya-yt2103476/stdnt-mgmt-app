@@ -1,7 +1,7 @@
 [
   {
     "id": 7,
-    "shortName": "CMPS208",
+    "shortName": "CMPS 208",
     "name": "Artificial Intelligence ",
     "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 5,
@@ -10,17 +10,17 @@
   },
   {
     "id": 8,
-    "shortName": "CMPS209",
+    "shortName": "CMPS 209",
     "name": "Artificial Intelligence 2",
     "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 3,
     "category": "programming",
-    "prerequisites": ["7", "7"]
+    "prerequisites": ["7"]
   },
   {
-    "shortName": "CMPS212",
+    "shortName": "CMPS 212",
     "name": "Artificial Intelligence 25",
-    "description": "yes",
+    "description": "This course introduces the basics of artificial intelligence.",
     "creditHours": 3,
     "category": "programming",
     "prerequisites": ["8"],
