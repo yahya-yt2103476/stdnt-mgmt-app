@@ -23,6 +23,14 @@ import {
   deleteRegistrationById,
 } from "../../../services/registration-service.js";
 
+import {
+  createStudent,
+  updateStudent,
+  fetchAllStudents,
+  fetchStudentById,
+  deleteStudentById,
+} from "../../../services/student-service.js";
+
 async function main() {
   const searchBar = document.querySelector("#searchBar");
   const coursesContainer = document.querySelector(".coursesContainer");
@@ -31,8 +39,10 @@ async function main() {
   let courses = await fetchAllCourses();
   let sections = await fetchAllSections();
   let registrations = await fetchAllRegistrations();
-  let currentStudentInfo = await fetchUserById(currentUserID);
-
+  let currentStudentUserInfo = await fetchUserById(currentUserID);
+  let currentStudentInfo = await fetchStudentById(currentUserID);
+  console.log("user info: ", currentStudentUserInfo);
+  console.log("student info: ", currentStudentInfo);
   renderCourses(courses);
 
   searchBar.addEventListener("input", handleSearch);
