@@ -3,6 +3,7 @@ import {fetchAllCourses} from '../../../services/course-service.js'
 import {fetchAllSections,updateSection} from '../../../services/section-service.js'
 import {fetchAllRegistrations,updateRegistrationData} from '../../../services/registration-service.js'
 import {fetchAllStudents,fetchStudentById} from '../../../services/student-service.js'
+var testingSmth = null;
 
 const urlParams = new URLSearchParams(window.location.search);
 const instructorName = urlParams.get("instructorName"); // not used
@@ -33,6 +34,8 @@ let instructorRegistrations = () =>{
     return allRegistrations.filter(registration => registration.sectionId === Number(sectionId));
 };
 
+let instructorRegistrationsList = instructorRegistrations();
+
 
 console.log((courseShortName))
 console.log(enrolledStudents());
@@ -55,7 +58,7 @@ function main() {
     }
     displayAssignmentsExams(instructorSections());
 
-    populateStudentSelect(instructorRegistrations(),enrolledStudents())
+    populateStudentSelect(instructorRegistrationsList,enrolledStudents())
 }
 main();
 
@@ -148,7 +151,6 @@ function displayAssignmentsExams(instructorSection) {
                             ${assignment.status}
                             <button class="status-toggle" data-index="${index}">Toggle</button>
                         </td>
-                        <td><a href="">View</a></td>
                         <td><button class="remove-assignment" data-index="${index}">Remove</button></td>
                     </tr>
                 `;
@@ -181,61 +183,6 @@ function toggleStatus(event, instructorSection) {
     instructorSection.courseContent[index].status = instructorSection.courseContent[index].status === "Open" ? "Closed" : "Open";
     displayAssignmentsExams(instructorSection);
 }
-
-/* 
-this one was weird too most of the new used techniques i learned from an ai since working with 
-select boxes is different from regular HTML injections we've been using
-*/
-// function populateStudentSelect(registrations,enrolledStudentsList) {    
-    
-//     const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
-//     if (!studentFinalGradeDiv) {
-//         console.error("Error: .studentFinalGrade div not found in the HTML.");
-//         return;
-//     }
-
-//     // studentFinalGradeDiv.innerHTML = '<h3>Submit Students Final Grade</h3>';
-
-//     if (registrations && registrations.length > 0) {
-//         const table = document.createElement('table');
-//         table.innerHTML = `
-//         <thead>
-//             <tr>
-//             <th>Student ID</th>
-//             <th>Student Name</th>
-//             <th>Final Grade</th>
-//             </tr>
-//         </thead>
-//         <tbody></tbody>
-//         `;
-//         const tbody = table.querySelector('tbody');
-
-//         enrolledStudentsList.map(student => {
-//           const row = document.createElement('tr');
-//           row.innerHTML = `
-//             <td>${student.id}</td>
-//             <td>${student.name}</td>
-//             <td><input type="number class="grade"" min="0" max="110" data-student-id="${student.id}" /></td>
-//           `;
-//           return row;
-//         }).forEach(row => tbody.appendChild(row));
-
-//         // Append the table to the div
-//         studentFinalGradeDiv.appendChild(table);
-
-//         const submitButton = studentFinalGradeDiv.querySelector('.finalGradeSubmitBtn');
-//     if (submitButton) {
-//       studentFinalGradeDiv.insertBefore(table, submitButton);
-//     } else {
-//       studentFinalGradeDiv.appendChild(table);
-//     }
-//     submitButton.addEventListener('click', (e) => {handleFinalGradeSubmit(e,allRegistrations)});
-//     } else {
-//         studentFinalGradeDiv.innerHTML += '<p>No students registered for this section.</p>';
-//     }
-// }
-
-
 
 function populateStudentSelect(registrations, enrolledStudentsList) {
 
@@ -275,7 +222,7 @@ function populateStudentSelect(registrations, enrolledStudentsList) {
 
         const submitButton = studentFinalGradeDiv.querySelector('.finalGradeSubmitBtn');
         if (submitButton) {
-            submitButton.addEventListener('click', (e) => { handleFinalGradeSubmit(e, allRegistrations); });
+            submitButton.addEventListener('click', (e) => { handleFinalGradeSubmit(e, instructorRegistrationsList); });
             studentFinalGradeDiv.insertBefore(table, submitButton);
         } 
     } else {
@@ -284,39 +231,88 @@ function populateStudentSelect(registrations, enrolledStudentsList) {
 }
 
 
+// function handleFinalGradeSubmit(e, registrations) {
+//     e.preventDefault();
+
+//     const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
+//     if (!studentFinalGradeDiv) {
+//         console.error("Error: .studentFinalGrade div not found in the HTML.");
+//         return;
+//     }
+
+//     const gradeInputs = studentFinalGradeDiv.querySelectorAll('input.grade'); //input.grade will select all inpuys with class grades
+//     console.log("Found grade input elements:", gradeInputs);
+
+//     gradeInputs.forEach(input => {
+//         const studentId = parseInt(input.dataset.studentId);
+//         const finalGrade = parseInt(input.value);
+//         console.log(`Processing student ID: ${studentId}, Final Grade entered: ${finalGrade}`);
+
+//         // Find the matching registration and update the grade
+//         const registrationToUpdate = registrations.find(reg => reg.studentId === studentId);
+
+//         if (registrationToUpdate && finalGrade && finalGrade <= 110 && finalGrade >= 0) {
+//             registrationToUpdate.grade = finalGrade;
+//             console.log(`Updated grade for student ID ${studentId} to ${finalGrade} in registrations.`);//testing
+//         } else {
+//             console.warn(`No matching registration found for student ID ${studentId}.`);
+//         }
+//     });
+
+//     console.log("Updated registrations:", registrations);
+// }
+
+
+
+
 function handleFinalGradeSubmit(e, registrations) {
     e.preventDefault();
 
     const studentFinalGradeDiv = document.querySelector('.finalGradeFOrm');
     if (!studentFinalGradeDiv) {
         console.error("Error: .studentFinalGrade div not found in the HTML.");
-        return;
+        return registrations; 
     }
 
-    const gradeInputs = studentFinalGradeDiv.querySelectorAll('input.grade'); //input.grade will select all inpuys with class grades
-    console.log("Found grade input elements:", gradeInputs);
+    const gradeInputs = studentFinalGradeDiv.querySelectorAll('input.grade');
+    console.log("Found grade input elements:", gradeInputs);//tetsing
 
-    gradeInputs.forEach(input => {
-        const studentId = parseInt(input.dataset.studentId);
-        const finalGrade = parseInt(input.value);
-        console.log(`Processing student ID: ${studentId}, Final Grade entered: ${finalGrade}`);
+    const updatedRegistrations = registrations.map(reg => {
+        const inputElement = Array.from(gradeInputs).find(
+            input => parseInt(input.dataset.studentId) === reg.studentId
+        );
 
-        // Find the matching registration and update the grade
-        const registrationToUpdate = registrations.find(reg => reg.studentId === studentId);
-
-        if (registrationToUpdate) {
-            registrationToUpdate.grade = finalGrade;
-            console.log(`Updated grade for student ID ${studentId} to ${finalGrade} in registrations.`);//testing
-        } else {
-            console.warn(`No matching registration found for student ID ${studentId}.`);
+        if (inputElement) {
+            const finalGrade = parseInt(inputElement.value);
+            if (!isNaN(finalGrade) && finalGrade <= 110 && finalGrade >= 0) {
+                return { ...reg, grade: finalGrade }; // i am keeping everything the same and updating the grade
+            }
         }
+        return reg; // if the condition evaluates to false i'm keeping the object the same
     });
 
-    console.log("Updated registrations:", registrations);
-    updateRegistrationList(registrations);
+    console.log("Updated registrations:", updatedRegistrations);//testing
+    instructorRegistrationsList = updatedRegistrations; 
+    console.log(instructorRegistrationsList); // testing
     
+
+    testingSmth = compareAndUpdateLists(allRegistrations,instructorRegistrationsList); //testing
+    console.log("I am testingSmth :",testingSmth); //testing
+    
+    // updateRegistrationList(compareAndUpdateLists(allRegistrations,instructorRegistrationsList));
+    updateRegistrationList(testingSmth)
 }
-  
+
+
+function compareAndUpdateLists(list1, list2) {
+    return list1.map(obj1 => {
+        const matchingObj2 = list2.find(obj2 => obj1.id === obj2.id);
+        if (matchingObj2 && obj1.grade !== matchingObj2.grade) {
+            return matchingObj2; 
+        }
+        return obj1; 
+    });
+}
 
 // this uses the same logic as the one we used in updateSectionList
 async function updateRegistrationList(registrations) {
