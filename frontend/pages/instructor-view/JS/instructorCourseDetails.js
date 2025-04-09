@@ -1,11 +1,11 @@
-import {fetchInstructorById} from '../../../services/instructor-service.js'
+import {fetchInstructorById} from '../../../services/instructor-service.js' // not used
 import {fetchAllCourses} from '../../../services/course-service.js'
 import {fetchAllSections,updateSection} from '../../../services/section-service.js'
 import {fetchAllRegistrations,updateRegistrationData} from '../../../services/registration-service.js'
 import {fetchAllStudents,fetchStudentById} from '../../../services/student-service.js'
 
 const urlParams = new URLSearchParams(window.location.search);
-const instructorName = urlParams.get("instructorName");
+const instructorName = urlParams.get("instructorName"); // not used
 const courseId = urlParams.get("courseId");
 const sectionId = urlParams.get("sectionId");
 const courseShortName = urlParams.get("courseShortName");
@@ -32,6 +32,10 @@ let enrolledStudents = () =>{
 let instructorRegistrations = () =>{
     return allRegistrations.filter(registration => registration.sectionId === Number(sectionId));
 };
+
+
+console.log((courseShortName))
+console.log(enrolledStudents());
 
 function main() {
     const backButton = document.querySelector("#backBtn");
