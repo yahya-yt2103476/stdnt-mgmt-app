@@ -18,9 +18,9 @@
     "courseId": 7,
     "courseShortName": "CMPS208",
     "instructorName": "Isabella King",
-    "capacity": 30,
+    "capacity": 0,
     "enrolledStudents": [],
-    "status": "cancelled",
+    "status": "approved",
     "semester": "Spring 2023",
     "Time": "04:00 04:50",
     "Days": ["Monday", "Tuesday"],
@@ -56,20 +56,6 @@
     "id": 7
   },
   {
-    "courseId": 7,
-    "courseShortName": "CMPS208",
-    "instructorName": "Ava Halla",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "open",
-    "semester": "Spring 2023",
-    "Time": "05:00 05:50",
-    "Days": ["Monday"],
-    "location": "",
-    "courseContent": [],
-    "id": 7
-  },
-  {
     "id": 12,
     "courseId": 8,
     "courseShortName": "CMPS209",
@@ -79,20 +65,6 @@
     "status": "approved",
     "semester": "Spring 2023",
     "Time": "02:00 02:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "",
-    "courseContent": []
-  },
-  {
-    "id": 13,
-    "courseId": 7,
-    "courseShortName": "CMPS208",
-    "instructorName": "Dr. Layla Mohamed",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "08:00 08:50",
     "Days": ["Monday", "Wednesday"],
     "location": "",
     "courseContent": []
@@ -126,7 +98,7 @@
     "courseContent": []
   },
   {
-    "id": "16",
+    "id": 16,
     "courseId": 7,
     "courseShortName": "CMPS208",
     "instructorName": "Dr. Omar Hassan",
@@ -142,7 +114,7 @@
     ]
   },
   {
-    "id": "17",
+    "id": 16,
     "courseId": 9,
     "courseShortName": "CMPS212",
     "instructorName": "Dr. Omar Hassan",
