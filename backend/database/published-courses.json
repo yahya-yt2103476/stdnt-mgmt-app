@@ -1,16 +1,3 @@
 [
-    {
-        "courseId": 6,
-        "semester": "Fall 2025",
-        "instructors": [
-            2
-        ]
-    },
-    {
-        "courseId":7,
-        "semester": "Fall 2025",
-        "instructors": [
-           2,5,9
-        ]
-    }
+  
 ]

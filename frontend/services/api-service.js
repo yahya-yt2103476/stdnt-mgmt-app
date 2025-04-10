@@ -11,10 +11,11 @@ async function fetchDataFromApi(endpoint) {
   }
 }
 
-async function saveDataToApi(endpoint, data) {
+async function saveDataToApi(endpoint, data, method) {
+  method = method || 'POST'; // Default to POST if no method is provided
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: 'POST',
+      method: method,
       headers: {
         'Content-Type': 'application/json'
       },

@@ -8,6 +8,7 @@ import adminRepo from './repos/adminRepo.js'
 import coursesRepo from './repos/coursesRepo.js'
 import sectionsRepo from './repos/sectionsRepo.js'
 import registrationsRepo from './repos/registrationsRepo.js'
+import publishedCoursesRepo from './repos/publishedCoursesRepo.js';
 
 
 
@@ -311,6 +312,54 @@ app.delete("/api/registration/:id", async (request, res) => {
 });
 
 
+//endpoints for published courses
+//receive all published courses
+app.get("/api/publishedCourses/", async (request, res) => {
+    const users = await publishedCoursesRepo.getAllPublishedCourses()
+    res.json(users)
+}
+)
+
+//send an id to the endpoint, u receive an object of published course
+app.get("/api/publishedCourses/:id", async (request, res) => {
+    const id = request.params.id;
+    const user = await publishedCoursesRepo.getPublishedCourse(id)
+    res.json(user)
+})
+
+//send an object of published course, u receive whether its added or not
+app.post("/api/publishedCourses", async (request, res) => {
+    const publishedCourse = request.body;
+    try {
+        const result = await publishedCoursesRepo.createPublishedCourse(publishedCourse);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error adding published course:", error);
+    }
+});
+//send an id to the endpoint, u receive a message whether deleted or not
+app.delete("/api/publishedCourses/:id", async (request, res) => {
+    const publishedCourseId = request.params.id;
+    try {
+        const result = await publishedCoursesRepo.deletePublishedCourse(publishedCourseId);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error deleting published course:", error);
+    }
+});
+
+//send an object of published course, u receive whether its updated or not
+app.put("/api/publishedCourses", async (request, res) => {
+    const publishedCourse = request.body;
+    try {
+        const result = await publishedCoursesRepo.updatePublishedCourse(publishedCourse);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating published course:", error);
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Student Managament System server is running on http://localhost:${PORT}\n base url is http://localhost:${PORT}/api/ ✅\n`);
@@ -359,6 +408,14 @@ app.listen(PORT, () => {
     console.log("POST /api/registration to update a registration");
     console.log("DELETE /api/registration/:id to delete a registration");
     console.log("POST /api/registration to add a registration\n");
+
+    console.log("published courses related endpoints:");
+    console.log("GET /api/publishedCourses");
+    console.log("GET /api/publishedCourses/:id for a specific published course");
+    console.log("POST /api/publishedCourses to update a published course");
+    console.log("DELETE /api/publishedCourses/:id to delete a published course");
+    console.log("PUT /api/publishedCourses to add a published course\n");
+
     console.log("this is a simple server to handle the reading and writing requests, created by Ayoub(:");
 
 });
