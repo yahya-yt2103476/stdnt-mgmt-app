@@ -24,6 +24,14 @@ class usersRepo{
         }
     }
 
+    //create a new user
+    async createUser(user) {
+        const users = await fs.readJSON(this.UsersFilePath);
+        users.push(user);
+        await fs.writeJSON(this.UsersFilePath, users);
+        return "User Created Successfully";
+    }
+
 }
 
 export default new usersRepo();

@@ -19,6 +19,10 @@ async function main() {
   icons.push(Admin_icn);
   const indicator = document.querySelector("#indicator");
   const userType = document.querySelector("#usertype");
+  if (window.location.pathname.includes("signup.html")) {
+    const registerBtn = document.querySelector("#registerButton");
+    registerBtn.addEventListener("click", handleRegisterUser);
+  }
   let usertype;
 
   std_icn.addEventListener("click", () => handleUserType("Student"));
@@ -100,6 +104,30 @@ async function main() {
   async function loadPage(user, page) {
     window.location.href = page;
     sessionStorage.setItem("authenticated_user_id", `${user.id}`);
+  }
+  async function handleRegisterUser(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+    let formObject = {};
+
+    formData.forEach((value, key) => {
+      formObject[key] = value;
+    });
+    console.log(formObject);
+    
+
+    if (formObject.password != formObject.confirmPassword) {
+      alert("Password and Confirm Password do not match");
+      return;
+    }
+
+    const user = {
+      ...formObject,
+      userType: usertype,
+    };
+
+    await createUser(user);
+    alert("User created successfully");
   }
 }
 

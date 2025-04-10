@@ -38,6 +38,16 @@ app.get("/api/users/:id", async (request, res) => {
     res.json(user)
 })
 
+//create a new user
+app.post("/api/users", async (request, res) => {
+    const user = request.body;
+    try {
+        const result = await usersRepo.createUser(user);
+        res.status(200).json({ message: "User created", result });
+    } catch (error) {
+        console.error("Error creating user:", error);
+    }
+});
 
 
 //endpoints for students, receive all students

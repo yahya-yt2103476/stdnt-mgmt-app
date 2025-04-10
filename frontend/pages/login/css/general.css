@@ -129,3 +129,18 @@ button:hover {
   display: none;
   transition: display 0.5s ease-in-out;
 }
+
+.sign-in-up a{
+  margin: 10px;
+  font-size: 14px;
+}
+
+.sign-in-up a:hover{
+  text-decoration: underline;
+}
+.sign-in-up{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
