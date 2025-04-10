@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Teaching Interest</title>
+    <link rel="stylesheet" href="../../admin/styles/admin-styles.css">
+    <link rel="stylesheet" href="../../admin/styles/courses-styles.css">
+    <style>
+        .interest-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .interest-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .interest-btn.interested {
+            background-color: #2196F3;
+        }
+
+        .course-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .instructor-list {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .no-courses {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Courses for Next Semester</h1>
+        
+        <div class="info-section">
+            <p>Select the courses you're interested in teaching for the upcoming semester.</p>
+        </div>
+
+        <div id="coursesContainer">
+            <div id="loadingIndicator">Loading available courses...</div>
+        </div>
+    </div>
+    <script type="module" src="./next-sem-courses.js"></script>
+</body>
+</html>

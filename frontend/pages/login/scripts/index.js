@@ -78,7 +78,7 @@ async function main() {
           );
           break;
         case "Instructor":
-          loadPage(user, "../instructor-view/instructor-mp/instructor-mp.html");
+          loadPage(user, "../instructor-view/instructor-dash-board/instructor_dash_board.html");
           break;
 
         case "Admin":
