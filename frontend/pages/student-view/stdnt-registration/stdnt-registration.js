@@ -30,6 +30,7 @@ import {
   fetchAllStudents,
   fetchStudentById,
   deleteStudentById,
+  addCourseToRegisteredCourses
 } from "../../../services/student-service.js";
 
 
@@ -158,7 +159,8 @@ import {
       } else if (remainingSeats == 0) {
         registerButton = `<button class="register-btn" disabled>Section Full</button>`;
       } else {
-        registerButton = `<button type="button" onclick="registerForSection(event,'${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
+        registerButton = `<button type="button" onclick="registerForSection(event, '${sec.id}', '${courseid}')" class="register-btn">Register</button>`;
+        
       }
 
       sectionsContainer.innerHTML += `
@@ -195,9 +197,8 @@ import {
   async function registerForSection(event,sectionId, courseId) {    
     event.preventDefault();
     console.log(event);
-    
-    parseInt(sectionId)
-    parseInt(courseId)
+
+
     console.log("sectionId: ", sectionId);
     console.log("courseId: ", courseId);
     
@@ -238,22 +239,20 @@ import {
 
 
 
-  //   let sectionIndex = sections.findIndex(
-  //     (section) => section.id == sectionId
-  //   );
-  //   sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
+    let sectionIndex = sections.findIndex(
+      (section) => section.id == sectionId
+    );
+    sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
+    await addStudentToSection(parseInt(sectionId), parseInt(currentUserID));
+    await addCourseToRegisteredCourses(parseInt(courseId), parseInt(sectionId), parseInt(currentUserID));
+    alert("You have successfully registered for this section! refreshing page");
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
     
-  //   console.log("section updated");
-  //   await addStudentToSection(parseInt(sectionId), currentStudentInfo.id);
 
+    
 
-
-  //   // updated student's registeredCourses
-  //   if (!currentStudentInfo.registeredCourses) {
-  //     currentStudentInfo.registeredCourses = [];
-  //   }
-  //   currentStudentInfo.registeredCourses.push(courseId);
-  //   console.log("finished");
+    
     
   }
   window.registerForSection = registerForSection;

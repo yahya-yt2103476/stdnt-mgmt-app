@@ -5,7 +5,7 @@ import { fetchStudentById } from "../../../services/student-service.js";
 
 const coursesRegistrationCard = document.getElementById("coursesRegistration");
 const learningPathCard = document.getElementById("learningPath");
-const logoutbtn = document.querySelector("#log-out-btn")
+const logoutbtn = document.querySelector("#logOutBtn")
 const WelcomeMessage = document.querySelector("#WelcomeMsg");
 
 

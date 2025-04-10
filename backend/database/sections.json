@@ -14,7 +14,7 @@
     "courseContent": []
   },
   {
-    "id":30,
+    "id": 30,
     "courseId": 8,
     "courseShortName": "CMPS209",
     "instructorName": "Isabella King",
@@ -22,20 +22,6 @@
     "enrolledStudents": [],
     "status": "approved",
     "semester": "Spring 2026",
-    "Time": "05:00 05:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "",
-    "courseContent": []
-  },
-  {
-    "id": 20,
-    "courseId": 6,
-    "courseShortName": "CMPS101",
-    "instructorName": "Isabella King",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "approved",
-    "semester": "Spring 2023",
     "Time": "05:00 05:50",
     "Days": ["Monday", "Wednesday"],
     "location": "",
@@ -54,6 +40,54 @@
     "Days": ["Monday", "Tuesday"],
     "location": "",
     "courseContent": []
+  },
+  {
+    "id": 12,
+    "courseId": 8,
+    "courseShortName": "CMPS209",
+    "instructorName": "Dr. Layla Mohamed",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "02:00 02:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": []
+  },
+  {
+    "id": 15,
+    "courseId": 8,
+    "courseShortName": "CMPS209",
+    "instructorName": "Dr. Omar Hassan",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "10:00 10:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": []
+  },
+  {
+    "id": 17,
+    "courseId": 9,
+    "courseShortName": "CMPS212",
+    "instructorName": "Dr. Omar Hassan",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "13:00 13:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": [
+      {
+        "title": "a testing assignmenr",
+        "deadline": "2025-04-30",
+        "status": "Open"
+      }
+    ]
   },
   {
     "id": 6,
@@ -84,18 +118,34 @@
     "courseContent": []
   },
   {
-    "id": 12,
-    "courseId": 8,
-    "courseShortName": "CMPS209",
-    "instructorName": "Dr. Layla Mohamed",
+    "id": 20,
+    "courseId": 6,
+    "courseShortName": "CMPS101",
+    "instructorName": "Isabella King",
     "capacity": 30,
     "enrolledStudents": [],
     "status": "approved",
     "semester": "Spring 2023",
-    "Time": "02:00 02:50",
+    "Time": "05:00 05:50",
     "Days": ["Monday", "Wednesday"],
     "location": "",
     "courseContent": []
+  },
+  {
+    "id": 16,
+    "courseId": 7,
+    "courseShortName": "CMPS208",
+    "instructorName": "Dr. Omar Hassan",
+    "capacity": 30,
+    "enrolledStudents": [],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "H07-BL024",
+    "courseContent": [
+      { "title": "Assignment 1", "deadline": "2025-04-10", "status": "Open" }
+    ]
   },
   {
     "id": 14,
@@ -110,55 +160,5 @@
     "Days": ["Monday", "Wednesday"],
     "location": "",
     "courseContent": []
-  },
-  {
-    "id": 15,
-    "courseId": 8,
-    "courseShortName": "CMPS209",
-    "instructorName": "Dr. Omar Hassan",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "10:00 10:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "",
-    "courseContent": []
-  },
-  {
-    "id": 16,
-    "courseId": 7,
-    "courseShortName": "CMPS208",
-    "instructorName": "Dr. Omar Hassan",
-    "capacity": 30,
-    "enrolledStudents": [6, 7, 10],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "05:00 05:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "H07-BL024",
-    "courseContent": [
-      { "title": "Assignment 1", "deadline": "2025-04-10", "status": "Open" }
-    ]
-  },
-  {
-    "id": 17,
-    "courseId": 9,
-    "courseShortName": "CMPS212",
-    "instructorName": "Dr. Omar Hassan",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "13:00 13:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "",
-    "courseContent": [
-      {
-        "title": "a testing assignmenr",
-        "deadline": "2025-04-30",
-        "status": "Open"
-      }
-    ]
   }
 ]

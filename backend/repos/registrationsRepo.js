@@ -70,6 +70,14 @@ class registrationsRepo {
         return "registration created Successfully"
     }
 
+    async AddRegistration(registration) {
+        const regs = await this.GetRegistrations();
+        regs.push(registration);
+        await fs.writeJSON(this.RegistrationFilePath, regs)
+        return "registration created Successfully"
+        
+    }
+
 }
 
 export default new registrationsRepo();

@@ -1,7 +1,7 @@
 import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
 
 async function createStudent(data) {
-  if (data.major && !["Computer Science","Computer Engineering"].includes(data.major)) {
+  if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
   const newStudent = {
@@ -12,12 +12,12 @@ async function createStudent(data) {
     gpa: data.gpa || 0,
     major: data.major
   };
-  
+
   return await saveDataToApi('/students', newStudent);
 }
 
 async function updateStudent(data) {
-  if (data.major && !["Computer Science","Computer Engineering"].includes(data.major)) {
+  if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
   const updatedStudent = {
@@ -28,8 +28,8 @@ async function updateStudent(data) {
     gpa: data.gpa || 0,
     major: data.major
   };
-  
-  return await saveDataToApi(`/students/${data.id}`, updatedStudent);
+
+  return await saveDataToApi(`/students`, updatedStudent);
 }
 
 async function fetchAllStudents() {
@@ -46,10 +46,29 @@ async function deleteStudentById(studentId) {
   return await deleteDataFromApi(`/students/${studentId}`);
 }
 
-export { 
+async function addCourseToRegisteredCourses(courseId, SectionId, studentId) {
+  parseInt(studentId);
+  parseInt(courseId);
+  parseInt(SectionId);
+  const student = await fetchStudentById(studentId);
+  if (!student) {
+    throw new Error('Student not found');
+  }
+
+  const updatedStudent = {
+    ...student,
+    registeredCourses: [...student.registeredCourses, { courseId, SectionId }]
+  };
+
+  return await updateStudent(updatedStudent);
+
+}
+
+export {
   createStudent,
   updateStudent,
-  fetchAllStudents, 
-  fetchStudentById, 
-  deleteStudentById 
+  fetchAllStudents,
+  fetchStudentById,
+  deleteStudentById,
+  addCourseToRegisteredCourses
 }; 

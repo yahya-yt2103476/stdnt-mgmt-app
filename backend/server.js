@@ -290,7 +290,7 @@ app.post("/api/registration", async (request, res) => {
             res.status(201).json({ message: result });
         } else {
             // Otherwise update existing registration
-            const result = await registrationsRepo.UpdateRegistration(registration);
+            const result = await registrationsRepo.AddRegistration(registration);
             res.status(200).json({ message: result });
         }
     } catch (error) {
