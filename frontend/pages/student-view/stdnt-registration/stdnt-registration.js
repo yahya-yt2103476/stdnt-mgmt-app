@@ -84,7 +84,8 @@ function renderCourses(coursesToRender) {
     coursesContainer.innerHTML += `
       <div class="course-card" id="course-${course.id}">
         <div class="card-header">
-          <h4>${course.shortName} - ${course.id}</h2>
+          <h4 class="courseId">${course.shortName}</h4>
+          <h4 class="courseId">${course.id}</h4>
         </div>
         <div class="card-body">
           <div class="card-section">

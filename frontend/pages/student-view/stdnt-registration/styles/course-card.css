@@ -22,6 +22,13 @@
   padding: 7px;
   font-size: 1.2rem;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.courseId {
+  background-color: #92929292;
+  padding: 0.5px 5px;
+  border-radius: 5px;
 }
 
 .card-body {
