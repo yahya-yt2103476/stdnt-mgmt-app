@@ -1,13 +1,12 @@
-
-.coursesContainer>div{
-  min-width: 700px;
+.coursesContainer > div {
+  width: 50vw;
 }
 .course-card {
   min-width: 300px;
   width: 90vw;
   margin: 20px auto;
   background: #ffffff;
-  border-radius: 7px;
+  border-radius: 5px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s;
@@ -18,7 +17,7 @@
 }
 
 .card-header {
-  background-color: #4da8da;
+  background-color: #b7b7b792;
   color: white;
   padding: 7px;
   font-size: 1.2rem;
@@ -35,8 +34,8 @@
 .category {
   padding: 7px;
   background: rgb(238, 238, 238);
-  border-radius: 9px;
-  border-bottom: 4px solid #4da8da;
+  border-radius: 5px;
+  border-bottom: 4px solid #b7b7b792;
   width: max-content;
 }
 
@@ -51,7 +50,7 @@
 .description {
   padding: 12px;
   background-color: #f5f8fa;
-  border-left: 4px solid #4da8da;
+  border-left: 4px solid #b7b7b792;
   border-radius: 8px;
   font-style: italic;
 }
@@ -63,22 +62,42 @@
 }
 
 .card-footer button {
-  background-color: #4da8da;
+  background-color: #8a8a8a92;
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
 }
 
 .card-footer button:hover {
-  background-color: #0077b6;
+  background-color: #7b7b7b92;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 767px) {
+  .coursesContainer > div {
+    min-width: 100%;
+  }
+
   .course-card {
-    width: 50vw;
+    width: 95vw;
+    margin: 10px auto;
+  }
+
+  .card-body {
+    padding: 16px 12px;
+  }
+
+  .card-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-footer button {
+    width: 100%;
+    max-width: 300px;
   }
 }

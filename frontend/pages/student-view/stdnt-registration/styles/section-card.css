@@ -52,11 +52,10 @@
 }
 
 .register-btn {
-  background-color: #4da8da;
   color: white;
   padding: 8px 18px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
@@ -69,4 +68,41 @@
 .register-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.msg {
+  text-align: center;
+  background-color: #8a8a8a92;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+.blue {
+  background-color: #4da8da;
+}
+.red:disabled {
+  background-color: red;
+}
+.green:disabled {
+  background-color: green;
+}
+.yellow:disabled {
+  background-color: rgb(255, 183, 0);
+}
+
+@media screen and (max-width: 767px) {
+  .sectionHeader {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 1rem;
+  }
+
+  .registerContainer {
+    justify-content: center;
+  }
+
+  .register-btn {
+    width: 100%;
+    max-width: 300px;
+  }
 }

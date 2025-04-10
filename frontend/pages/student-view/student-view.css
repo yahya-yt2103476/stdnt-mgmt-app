@@ -1,97 +1,184 @@
 /* Header and Navigation Styles */
 header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .nav-links h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #666;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    font-size: 1rem;
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 1rem;
 }
 
 .nav-links a:hover {
-    color: #2196F3;
+  color: #2196f3;
 }
 
-#userBtn, .log-out-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
+#userBtn,
+.log-out-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
 }
 
-#userBtn:hover, .log-out-btn:hover {
-    background-color: #f0f0f0;
+#userBtn:hover,
+.log-out-btn:hover {
+  background-color: #f0f0f0;
 }
 
 #userBtn svg {
-    fill: #666;
+  fill: #666;
 }
 
 .search-group {
-    display: flex;
-    flex: 1;
-    max-width: 600px;
-    margin: 0 2rem;
+  display: flex;
+  /* flex: 1; */
+  max-width: 600px;
+  margin: 0 2rem;
 }
 
 .searchBar {
-    min-width: 300px;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    transition:  ease-in-out 0.2s;
+  min-width: 300px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: ease-in-out 0.2s;
 }
 
 .searchBar:focus {
-    outline: none;
-    border-color: #2196F3;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
 }
-.searchBar:hover{
-    scale: 1.02;
+.searchBar:hover {
+  scale: 1.02;
+}
 
+footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1.5rem 1rem;
+  margin-top: auto; /* pushes footer to bottom */
+  text-align: center;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  margin-bottom: 1.5rem;
+}
+
+.footer-section h3 {
+  color: #ecf0f1;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #eaeaea92;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.footer-section p,
+.footer-section a {
+  color: #e4e4e492;
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: #4da8da;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid #34495e;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+.footer-bottom p {
+  color: #ecf0f1;
 }
 
 /* Responsive Navigation */
 @media (max-width: 768px) {
-    nav {
-        padding: 1rem;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+  nav {
+    padding: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+  }
+
+  .footer-section {
+    margin-bottom: 0;
+  }
+
+  .footer-bottom {
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+  }
 }
