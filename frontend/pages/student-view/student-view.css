@@ -11,7 +11,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.1rem 1.5rem;
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -35,7 +35,7 @@ nav {
   transition: color 0.2s ease;
   font-size: 1rem;
   height: 100%;
-  padding: 0.75rem;
+  padding: 1rem;
 }
 
 .nav-links a:hover {
@@ -43,9 +43,7 @@ nav {
   background-color: #2196f3;
 }
 
-#userBtn,
-.log-out-btn {
-  background: none;
+#userBtn {
   border: none;
   cursor: pointer;
   padding: 0.5rem;
@@ -53,9 +51,23 @@ nav {
   transition: background-color 0.3s ease;
 }
 
-#userBtn:hover,
-.log-out-btn:hover {
+#userBtn:hover {
   background-color: #f0f0f0;
+}
+
+.log-out-btn {
+  width: fit-content;
+  height: fit-content;
+  background: none;
+  border: 2px solid #e4e4e492;
+  border-radius: 2px;
+  padding: 2px;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+.log-out-btn:hover {
+  background: #e4e4e492;
+  cursor: pointer;
 }
 
 #userBtn svg {
@@ -161,7 +173,16 @@ footer {
     padding: 1rem;
     gap: 1rem;
     flex-wrap: wrap;
-    justify-content: center;
+    text-align: center;
+  }
+
+  .log-out-btn {
+    order: -1;
+    margin-left: auto;
+  }
+
+  .nav-links {
+    order: 0;
   }
 }
 

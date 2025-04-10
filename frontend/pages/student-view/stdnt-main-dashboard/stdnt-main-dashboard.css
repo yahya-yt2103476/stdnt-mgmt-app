@@ -21,17 +21,13 @@ body {
 }
 
 /* mobile view */
-header {
+/* header {
   background-color: white;
   height: fit-content;
 }
 
 header nav {
-  /* display: grid;
-   */
   display: flex;
-  /* justify-content: flex-end; */
-  /* grid-template-columns: 1fr auto; */
   grid-template-columns: 1fr;
   align-items: center;
   gap: 1rem;
@@ -51,7 +47,7 @@ header nav {
 .log-out-btn:hover {
   background: #e4e4e492;
   cursor: pointer;
-}
+} */
 
 h1 {
   color: #5a5a5a92;
@@ -97,21 +93,6 @@ h1 {
 
 /* large screen */
 @media (min-width: 768px) {
-  header nav {
-    grid-template-columns: 1fr auto 1fr;
-    padding: 0.25rem 0.6rem;
-  }
-
-  .log-out-btn {
-    grid-column: 3;
-    justify-self: end;
-  }
-
-  h1 {
-    margin: 3rem 0 2rem;
-    font-size: 2.2rem;
-  }
-
   .options {
     padding: 2rem 10%;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

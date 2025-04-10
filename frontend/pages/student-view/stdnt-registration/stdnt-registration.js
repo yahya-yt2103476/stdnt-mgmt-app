@@ -90,7 +90,7 @@ function renderCourses(coursesToRender) {
         <div class="card-body">
           <div class="card-section">
             <p class="category">${course.category}</p>
-            <p><strong>Title:</strong> ${course.name}</p>
+            <p><strong>Course Name:</strong> ${course.name}</p>
             <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
             <p><strong>Prerequisites:</strong> 
               ${prerequisiteNames}
