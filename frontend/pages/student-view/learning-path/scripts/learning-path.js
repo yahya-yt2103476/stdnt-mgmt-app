@@ -7,12 +7,14 @@ let student;
 
 async function fetchCourseDetails(courseId) {
     try {
-        const response = await fetch('../../../../../backend/database/courses.json');
+        const response = await fetch('/backend/database/courses.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const courses = await response.json();
-        return courses.find(course => course.id === parseInt(courseId));
+        const course = courses.find(c => c.id === parseInt(courseId));
+        console.log('Found course:', course, 'for ID:', courseId);
+        return course;
     } catch (error) {
         console.error('Error fetching course details:', error);
         return null;
@@ -21,30 +23,19 @@ async function fetchCourseDetails(courseId) {
 
 async function fetchSectionDetails(sectionId) {
     try {
-        console.log('Fetching section with ID:', sectionId);
-        
-        const response = await fetch('../../../../../backend/database/sections.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const sections = await response.json();
-        
-        console.log('Fetched sections:', sections);
-
         if (!sectionId) {
             console.warn('Section ID is undefined or null');
             return null;
         }
 
-        const section = sections.find(section => {
-            if (!section || !section.id) {
-                console.warn('Invalid section object:', section);
-                return false;
-            }
-            return section.id.toString() === sectionId.toString();
-        });
-
-        console.log('Found section:', section);
+        const response = await fetch('/backend/database/sections.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const sections = await response.json();
+        
+        const section = sections.find(s => s.id === parseInt(sectionId));
+        console.log('Found section:', section, 'for ID:', sectionId);
         return section;
     } catch (error) {
         console.error('Error fetching section details:', error);
@@ -54,14 +45,14 @@ async function fetchSectionDetails(sectionId) {
 
 async function fetchCategories() {
     try {
-        const response = await fetch('../../../../../backend/database/categories.json');
+        const response = await fetch('/api/courses');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const categoriesData = await response.json();
-        console.log('Raw categories data:', categoriesData);
-        const categories = categoriesData[0] || [];
-        console.log('Processed categories:', categories);
+        const courses = await response.json();
+        // Extract unique categories from courses
+        const categories = [...new Set(courses.map(course => course.category))];
+        console.log('Extracted categories:', categories);
         return categories;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -130,56 +121,35 @@ function isSemesterFuture(semester) {
 }
 
 async function processCourses(student) {
+    console.log('Processing courses for student:', student);
     const completedCourses = [];
     const inProgressCourses = [];
     const pendingCourses = [];
 
-    
-    if (student.completedCourses && student.completedCourses.length > 0) {
-        for (const completedCourse of student.completedCourses) {
-            try {
-                const courseDetails = await fetchCourseDetails(completedCourse.courseId);
-                const sectionDetails = completedCourse.sectionId ? 
-                    await fetchSectionDetails(completedCourse.sectionId) : null;
-                
-                if (courseDetails) {
-                    console.log('Course category before normalization:', courseDetails.category);
-                    const normalizedCategory = normalizeCategory(courseDetails.category);
-                    console.log('Course category after normalization:', normalizedCategory); // Debug log
-                    
-                    completedCourses.push({
-                        name: courseDetails.name,
-                        status: 'completed',
-                        grade: completedCourse.grade || 'N/A',
-                        semester: sectionDetails?.semester || 'N/A',
-                        category: normalizedCategory
-                    });
-                }
-            } catch (error) {
-                console.error('Error processing completed course:', error);
-            }
-        }
-    }
-
+    // Process registered courses
     if (student.registeredCourses && student.registeredCourses.length > 0) {
+        console.log('Processing registered courses:', student.registeredCourses);
         for (const registeredCourse of student.registeredCourses) {
             try {
+                console.log('Processing course ID:', registeredCourse.courseId, 'Section ID:', registeredCourse.SectionId);
                 const courseDetails = await fetchCourseDetails(registeredCourse.courseId);
-                const sectionDetails = registeredCourse.sectionId ? 
-                    await fetchSectionDetails(registeredCourse.sectionId) : null;
+                const sectionDetails = await fetchSectionDetails(registeredCourse.SectionId);
                 
-                if (courseDetails && sectionDetails?.semester) {
+                console.log('Fetched course details:', courseDetails);
+                console.log('Fetched section details:', sectionDetails);
+
+                if (courseDetails) {
                     const course = {
                         name: courseDetails.name,
                         grade: 'TBD',
-                        semester: sectionDetails.semester,
-                        category: courseDetails.category
+                        semester: sectionDetails?.semester || 'Unknown',
+                        category: normalizeCategory(courseDetails.category)
                     };
 
-                    if (isSemesterCurrent(sectionDetails.semester)) {
+                    if (sectionDetails && isSemesterCurrent(sectionDetails.semester)) {
                         course.status = 'in progress';
                         inProgressCourses.push(course);
-                    } else if (isSemesterFuture(sectionDetails.semester)) {
+                    } else if (sectionDetails && isSemesterFuture(sectionDetails.semester)) {
                         course.status = 'pending';
                         pendingCourses.push(course);
                     } else {
@@ -193,7 +163,30 @@ async function processCourses(student) {
         }
     }
 
-    console.log('Processed course arrays:', {
+    // Process completed courses
+    if (student.completedCourses && student.completedCourses.length > 0) {
+        console.log('Processing completed courses:', student.completedCourses);
+        for (const completedCourse of student.completedCourses) {
+            try {
+                const courseDetails = await fetchCourseDetails(completedCourse.courseId);
+                console.log('Fetched completed course details:', courseDetails);
+                
+                if (courseDetails) {
+                    completedCourses.push({
+                        name: courseDetails.name,
+                        status: 'completed',
+                        grade: completedCourse.grade || 'N/A',
+                        semester: completedCourse.semester || 'N/A',
+                        category: normalizeCategory(courseDetails.category)
+                    });
+                }
+            } catch (error) {
+                console.error('Error processing completed course:', error);
+            }
+        }
+    }
+
+    console.log('Final processed courses:', {
         completedCourses,
         inProgressCourses,
         pendingCourses
