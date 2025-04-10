@@ -118,20 +118,6 @@
     "courseContent": []
   },
   {
-    "id": 20,
-    "courseId": 6,
-    "courseShortName": "CMPS101",
-    "instructorName": "Isabella King",
-    "capacity": 30,
-    "enrolledStudents": [],
-    "status": "approved",
-    "semester": "Spring 2023",
-    "Time": "05:00 05:50",
-    "Days": ["Monday", "Wednesday"],
-    "location": "",
-    "courseContent": []
-  },
-  {
     "id": 16,
     "courseId": 7,
     "courseShortName": "CMPS208",
@@ -157,6 +143,20 @@
     "status": "approved",
     "semester": "Spring 2023",
     "Time": "10:00 10:50",
+    "Days": ["Monday", "Wednesday"],
+    "location": "",
+    "courseContent": []
+  },
+  {
+    "id": 20,
+    "courseId": 6,
+    "courseShortName": "CMPS101",
+    "instructorName": "Isabella King",
+    "capacity": 30,
+    "enrolledStudents": [3],
+    "status": "approved",
+    "semester": "Spring 2023",
+    "Time": "05:00 05:50",
     "Days": ["Monday", "Wednesday"],
     "location": "",
     "courseContent": []

@@ -194,7 +194,9 @@ import {
   window.loadsections = loadsections;
 
 
-  async function registerForSection(event,sectionId, courseId) {    
+  async function registerForSection(event,sectionId, courseId) { 
+    //edge case to do: a student can't register a course if he/she is already registered for that course
+    // check if the student is already registered for the course, just a different section   
     event.preventDefault();
     console.log(event);
 

@@ -34,9 +34,7 @@
     "id": 3,
     "name": "fatima Al-Mansoori",
     "completedCourses": [],
-    "registeredCourses": [
-      
-    ],
+    "registeredCourses": [{ "courseId": 6, "SectionId": 20 }],
     "gpa": 2.8,
     "major": "Computer Science"
   }

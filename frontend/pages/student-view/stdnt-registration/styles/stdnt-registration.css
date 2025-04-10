@@ -37,13 +37,7 @@ header nav {
   align-items: center;
   padding: 0.3rem 0.5rem;
 }
-.search-group {
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.7rem;
-}
 .header-btn {
   background: none;
   border: none;
@@ -54,18 +48,14 @@ header nav {
 .header-btn:hover {
   background-color: #4da8da;
 }
-.searchBar {
-  border-radius: 10px;
-  width: 18rem;
-  height: 2.5rem;
-  padding: 0.5rem;
-  outline: none;
-}
-.searchBar:focus {
-  border: #4da8da solid 0.1rem;
-}
+
+
 
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
   color: white;
   padding: 0.5rem;
 }
