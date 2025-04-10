@@ -6,24 +6,264 @@ import { sectionCard } from '../components/section-card.js';
 let courses = [];
 let coursesContainer;
 let loadingIndicator;
-let listViewBtn;
-let calendarViewBtn;
 let addCourseBtn;
+let calendarViewBtn;
+let hybridViewBtn;
+
+function isSemesterFuture(semester) {
+    if (!semester) return false;
+    
+    const now = new Date();
+    const [term, year] = semester.split(' ');
+    const semesterYear = parseInt(year);
+    
+    if (semesterYear > now.getFullYear()) return true;
+    
+    if (semesterYear === now.getFullYear()) {
+        const currentMonth = now.getMonth();
+        const termStarts = {
+            'Spring': 0,  
+            'Summer': 5,  
+            'Fall': 8     
+        };
+        return currentMonth < termStarts[term];
+    }
+    
+    return false;
+}
+
+function isSemesterCurrent(semester) {
+    if (!semester) return false;
+    
+    const now = new Date();
+    const [term, year] = semester.split(' ');
+    const semesterYear = parseInt(year);
+    
+    const semesterRanges = {
+        'Fall': {
+            start: new Date(semesterYear, 8, 1),
+            end: new Date(semesterYear, 11, 31)
+        },
+        'Spring': {
+            start: new Date(semesterYear, 0, 1),
+            end: new Date(semesterYear, 4, 31)
+        },
+        'Summer': {
+            start: new Date(semesterYear, 5, 1),
+            end: new Date(semesterYear, 7, 31)
+        }
+    };
+    
+    const range = semesterRanges[term];
+    if (!range) return false;
+    
+    return now >= range.start && now <= range.end;
+}
 
 async function loadCourses() {
-  const coursesData = await fetchAllCourses();
-  
-  // Process courses one by one
-  courses = [];
-  for (const course of coursesData) {
-    const sections = await fetchSectionsByCourseId(course.id);
-    courses.push({
-      ...course,
-      sections: Array.isArray(sections) ? sections : []
+    console.log('Loading courses...');
+    try {
+        const coursesData = await fetchAllCourses();
+        console.log('Fetched courses data:', coursesData); 
+        
+        if (!Array.isArray(coursesData)) {
+            console.error('Courses data is not an array:', coursesData);
+            return;
+        }
+        
+        courses = coursesData;
+        
+        let coursesWithActiveSections = [];
+        let coursesWithoutActiveSections = [];
+      
+        for (const course of coursesData) {
+            const sections = await fetchSectionsByCourseId(course.id);
+            course.sections = sections;
+            
+            if (Array.isArray(sections)) {
+                
+                const activeSections = sections.filter(section => {
+                    const isInProgress = isSemesterCurrent(section.semester);
+                    const isPendingRegistration = isSemesterFuture(section.semester) || 
+                        (isSemesterCurrent(section.semester) && !section.isRegistrationClosed);
+                    
+                    console.log(`Section ${section.id} status:`, {
+                        semester: section.semester,
+                        isInProgress,
+                        isPendingRegistration
+                    });
+
+                    return isInProgress || isPendingRegistration;
+                });
+                
+                if (activeSections.length > 0) {
+                    console.log(`Course ${course.id} has active sections:`, activeSections);
+                    coursesWithActiveSections.push({
+                        ...course,
+                        sections: activeSections
+                    });
+                } else {
+                    console.log(`Course ${course.id} has no active sections`);
+                    coursesWithoutActiveSections.push({
+                        ...course,
+                        sections: []
+                    });
+                }
+            }
+        }
+        
+        console.log('Courses categorized:', {
+            withActiveSections: coursesWithActiveSections,
+            withoutActiveSections: coursesWithoutActiveSections
+        });
+
+        renderHybridView(coursesWithActiveSections, coursesWithoutActiveSections);
+        if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+        }
+    } catch (error) {
+        console.error('Error loading courses:', error);
+    }
+}
+
+function addDropdownHandlers() {
+    document.querySelectorAll('.dropdown-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const targetId = header.dataset.target;
+            const targetList = document.getElementById(targetId);
+            const toggleIcon = header.querySelector('.toggle-icon');
+            
+            targetList.classList.toggle('collapsed');
+            toggleIcon.textContent = targetList.classList.contains('collapsed') ? '▶' : '▼';
+        });
     });
-  }
-  
-  loadingIndicator.classList.add('hidden');
+}
+
+function renderHybridView(activeCourses, inactiveCourses) {
+    const container = document.getElementById('coursesContainer');
+    if (!container) {
+        console.error('Courses container not found');
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="courses-group active-courses">
+            <div class="dropdown-header" data-target="active-courses-list">
+                <h3>Active Courses (In Progress & Open Registration) (${activeCourses.length})</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="courses-list" id="active-courses-list">
+                ${activeCourses.map(course => {
+                    return createCourseCardWithButtons(course, true);
+                }).join('')}
+            </div>
+        </div>
+        
+        <div class="courses-group inactive-courses">
+            <div class="dropdown-header" data-target="inactive-courses-list">
+                <h3>Inactive Courses (${inactiveCourses.length})</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="courses-list" id="inactive-courses-list">
+                ${inactiveCourses.map(course => {
+                    return createCourseCardWithButtons(course, false);
+                }).join('')}
+            </div>
+        </div>
+    `;
+
+    addSectionStatusBadges();
+    addDropdownHandlers();
+    addButtonEventListeners();
+}
+
+function createCourseCardWithButtons(course, hasActiveSections) {
+    console.log('Creating card for course:', course); 
+    return `
+        <div class="course-card ${hasActiveSections ? 'active' : 'inactive'}" data-course-id="${course.id}">
+            <div class="course-header">
+                <h4>${course.name}</h4>
+                <span class="course-id">${course.id}</span>
+            </div>
+            <div class="course-info">
+                <p class="category">${course.category.charAt(0).toUpperCase() + course.category.slice(1)}</p>
+                <p class="prerequisites">Prerequisites: ${course.prerequisites?.join(', ') || 'None'}</p>
+            </div>
+            ${hasActiveSections ? renderSections(course.sections) : ''}
+            <div class="course-actions">
+                <button class="view-btn" data-action="view" data-course-id="${course.id}">View</button>
+                <button class="edit-btn" data-action="edit" data-course-id="${course.id}">Edit</button>
+                <button class="delete-btn" data-action="delete" data-course-id="${course.id}">Delete</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderSections(sections) {
+    if (!sections || sections.length === 0) return '';
+    
+    return `
+        <div class="sections-list">
+            <h5>Active Sections:</h5>
+            ${sections.map(section => `
+                <div class="section-item" data-section-id="${section.id}">
+                    <div class="section-info">
+                        <span class="section-id">Section ${section.id}</span>
+                        <span class="semester">${section.semester}</span>
+                        <span class="instructor">${section.instructorName}</span>
+                        <span class="status-badge ${getSectionStatusClass(section)}">
+                            ${getSectionStatus(section)}
+                        </span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="view-btn" data-action="view" data-section-id="${section.id}">View</button>
+                        <button class="edit-btn" data-action="edit" data-section-id="${section.id}">Edit</button>
+                        <button class="delete-btn" data-action="delete" data-section-id="${section.id}">Delete</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function getSectionStatus(section) {
+    if (isSemesterCurrent(section.semester)) {
+        return 'In Progress';
+    }
+    return 'Open for Registration';
+}
+
+function getSectionStatusClass(section) {
+    if (isSemesterCurrent(section.semester)) {
+        return 'in-progress';
+    }
+    return 'open-registration';
+}
+
+function addSectionStatusBadges() {
+    const styles = `
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-badge.in-progress {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .status-badge.open-registration {
+            background-color: #2196F3;
+            color: white;
+        }
+    `;
+    
+    if (!document.querySelector('#status-badge-styles')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'status-badge-styles';
+        styleSheet.textContent = styles;
+        document.head.appendChild(styleSheet);
+    }
 }
 
 function clearCoursesContainer() {
@@ -41,19 +281,27 @@ function clearCoursesContainer() {
 }
 
 function renderListView() {
-  if (clearCoursesContainer()) return;
-  
-  coursesContainer.className = 'list-view';
-  
-  courses.map(course => {
-    const card = courseCard(course, {
-      onView: () => navigateToCourseDetails(course.id),
-      onEdit: () => window.location.href = `course-details-view.html?id=${course.id}&mode=edit`,
-      onDelete: () => deleteCourseById(course.id).then(() => window.location.reload())
+    if (clearCoursesContainer()) return;
+    
+    coursesContainer.className = 'list-view';
+    
+    const wrapper = document.createElement('div');
+    wrapper.className = 'courses-vertical-layout';
+    
+    courses.forEach(course => {
+        const card = courseCard(course, {
+            onView: () => navigateToCourseDetails(course.id),
+            onEdit: () => window.location.href = `course-details-view.html?id=${course.id}&mode=edit`,
+            onDelete: () => deleteCourseById(course.id).then(() => window.location.reload())
+        });
+        
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = 'course-wrapper';
+        cardWrapper.appendChild(card);
+        wrapper.appendChild(cardWrapper);
     });
     
-    coursesContainer.appendChild(card);
-  });
+    coursesContainer.appendChild(wrapper);
 }
 
 function renderCalendarView() {
@@ -69,7 +317,6 @@ function renderCalendarView() {
     coursesContainer.appendChild(dayHeader);
   });
   
-  // Create day columns
   const dayColumns = {};
   days.forEach(day => {
     const dayColumn = document.createElement('div');
@@ -78,7 +325,6 @@ function renderCalendarView() {
     dayColumns[day] = dayColumn;
   });
   
-  // Distribute sections by day
   courses.forEach(course => {
     if (course.sections && course.sections.length > 0) {
       course.sections.forEach(section => {
@@ -99,38 +345,181 @@ function renderCalendarView() {
   });
 }
 
-// Navigate to course details page
-function navigateToCourseDetails(courseId) {
-  window.location.href = `course-details-view.html?id=${courseId}`;
+async function navigateToCourseDetails(courseId) {
+    try {
+        console.log('Fetching course details for:', courseId);
+        const allCourses = await fetchAllCourses();
+        console.log('All courses:', allCourses); 
+        
+        const numericCourseId = parseInt(courseId);
+        const course = allCourses.find(c => c.id === numericCourseId || c.id === courseId);
+        
+        if (!course) {
+            console.error('Course not found:', courseId);
+            console.log('Available course IDs:', allCourses.map(c => c.id)); // Debug log
+            alert('Course not found');
+            return;
+        }
+
+        sessionStorage.setItem('currentCourse', JSON.stringify({
+            id: course.id,
+            name: course.name || 'Untitled Course',
+            description: course.description || 'No description available',
+            creditHours: course.creditHours || 'Not specified',
+            category: course.category || 'Uncategorized',
+            prerequisites: course.prerequisites || []
+        }));
+
+        window.location.href = `course-details-view.html?id=${course.id}`;
+    } catch (error) {
+        console.error('Error navigating to course details:', error);
+        console.log('Full error:', error); // Debug log
+        alert('Failed to load course details. Please try again.');
+    }
 }
 
-// Navigate to section details page
 function navigateToSectionDetails(sectionId, courseId) {
   window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseId}`;
 }
 
-// Navigate to add course page
 function navigateToAddCourse() {
   window.location.href = 'course-details-view.html?mode=add';
 }
 
+function renderSemesterStatusView() {
+    const coursesWithFutureSections = [];
+    const coursesWithoutFutureSections = [];
+    
+    courses.forEach(course => {
+        if (course.sections && course.sections.some(section => 
+            isSemesterFuture(section.semester) || 
+            (isSemesterCurrent(section.semester) && !section.isRegistrationClosed))) {
+            coursesWithFutureSections.push(course);
+        } else {
+            coursesWithoutFutureSections.push(course);
+        }
+    });
+    
+    renderCourseLists(coursesWithFutureSections, coursesWithoutFutureSections);
+}
+
+function addButtonEventListeners() {
+    document.querySelectorAll('.course-actions button').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const action = e.target.dataset.action;
+            const courseId = e.target.dataset.courseId;
+            console.log('Button clicked:', {
+                action,
+                courseId,
+                buttonElement: e.target,
+                dataset: e.target.dataset
+            });
+
+            if (!courseId) {
+                console.error('No course ID found on button');
+                return;
+            }
+
+            switch(action) {
+                case 'view':
+                    await navigateToCourseDetails(courseId);
+                    break;
+                case 'edit':
+                    window.location.href = `course-details-view.html?id=${courseId}&mode=edit`;
+                    break;
+                case 'delete':
+                    if (confirm('Are you sure you want to delete this course?')) {
+                        try {
+                            await deleteCourseById(courseId);
+                            window.location.reload();
+                        } catch (error) {
+                            console.error('Failed to delete course:', error);
+                            alert('Failed to delete course. Please try again.');
+                        }
+                    }
+                    break;
+            }
+        });
+    });
+
+    document.querySelectorAll('.section-actions button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const action = e.target.dataset.action;
+            const sectionId = e.target.dataset.sectionId;
+            console.log(`Section button clicked: ${action} for section ${sectionId}`);
+
+            switch(action) {
+                case 'view':
+                    console.log('Navigating to section details:', sectionId);
+                    navigateToSectionDetails(sectionId);
+                    break;
+                case 'edit':
+                    console.log('Navigating to edit section:', sectionId);
+                    window.location.href = `section-details-view.html?id=${sectionId}&mode=edit`;
+                    break;
+                case 'delete':
+                    console.log('Attempting to delete section:', sectionId);
+                    if (confirm('Are you sure you want to delete this section?')) {
+                        deleteSectionById(sectionId)
+                            .then(() => {
+                                console.log('Section deleted successfully:', sectionId);
+                                window.location.reload();
+                            })
+                            .catch(error => {
+                                console.error('Failed to delete section:', error);
+                                alert('Failed to delete section. Please try again.');
+                            });
+                    }
+                    break;
+            }
+        });
+    });
+}
+
 async function init() {
-  coursesContainer = document.getElementById('coursesContainer');
-  loadingIndicator = document.getElementById('loadingIndicator');
-  listViewBtn = document.getElementById('listViewBtn');
-  calendarViewBtn = document.getElementById('calendarViewBtn');
-  addCourseBtn = document.getElementById('addCourseBtn');
-  
-  listViewBtn.addEventListener('click', renderListView);
-  calendarViewBtn.addEventListener('click', renderCalendarView);
-  addCourseBtn.addEventListener('click', navigateToAddCourse);
-  
-  try {
-    await loadCourses();
-    renderListView(); // Default to list view
-  } catch (error) {
-    console.error('Failed to initialize courses view:', error);
-  }
+    coursesContainer = document.getElementById('coursesContainer');
+    loadingIndicator = document.getElementById('loadingIndicator');
+    addCourseBtn = document.getElementById('addCourseBtn');
+    calendarViewBtn = document.getElementById('calendarViewBtn');
+    hybridViewBtn = document.getElementById('hybridViewBtn');
+    
+    if (!coursesContainer) {
+        console.error('Courses container not found');
+        return;
+    }
+
+    if (addCourseBtn) {
+        addCourseBtn.addEventListener('click', navigateToAddCourse);
+    }
+
+    if (calendarViewBtn) {
+        calendarViewBtn.addEventListener('click', () => {
+            hybridViewBtn.classList.remove('active');
+            calendarViewBtn.classList.add('active');
+            coursesContainer.className = 'calendar-view';
+            renderCalendarView();
+        });
+    }
+
+    if (hybridViewBtn) {
+        hybridViewBtn.addEventListener('click', () => {
+            calendarViewBtn.classList.remove('active');
+            hybridViewBtn.classList.add('active');
+            coursesContainer.className = 'list-view';
+            loadCourses();
+        });
+    }
+    
+    try {
+        await loadCourses(); 
+    } catch (error) {
+        console.error('Failed to initialize courses view:', error);
+        if (loadingIndicator) {
+            loadingIndicator.textContent = 'Failed to load courses. Please try again.';
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);

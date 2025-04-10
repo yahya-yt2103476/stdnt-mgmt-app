@@ -14,6 +14,11 @@ let sectionForm;
 // Data
 let currentSection, currentCourse;
 
+function getCourseFromStorage() {
+    const storedCourse = sessionStorage.getItem('currentCourse');
+    return storedCourse ? JSON.parse(storedCourse) : null;
+}
+
 async function init() {
   // Get DOM elements
   sectionDetails = document.getElementById('sectionDetails');
@@ -40,8 +45,12 @@ async function init() {
       currentSection = await fetchSectionById(sectionId);
       
       if (currentSection) {
-        // If we got courseId from URL, use it, otherwise use the one from section
-        currentCourse = await fetchCourseById(courseId || currentSection.courseId);
+        // Try to get course from storage first
+        currentCourse = getCourseFromStorage();
+        if (!currentCourse) {
+          // Fallback to fetching from API
+          currentCourse = await fetchCourseById(courseId || currentSection.courseId);
+        }
         
         displaySectionDetails();
         displayStudents();
@@ -72,8 +81,11 @@ async function init() {
         sectionDetails.innerHTML = '<p>Section not found</p>';
       }
     } else if (mode === 'add' && courseId) {
-      // Handle add section mode
-      currentCourse = await fetchCourseById(courseId);
+      // Try to get course from storage first
+      currentCourse = getCourseFromStorage();
+      if (!currentCourse) {
+        currentCourse = await fetchCourseById(courseId);
+      }
       
       currentSection = {
         courseId: parseInt(courseId),

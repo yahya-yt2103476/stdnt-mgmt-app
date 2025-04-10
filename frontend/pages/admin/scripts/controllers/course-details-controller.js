@@ -13,6 +13,10 @@ let courseForm, prerequisitesContainer;
 // Data
 let currentCourse, allCourses, sections = [];
 
+function clearCourseStorage() {
+    sessionStorage.removeItem('currentCourse');
+}
+
 async function init() {
   // Get DOM elements
   courseDetails = document.getElementById('courseDetails');
@@ -24,6 +28,7 @@ async function init() {
   
   // Set up event listeners
   document.getElementById('backButton').addEventListener('click', () => {
+    clearCourseStorage();
     window.location.href = 'courses-view.html';
   });
   
@@ -52,7 +57,15 @@ async function init() {
     allCourses = await fetchAllCourses();
     
     if (courseId) {
-      currentCourse = await fetchCourseById(courseId);
+      // First try to get from session storage
+      const storedCourse = sessionStorage.getItem('currentCourse');
+      if (storedCourse) {
+        currentCourse = JSON.parse(storedCourse);
+      } else {
+        // Fallback to fetching from API
+        currentCourse = await fetchCourseById(courseId);
+      }
+      
       sections = await fetchSectionsByCourseId(courseId);
       
       // Make sure sections is always an array
@@ -231,14 +244,11 @@ async function saveForm(event) {
     let savedCourse;
     if (courseId) {
       savedCourse = await updateCourse(updatedCourse);
-      console.log('Course updated, response:', savedCourse);
+      // Update session storage with new data
+      sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     } else {
       savedCourse = await createCourse(updatedCourse);
-      console.log('Course created, response:', savedCourse);
-      
-      // For new courses, redirect to courses view instead
-      window.location.href = 'courses-view.html';
-      return;
+      sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     }
     
     // Only redirect to view mode for existing courses
