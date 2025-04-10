@@ -5,81 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Courses</title>
     <link rel="stylesheet" href="styles/instructor-mp.css" />
-    <link rel="stylesheet" href="../../../styles/navigation.css">
-    <link rel="stylesheet" href="../../../styles/footer.css">
+    <link rel="stylesheet" href="../../../styles/navigation.css" />
+    <link rel="stylesheet" href="../../../styles/footer.css" />
+    <link rel="stylesheet" href="../../../styles/searchBar.css" />
   </head>
   <body>
     <header>
       <nav>
-        <button class="header-btn" name="backBtn" id="backBtn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            style="fill: rgba(0, 0, 0, 1); transform: msFilter"
+        <div class="nav-links">
+          <a href="../stdnt-main-dashboard/stdnt-main-dashboard.html"
+            >Dashboard</a
           >
-            <path
-              d="M11.83 5.41a1 1 0 0 0-1.41 1.41L14.59 12l-4.17 4.17a1 1 0 0 0 1.41 1.41l4.17-4.17 4.17 4.17a1 1 0 0 0 1.41-1.41L16 12l4.17-4.17a1 1 0 0 0-1.41-1.41L16 10.59l-4.17-4.18z"
-            ></path>
-          </svg>
-
-        <button class="header-btn" name="userBtn" id="userBtn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            style="fill: rgba(0, 0, 0, 1); transform: msFilter"
+          <a href="../learning-path/pages/learning-path-page.html"
+            >Learning Path</a
           >
+          <a href="stdnt-registration.html">Course Registration</a>
+        </div>
+        <button class="log-out-btn" id="logOutBtn">
+          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
             <path
-              d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z"
-            ></path>
-            <path
-              d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z"
-            ></path>
+              d="M27,3V29a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V27H7v1H25V4H7V7H5V3A1,1,0,0,1,6,2H26A1,1,0,0,1,27,3ZM10.71,20.29,7.41,17H18V15H7.41l3.3-3.29L9.29,10.29l-5,5a1,1,0,0,0,0,1.42l5,5Z"
+              fill="#000"
+            />
           </svg>
         </button>
-        <div class="search-group">
-          <input
-            type="search"
-            name="searchBar"
-            id="searchBar"
-            class="searchBar"
-            placeholder="Search by course or category"
-          />
-          <button class="header-btn" name="searchBtn" id="searchBtn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              style="fill: rgba(0, 0, 0, 1); transform: msFilter"
-            >
-              <path
-                d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"
-              ></path>
-            </svg>
-          </button>
-          <button class="header-btn" name="filterBtn" id="filterBtn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              style="fill: rgba(0, 0, 0, 1); transform: msFilter"
-            >
-              <path d="M7 11h10v2H7zM4 7h16v2H4zm6 8h4v2h-4z"></path>
-            </svg>
-          </button>
-        </div>
       </nav>
     </header>
     <main>
+      <div class="search-group">
+        <input
+          type="search"
+          search-group
+          name="searchBar"
+          id="searchBar"
+          class="searchBar"
+          placeholder="Search by course or category"
+        />
+      </div>
       <h2>Your Courses</h2>
-    <div class="container">
+      <div class="container">
         <!-- HTML injection -->
-    </div>
+      </div>
     </main>
     <footer>
       <p>&copy; Student Management Application 2025</p>

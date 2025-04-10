@@ -1,0 +1,28 @@
+.search-group {
+  display: flex;
+  /* flex: 1; */
+  max-width: 600px;
+  margin: 0 2rem;
+}
+
+.searchBar {
+  min-width: 300px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: ease-in-out 0.2s;
+}
+
+.searchBar:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+.searchBar:hover {
+  scale: 1.02;
+}
