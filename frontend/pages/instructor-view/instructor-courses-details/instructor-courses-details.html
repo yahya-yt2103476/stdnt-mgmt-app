@@ -64,9 +64,9 @@
       <main>
         <div class="courseInfo">
           <h2>Course Info</h2>
-            <div class="courseInfoInner">
-              <!-- HTML Injection -->
-            </div>
+          <div class="courseInfoInner">
+            <!-- HTML Injection -->
+          </div>
         </div>
         <div class="studentList">
           <h2>Enrolled Students</h2>
@@ -83,7 +83,6 @@
               </div>
             </tbody>
           </table>
-          
         </div>
         <div class="assignmentsExams">
           <h2>Assignments & Exams</h2>
@@ -96,9 +95,7 @@
                 <th>View</th>
               </tr>
             </thead>
-            <tbody class="contentTable">
-              
-            </tbody>
+            <tbody class="contentTable"></tbody>
           </table>
           <hr />
           <h3>Upload New Assignment</h3>
@@ -109,16 +106,26 @@
             class="assignmentForm"
           >
             <label for="assignmentTitle">Title:</label>
-            <input type="text" id="assignmentTitle" name="assignmentTitle" required />
+            <input
+              type="text"
+              id="assignmentTitle"
+              name="assignmentTitle"
+              required
+            />
             <label for="deadline">Deadline:</label>
             <input type="date" id="deadline" name="deadline" required />
             <button type="submit">Upload</button>
           </form>
         </div>
-       
+
         <div class="studentFinalGrade">
           <h3>Submit Students Final Grade</h3>
-          <form action="" method="POST" enctype="multipart/form-data" class="finalGradeFOrm">
+          <form
+            action=""
+            method="POST"
+            enctype="multipart/form-data"
+            class="finalGradeFOrm"
+          >
             <!-- HTML Injection -->
             <button type="submit" class="finalGradeSubmitBtn">Submit</button>
           </form>
@@ -128,6 +135,9 @@
         <p>&copy; Student Management Application 2025</p>
       </footer>
     </div>
-    <script src="../JS/instructorCourseDetails.js" type="module"></script>
+    <script
+      src="../scripts/instructor-courses-details.js"
+      type="module"
+    ></script>
   </body>
 </html>

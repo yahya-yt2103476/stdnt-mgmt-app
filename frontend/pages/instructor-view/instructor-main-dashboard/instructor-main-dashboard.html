@@ -3,24 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Main Dashboard</title>
+    <title>Instructor Main Dashboard</title>
     <link rel="stylesheet" href="../../../styles/navigation.css" />
     <link rel="stylesheet" href="../../../styles/footer.css" />
     <link rel="stylesheet" href="../../../styles/optionCards.css" />
 
     <link rel="stylesheet" href="../styles/instructor-general.css" />
-
     <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
     <header>
       <nav>
         <div class="nav-links">
-          <a href="stdnt-main-dashboard.html">Dashbaord</a>
-          <a href="../learning-path/pages/learning-path-page.html"
+          <a href="instructor-main-dashboard.html">Dashbaord</a>
+          <a href="../instructor-courses/instructor-courses.html"
             >Your Courses</a
           >
-          <a href="../stdnt-registration/stdnt-registration.html"
+          <a href="../instructor-signip-courses/next-sem-courses.html"
             >Course Interests</a
           >
         </div>
@@ -35,30 +34,28 @@
       </nav>
     </header>
     <main>
-      <h1>Welcome to Your Instructor Dashboard</h1>
+      <h1 id="welcomeMsg"></h1>
       <div class="options">
         <section>
-          <div class="optionCard" id="courses">
+          <div class="optionCard" id="yourCourses">
             <h2>View Your Courses</h2>
             <p>
-              Instructors can view the courses they are currently teaching and
-              the list of students registered for each of their courses.
+              Access a complete overview of the courses you are currently
+              teaching, including detailed course information, schedules, and
+              enrolled students. Easily view student performance and manage your
+              classroom activities efficiently.
             </p>
           </div>
         </section>
         <section>
-          <div class="optionCard" id="learningPath">
-            <a href="../instructor-signip-courses/next-sem-courses.html">
-              <h2>Course Interests</h2>
-              <p>
-                Classes are assigned to instructors as follows. The
-                administrator should publish the list of courses to be open. The
-                instructors should able to express their interests in courses.
-                Once the deadline of submitting interests / preferences, the
-                administrator should be able to select the instructors for the
-                courses / classes to be open for registration.
-              </p>
-            </a>
+          <div class="optionCard" id="courseInterests">
+            <h2>Course Interests</h2>
+            <p>
+              Explore the list of available courses for the upcoming semester
+              and submit your preferences for the ones you are interested in
+              teaching. Indicating your interests helps the department in
+              assigning instructors based on expertise and availability.
+            </p>
           </div>
         </section>
       </div>
@@ -87,6 +84,9 @@
         <p>&copy; 2024 Qatar University. All rights reserved.</p>
       </div>
     </footer>
-    <script src="stdnt-main-dashboard.js" type="module"></script>
+    <script
+      src="../scripts/instructor-main-dashboard.js"
+      type="module"
+    ></script>
   </body>
 </html>

@@ -5,8 +5,6 @@ import {
   fetchUserById,
 } from "../../../services/user-service.js";
 
-
-
 async function main() {
   const icons = [];
 
@@ -36,7 +34,7 @@ async function main() {
       i.style.color = "grey";
     });
 
-    if (e === "Student") {      
+    if (e === "Student") {
       usertype = e;
       std_icn.style.transform = "scale(1.05)";
       std_icn.style.color = "Black";
@@ -68,8 +66,6 @@ async function main() {
       return u.email == formObject.email && u.password == formObject.password;
     });
 
-
-
     if (user && usertype != undefined && user.userType == usertype) {
       console.log(`user have been found`);
       indicator.style.display = "none";
@@ -82,11 +78,13 @@ async function main() {
           );
           break;
         case "Instructor":
-          loadPage(user, "../instructor-view/instructor-dash-board/instructor_dash_board.html");
+          loadPage(
+            user,
+            "../instructor-view/instructor-main-dashboard/instructor-main-dashboard.html"
+          );
           break;
 
         case "Admin":
-
           // Ayoub: Working now
           loadPage(user, "../admin/views/courses-view.html");
           break;
@@ -114,7 +112,6 @@ async function main() {
       formObject[key] = value;
     });
     console.log(formObject);
-    
 
     if (formObject.password != formObject.confirmPassword) {
       alert("Password and Confirm Password do not match");
