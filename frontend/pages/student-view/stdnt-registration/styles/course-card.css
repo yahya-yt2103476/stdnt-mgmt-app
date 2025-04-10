@@ -44,6 +44,7 @@
   border-radius: 5px;
   border-bottom: 4px solid #b7b7b792;
   width: max-content;
+  font-weight: 500;
 }
 
 .card-section {
@@ -60,6 +61,7 @@
   border-left: 4px solid #b7b7b792;
   border-radius: 8px;
   font-style: italic;
+  font-weight: 430;
 }
 
 .card-footer {

@@ -21,34 +21,6 @@ body {
 }
 
 /* mobile view */
-/* header {
-  background-color: white;
-  height: fit-content;
-}
-
-header nav {
-  display: flex;
-  grid-template-columns: 1fr;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.3rem 0.5rem;
-}
-
-.log-out-btn {
-  width: fit-content;
-  height: fit-content;
-  background: none;
-  border: 2px solid #e4e4e492;
-  border-radius: 2px;
-  padding: 2px;
-  transition: 0.2s;
-  margin-top: 0;
-}
-.log-out-btn:hover {
-  background: #e4e4e492;
-  cursor: pointer;
-} */
-
 h1 {
   color: #5a5a5a92;
   text-align: center;
