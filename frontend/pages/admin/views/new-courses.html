@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Section Planning</title>
+    <link rel="stylesheet" href="../styles/admin-styles.css">
+    <link rel="stylesheet" href="../styles/courses-styles.css">
+    <link rel="stylesheet" href="../styles/course-card.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Course Section Planning</h1>
+        
+        <div class="planning-info">
+            <h3>Select courses for next semester sections</h3>
+            <p>Choose which courses will be offered in the upcoming semester.</p>
+        </div>
+
+        <div class="actions">
+            <select id="targetSemester" class="semester-select">
+                <!-- Options will be populated dynamically -->
+            </select>
+            <div class="add-course-container">
+                <select id="courseDropdown" class="course-select">
+                    <option value="">Select a course to add...</option>
+                </select>
+                <button id="addCourseBtn" class="action-btn add-btn">Add Course</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="search-bar">
+                <input type="text" id="courseSearch" placeholder="Search courses...">
+            </div>
+            <div class="category-filter">
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="programming">Programming</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="database">Database</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="courses-wrapper">
+            <div id="selectedCoursesContainer">
+                <h2>Selected Courses</h2>
+                <div id="loadingIndicator">Loading courses...</div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../scripts/controllers/publish-courses-controller.js"></script>
+</body>
+</html>

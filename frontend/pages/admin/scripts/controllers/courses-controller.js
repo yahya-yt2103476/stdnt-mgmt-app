@@ -63,7 +63,7 @@ function isSemesterCurrent(semester) {
 async function loadCourses() {
     console.log('Loading courses...');
     try {
-        const coursesData = await fetchAllCourses();
+  const coursesData = await fetchAllCourses();
         console.log('Fetched courses data:', coursesData); 
         
         if (!Array.isArray(coursesData)) {
@@ -76,8 +76,8 @@ async function loadCourses() {
         let coursesWithActiveSections = [];
         let coursesWithoutActiveSections = [];
       
-        for (const course of coursesData) {
-            const sections = await fetchSectionsByCourseId(course.id);
+  for (const course of coursesData) {
+    const sections = await fetchSectionsByCourseId(course.id);
             course.sections = sections;
             
             if (Array.isArray(sections)) {
@@ -105,7 +105,7 @@ async function loadCourses() {
                 } else {
                     console.log(`Course ${course.id} has no active sections`);
                     coursesWithoutActiveSections.push({
-                        ...course,
+      ...course,
                         sections: []
                     });
                 }
@@ -217,7 +217,6 @@ function renderSections(sections) {
                     </div>
                     <div class="section-actions">
                         <button class="view-btn" data-action="view" data-section-id="${section.id}">View</button>
-                        <button class="edit-btn" data-action="edit" data-section-id="${section.id}">Edit</button>
                         <button class="delete-btn" data-action="delete" data-section-id="${section.id}">Delete</button>
                     </div>
                 </div>
@@ -281,25 +280,25 @@ function clearCoursesContainer() {
 }
 
 function renderListView() {
-    if (clearCoursesContainer()) return;
-    
-    coursesContainer.className = 'list-view';
-    
+  if (clearCoursesContainer()) return;
+  
+  coursesContainer.className = 'list-view';
+  
     const wrapper = document.createElement('div');
     wrapper.className = 'courses-vertical-layout';
     
     courses.forEach(course => {
-        const card = courseCard(course, {
-            onView: () => navigateToCourseDetails(course.id),
-            onEdit: () => window.location.href = `course-details-view.html?id=${course.id}&mode=edit`,
-            onDelete: () => deleteCourseById(course.id).then(() => window.location.reload())
-        });
-        
+    const card = courseCard(course, {
+      onView: () => navigateToCourseDetails(course.id),
+      onEdit: () => window.location.href = `course-details-view.html?id=${course.id}&mode=edit`,
+      onDelete: () => deleteCourseById(course.id).then(() => window.location.reload())
+    });
+    
         const cardWrapper = document.createElement('div');
         cardWrapper.className = 'course-wrapper';
         cardWrapper.appendChild(card);
         wrapper.appendChild(cardWrapper);
-    });
+  });
     
     coursesContainer.appendChild(wrapper);
 }
@@ -479,10 +478,10 @@ function addButtonEventListeners() {
 }
 
 async function init() {
-    coursesContainer = document.getElementById('coursesContainer');
-    loadingIndicator = document.getElementById('loadingIndicator');
+  coursesContainer = document.getElementById('coursesContainer');
+  loadingIndicator = document.getElementById('loadingIndicator');
     addCourseBtn = document.getElementById('addCourseBtn');
-    calendarViewBtn = document.getElementById('calendarViewBtn');
+  calendarViewBtn = document.getElementById('calendarViewBtn');
     hybridViewBtn = document.getElementById('hybridViewBtn');
     
     if (!coursesContainer) {
@@ -491,7 +490,7 @@ async function init() {
     }
 
     if (addCourseBtn) {
-        addCourseBtn.addEventListener('click', navigateToAddCourse);
+  addCourseBtn.addEventListener('click', navigateToAddCourse);
     }
 
     if (calendarViewBtn) {
@@ -511,15 +510,15 @@ async function init() {
             loadCourses();
         });
     }
-    
-    try {
-        await loadCourses(); 
-    } catch (error) {
-        console.error('Failed to initialize courses view:', error);
+  
+  try {
+    await loadCourses();
+  } catch (error) {
+    console.error('Failed to initialize courses view:', error);
         if (loadingIndicator) {
             loadingIndicator.textContent = 'Failed to load courses. Please try again.';
         }
-    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
