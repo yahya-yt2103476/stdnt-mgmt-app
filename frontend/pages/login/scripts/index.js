@@ -80,7 +80,7 @@ async function main() {
         case "Instructor":
           loadPage(
             user,
-            "../../instructor-view/views/instructor-main-dashboard.html"
+            "/frontend/pages/instructor-view/views/instructor-main-dashboard.html"
           );
           break;
 
