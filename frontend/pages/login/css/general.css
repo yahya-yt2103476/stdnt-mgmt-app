@@ -92,6 +92,7 @@ form {
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
 }
 
 .form-group {
@@ -149,6 +150,10 @@ button:hover {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+}
+
+footer {
+  width: 100%;
 }
 
 @media (max-width: 600px) {
