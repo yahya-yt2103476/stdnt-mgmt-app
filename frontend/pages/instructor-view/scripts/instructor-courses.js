@@ -1,6 +1,7 @@
 import { fetchInstructorById } from "../../../services/instructor-service.js";
 import { fetchAllCourses } from "../../../services/course-service.js";
 import { fetchAllSections } from "../../../services/section-service.js";
+import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 
 // test value for instructor ID
 let instructor_Id = 2;
@@ -40,7 +41,7 @@ function main() {
     });
   }
 
-  const mainContent = document.querySelector(".container");
+  const mainContent = document.querySelector(".coursesContainer");
   let neededInfo = filterIntoOne(instructorCourses(), instructorSections());
   mainContent.innerHTML = loadCourses(
     neededInfo,
@@ -68,6 +69,8 @@ function filterIntoOne(corList, secList) {
       matchingSections.forEach((section) => {
         newList.push({
           name: course.name,
+          courseId: course.id,
+          sectionId: section.id,
           shortName: course.shortName,
           category: course.category,
           totalEnrolled: section.enrolledStudents.length,
@@ -82,17 +85,28 @@ function filterIntoOne(corList, secList) {
 function loadCourses(courseData, instructorCourses, instructorSections) {
   return courseData.map((course) => {
     const matchingCourse = instructorCourses.find(
-      (ic) => ic.name === course.name
+      (ic) => ic.name == course.name
     );
     const matchingSection = instructorSections.find(
-      (is) => is.courseId === matchingCourse.id
+      (is) => is.courseId == matchingCourse.id
     );
     return `
       <div class="course-card">
-        <h3>${course.name}</h3>
-        <p>Category: ${course.category}</p>
-        <p>Total Enrolled Students: ${course.totalEnrolled}</p>
-        <a href="../instructor-courses-details/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
+        <div class="card-header">
+          <h4 class="courseId">${course.shortName}</h4>
+          <h4 class="courseId">${course.courseId}</h4>
+        </div>
+        <div class="card-body">
+          <div class="card-section">
+            <p class="category">${course.category}</p>
+            <p><b>Course Name: </b>${course.name}</p>
+            <p><b>Section ID: </b>${course.sectionId}</p>
+            <p><b>Total Enrolled Students: </b>${course.totalEnrolled}</p>
+          </div>
+          <div class="card-footer">
+            <a href="../instructor-courses-details/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
+          </div>
+        </div>
       </div>
     `;
   });
@@ -114,7 +128,7 @@ function handleSearch(courseData, instructorCourses, instructorSections) {
 }
 
 function renderCourses(courses, instructorCourses, instructorSections) {
-  const mainContent = document.querySelector(".container");
+  const mainContent = document.querySelector(".coursesContainer");
   mainContent.innerHTML = loadCourses(
     courses,
     instructorCourses,
@@ -144,3 +158,6 @@ main();
         <a href="#" class="view-course-btn">View Course</a>
       </div>
  */
+
+const logoutbtn = document.querySelector("#logOutBtn");
+logoutbtn.addEventListener("click", logoutCurrentUser);

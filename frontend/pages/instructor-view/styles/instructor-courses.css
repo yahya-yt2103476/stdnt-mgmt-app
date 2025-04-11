@@ -1,5 +1,4 @@
 * {
-  color: black;
   /* reset */
   margin: 0;
   padding: 0;
@@ -11,10 +10,7 @@
 body {
   background-color: #eaeaea92;
   display: grid;
-  grid-template-areas:
-    "header"
-    "main"
-    "footer";
+  grid-template-areas: "header" "main" "footer";
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
@@ -26,39 +22,26 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  color: white;
   padding: 0.5rem;
   width: 100%;
 }
 
 h2 {
   margin-top: 15px;
-  text-align: center;
-}
-
-.mainContainer {
-  display: grid;
-  grid-template-columns: 1fr;
-  place-items: center;
-  width: 100%;
 }
 
 .coursesContainer {
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.course-card {
+  min-width: 500px;
   width: 100%;
 }
 
-.sectionsContainer {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 10px;
-  margin-top: 10px;
-  width: 100%;
+@media screen and (max-width: 767px) {
+  .coursesContainer {
+    grid-template-columns: 1fr;
+  }
 }

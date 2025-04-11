@@ -4,22 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Courses</title>
-    <link rel="stylesheet" href="styles/instructor-mp.css" />
     <link rel="stylesheet" href="../../../styles/navigation.css" />
     <link rel="stylesheet" href="../../../styles/footer.css" />
     <link rel="stylesheet" href="../../../styles/searchBar.css" />
+    <link rel="stylesheet" href="../../../styles/course-card.css" />
+    <link rel="stylesheet" href="../styles/instructor-courses.css" />
   </head>
   <body>
     <header>
       <nav>
         <div class="nav-links">
-          <a href="../stdnt-main-dashboard/stdnt-main-dashboard.html"
-            >Dashboard</a
+          <a href="instructor-main-dashboard.html">Dashbaord</a>
+          <a href="instructor-courses.html">Your Courses</a>
+          <a href="../instructor-signip-courses/next-sem-courses.html"
+            >Course Interests</a
           >
-          <a href="../learning-path/pages/learning-path-page.html"
-            >Learning Path</a
-          >
-          <a href="stdnt-registration.html">Course Registration</a>
         </div>
         <button class="log-out-btn" id="logOutBtn">
           <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
@@ -43,12 +42,33 @@
         />
       </div>
       <h2>Your Courses</h2>
-      <div class="container">
+      <div class="coursesContainer">
         <!-- HTML injection -->
       </div>
     </main>
     <footer>
-      <p>&copy; Student Management Application 2025</p>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>QU Instructor Portal</h3>
+          <p>Qatar University - CSE Department</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">University Website</a></li>
+            <li><a href="#">CSE Department</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: cse-support@qu.edu.qa</p>
+          <p>Phone: +974 4403-5555</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Qatar University. All rights reserved.</p>
+      </div>
     </footer>
     <script src="../scripts/instructor-courses.js" type="module"></script>
   </body>
