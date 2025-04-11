@@ -44,4 +44,7 @@ h2 {
   .coursesContainer {
     grid-template-columns: 1fr;
   }
+  .course-card {
+    width: 435px;
+  }
 }
