@@ -1,6 +1,6 @@
 import { fetchStudentById } from "../../../../services/student-service.js";
 import { createCourseCard } from './components/course-card.js';
-import { LogoutCurrentUser } from '../../../../services/logout.js';
+import { logoutCurrentUser } from '../../../../../frontend/services/logout.js';
 
 let studentId = sessionStorage.getItem("authenticated_user_id");
 let student;
@@ -254,7 +254,7 @@ function setupNavigation() {
     const logoutBtn = document.getElementById('logOutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
-            await LogoutCurrentUser();
+            await logoutCurrentUser();
         });
     }
 }

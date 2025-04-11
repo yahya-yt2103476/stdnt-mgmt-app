@@ -5,12 +5,5 @@
     "sectionId": 5,
     "grade": "B+",
     "status": "pending"
-  },
-  {
-    "id": 2,
-    "studentId": 2172,
-    "sectionId": 5,
-    "grade": "A",
-    "status": "pending"
   }
 ]

@@ -6,5 +6,13 @@
     "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
     "gpa": 3.6,
     "major": "Computer Engineering"
+  },
+  {
+    "id": 2172,
+    "name": "Ayoub theStudent",
+    "completedCourses": [],
+    "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
+    "gpa": 3.6,
+    "major": "Computer Engineering"
   }
 ]
