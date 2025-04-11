@@ -62,7 +62,7 @@
 }
 
 .register-btn:hover:enabled {
-  background-color: #0077b6;
+  background-color: #008fdd;
 }
 
 .register-btn:disabled {
@@ -78,7 +78,7 @@
   border-radius: 5px;
 }
 .blue {
-  background-color: #4da8da;
+  background-color: #009df1;
 }
 .red:disabled {
   background-color: red;
