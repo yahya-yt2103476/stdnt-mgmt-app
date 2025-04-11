@@ -9,7 +9,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const instructorName = urlParams.get("instructorName"); // not used
 const courseId = urlParams.get("courseId");
 const sectionId = urlParams.get("sectionId");
-const courseShortName = urlParams.get("courseShortName");
+const courseShortName = urlParams.get("courseShortName").replace(/\s/g, '').trim();
 
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();

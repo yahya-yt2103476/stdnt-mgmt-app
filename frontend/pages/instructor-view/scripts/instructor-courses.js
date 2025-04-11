@@ -4,18 +4,22 @@ import { fetchAllSections } from "../../../services/section-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 
 // test value for instructor ID
-let instructor_Id = 2;
+// let instructor_Id = 2;
 
-// let instructor_Id = sessionStorage.getItem('authenticated_user_id');
+let instructor_Id = Number(sessionStorage.getItem('instructor_id'));
 var currentInstructor = await fetchInstructorById(instructor_Id);
 
-let instructorName = currentInstructor.name;
+console.log("I am supposed to be instructor_Id: ",instructor_Id);
+
+let instructorName = currentInstructor.name.replace(/Dr\. ?/i, "").trim();
+console.log("Name: ",instructorName);
+
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
 
 let instructorSections = () => {
   return allSections.filter(
-    (section) => section.instructorName === instructorName
+    (section) => section.instructorName.trim() === instructorName
   );
 };
 let instructorCourses = () => {
@@ -28,6 +32,8 @@ let instructorCourses = () => {
 };
 
 //delete TESTING
+console.log("Testing Logs");
+
 console.log(instructorSections());
 console.log(instructorCourses());
 console.log(currentInstructor);
@@ -51,7 +57,7 @@ function main() {
 
   const searchBar = document.querySelector("#searchBar");
   searchBar.addEventListener("input", () =>
-    handleSearch(neededInfo, instructorCourses, instructorSections)
+    handleSearch(neededInfo, instructorCourses(), instructorSections())
   );
 }
 
@@ -62,7 +68,7 @@ function filterIntoOne(corList, secList) {
     const matchingSections = secList.filter(
       (section) =>
         section.courseId === course.id &&
-        section.instructorName === instructorName
+        section.instructorName.trim() === instructorName
     );
 
     if (matchingSections.length > 0) {
@@ -104,7 +110,7 @@ function loadCourses(courseData, instructorCourses, instructorSections) {
             <p><b>Total Enrolled Students: </b>${course.totalEnrolled}</p>
           </div>
           <div class="card-footer">
-            <a href="../instructor-courses-details/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
+            <a href="../views/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
           </div>
         </div>
       </div>
@@ -138,6 +144,15 @@ function renderCourses(courses, instructorCourses, instructorSections) {
 
 main();
 
+const logoutbtn = document.querySelector("#logOutBtn");
+logoutbtn.addEventListener("click", logoutCurrentUser);
+
+
+
+
+
+
+
 /*
 
  
@@ -158,6 +173,3 @@ main();
         <a href="#" class="view-course-btn">View Course</a>
       </div>
  */
-
-const logoutbtn = document.querySelector("#logOutBtn");
-logoutbtn.addEventListener("click", logoutCurrentUser);
