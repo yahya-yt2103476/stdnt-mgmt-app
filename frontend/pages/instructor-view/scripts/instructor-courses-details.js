@@ -1,14 +1,16 @@
 import {fetchInstructorById} from '../../../services/instructor-service.js' // not used
 import {fetchAllCourses} from '../../../services/course-service.js'
 import {fetchAllSections,updateSection} from '../../../services/section-service.js'
-import {fetchAllRegistrations,updateRegistrationData} from '../../../services/registration-service.js'
+import {fetchAllRegistrations,updateRegistrationData,createAndSaveRegistration} from '../../../services/registration-service.js'
 import {fetchAllStudents,fetchStudentById} from '../../../services/student-service.js'
+import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
+
 var testingSmth = null;
 
 const urlParams = new URLSearchParams(window.location.search);
 const instructorName = urlParams.get("instructorName"); // not used
-const courseId = urlParams.get("courseId");
-const sectionId = urlParams.get("sectionId");
+const courseId = Number(urlParams.get("courseId"));
+const sectionId = parseInt(urlParams.get("sectionId"));
 const courseShortName = urlParams.get("courseShortName").replace(/\s/g, '').trim();
 
 let allCourses = await fetchAllCourses();
@@ -17,16 +19,16 @@ let allStudents = await fetchAllStudents();
 let allRegistrations = await fetchAllRegistrations();
 
 let instructorSections = () => {
-    return allSections.find(section => section.id == sectionId);
+    return allSections.find(section => section.id === sectionId);
 };
 
 let instructorCourses = () => {
-    return allCourses.find(course => course.id == courseId);
+    return allCourses.find(course => course.id === courseId);
 };
 
 let enrolledStudents = () =>{
     return allStudents.filter(
-        student => student.registeredCourses && student.registeredCourses.includes(courseShortName)
+        student => student.registeredCourses && student.registeredCourses.find(e => e.courseId === courseId)
       );
 };
 
@@ -128,6 +130,7 @@ function handleAssignmentUpload(e, instructorSection) {
         updateSectionList(instructorSection);
         displayAssignmentsExams(instructorSection);
         e.target.reset();
+        alert("Assignment Uploaded sucessfully")
     } else {
         alert("Please fill in all fields.");
     }
@@ -176,6 +179,7 @@ function removeAssignment(event, instructorSection) {
     instructorSection.courseContent.splice(index, 1);
     updateSectionList(instructorSection);
     displayAssignmentsExams(instructorSection);
+    alert("Assignment Removed sucessfully")
 }
 
 function toggleStatus(event, instructorSection) {
@@ -300,7 +304,9 @@ function handleFinalGradeSubmit(e, registrations) {
     console.log("I am testingSmth :",testingSmth); //testing
     
     // updateRegistrationList(compareAndUpdateLists(allRegistrations,instructorRegistrationsList));
-    updateRegistrationList(testingSmth)
+    // updateRegistrationList(testingSmth)
+
+    testingSmth.forEach(e => updateRegistrationList(e))
 }
 
 
@@ -316,9 +322,14 @@ function compareAndUpdateLists(list1, list2) {
 
 // this uses the same logic as the one we used in updateSectionList
 async function updateRegistrationList(registrations) {
-    updateRegistrationData(registrations)
+    createAndSaveRegistration(registrations)
     alert("Grades have been submitted");
 }
+
+
+
+const logoutbtn = document.querySelector("#logOutBtn");
+logoutbtn.addEventListener("click", logoutCurrentUser);
 
 // /*
 

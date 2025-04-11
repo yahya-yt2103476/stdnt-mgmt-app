@@ -3,7 +3,7 @@
     "id": 7,
     "name": "zainab Al-Sulaiti",
     "completedCourses": [],
-    "registeredCourses": [],
+    "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
     "gpa": 3.6,
     "major": "Computer Engineering"
   }
