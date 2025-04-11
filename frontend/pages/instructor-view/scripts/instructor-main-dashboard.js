@@ -22,7 +22,7 @@ welcomeMessage.innerHTML = `Welcome back ${instructorFirstName} ${instructorLast
 logoutbtn.addEventListener("click", logoutCurrentUser);
 
 yourCoursesCard.addEventListener("click", function () {
-  window.location.href = "../instructor-courses/instructor-courses.html";
+  window.location.href = "../views/instructor-courses.html";
 });
 
 courseInterestsCard.addEventListener("click", function () {

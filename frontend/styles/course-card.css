@@ -1,9 +1,9 @@
-.coursesContainer > div {
-  width: 50vw;
-}
+/* .coursesContainer > div {
+  width: 700px;
+} */
 .course-card {
   min-width: 300px;
-  width: 90vw;
+  width: 100%;
   margin: 20px auto;
   background: #ffffff;
   border-radius: 5px;
@@ -83,7 +83,8 @@
   text-decoration: none;
 }
 
-.card-footer button:hover {
+.card-footer button:hover,
+.card-footer a:hover {
   background-color: #7b7b7b92;
 }
 
