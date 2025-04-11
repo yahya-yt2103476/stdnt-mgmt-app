@@ -40,7 +40,9 @@ let instructorRegistrationsList = instructorRegistrations();
 
 
 console.log((courseShortName))
+console.log("we are the students: ");
 console.log(enrolledStudents());
+
 
 function main() {
     const backButton = document.querySelector("#backBtn");
@@ -307,6 +309,7 @@ function handleFinalGradeSubmit(e, registrations) {
     // updateRegistrationList(testingSmth)
 
     testingSmth.forEach(e => updateRegistrationList(e))
+    alert("Grades have been submitted");
 }
 
 
@@ -322,8 +325,7 @@ function compareAndUpdateLists(list1, list2) {
 
 // this uses the same logic as the one we used in updateSectionList
 async function updateRegistrationList(registrations) {
-    createAndSaveRegistration(registrations)
-    alert("Grades have been submitted");
+    updateRegistrationData(registrations)
 }
 
 
