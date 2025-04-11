@@ -11,6 +11,7 @@ import {
 
 import { fetchUserById } from "../../../services/user-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
+import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
 import {
   fetchAllCourses,
@@ -112,12 +113,12 @@ function renderCourses(coursesToRender) {
 }
 
 async function loadsections(courseid) {
-  const courseShortName = courses.find((c)=> c.id == courseid).shortName;
+  const courseShortName = courses.find((c) => c.id == courseid).shortName;
   let sections = await fetchSectionsByCourseId(courseid);
   // get sections for this specific course
-  const courseSections = sections.filter(
-    (section) => section.courseId == courseid
-  );
+  // const courseSections = sections.filter(
+  //   (section) => section.courseId == courseid
+  // );
   const sectionsContainer = document.getElementById(`sections-${courseid}`);
   const toggleButton = document.getElementById(`toggle-${courseid}`);
 
@@ -161,6 +162,7 @@ async function loadsections(courseid) {
       registerButton = `<button type="button" onclick="registerForSection(event, '${sec.id}', '${courseid}')" class="register-btn blue">Register</button>`;
     }
 
+    const timeString = convertToAmPmRange(sec.Time);
     sectionsContainer.innerHTML += `
       <div class="sectionsCard">
         <div class="sectionHeader">
@@ -171,7 +173,7 @@ async function loadsections(courseid) {
         <div class="sectionInfo">
           <p><b>Course:</b> ${courseShortName}</p>
           <p><b>Semester:</b> ${sec.semester}</p>
-          <p><b>Time:</b> ${sec.Time}</p>
+          <p><b>Time:</b> ${timeString}</p>
           <p><b>Days:</b> ${sec.Days.join(", ")}</p>
         </div>
 

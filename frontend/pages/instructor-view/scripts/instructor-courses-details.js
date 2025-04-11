@@ -14,6 +14,7 @@ import {
   fetchStudentById,
 } from "../../../services/student-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
+import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
 var testingSmth = null;
 
@@ -21,7 +22,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const instructorName = urlParams.get("instructorName"); // not used
 const courseId = Number(urlParams.get("courseId"));
 const sectionId = Number(parseInt(urlParams.get("sectionId")));
-const courseShortName = urlParams.get("courseShortName").replace(/\s/g, "").trim();
+const courseShortName = urlParams
+  .get("courseShortName")
+  .replace(/\s/g, "")
+  .trim();
 
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
@@ -65,7 +69,10 @@ function main() {
   }
 
   const courseInfo = document.querySelector(".courseInfoInner");
-  courseInfo.innerHTML = displayCourseInfo(instructorCourses(),instructorSections());
+  courseInfo.innerHTML = displayCourseInfo(
+    instructorCourses(),
+    instructorSections()
+  );
 
   displayEnrolledStudents(enrolledStudents());
 
@@ -86,10 +93,11 @@ function displayCourseInfo(cor, sec) {
   console.log("I am location: ", sec.location);
 
   const scheduleRows = sec.Days.map((day) => {
+    const timeString = convertToAmPmRange(sec.Time);
     return `
             <tr>
                 <td>${day}</td>
-                <td>${sec.Time}</td> 
+                <td>${timeString}</td> 
             </tr>
         `;
   }).join("");
