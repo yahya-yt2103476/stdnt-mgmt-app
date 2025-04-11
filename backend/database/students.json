@@ -14,5 +14,12 @@
     "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
     "gpa": 3.6,
     "major": "Computer Engineering"
+  },
+  {
+    "name" : "zainab Al-Sulaiti",
+    "id": 1187,
+    "email": "fatima@example.com",
+    "password": "pass123",
+    "userType": "Student"
   }
 ]

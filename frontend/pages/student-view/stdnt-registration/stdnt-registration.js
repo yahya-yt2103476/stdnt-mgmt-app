@@ -112,6 +112,7 @@ function renderCourses(coursesToRender) {
 }
 
 async function loadsections(courseid) {
+  const courseShortName = courses.find((c)=> c.id == courseid).shortName;
   let sections = await fetchSectionsByCourseId(courseid);
   // get sections for this specific course
   const courseSections = sections.filter(
@@ -168,7 +169,7 @@ async function loadsections(courseid) {
         </div>
 
         <div class="sectionInfo">
-          <p><b>Course:</b> ${sec.courseShortName}</p>
+          <p><b>Course:</b> ${courseShortName}</p>
           <p><b>Semester:</b> ${sec.semester}</p>
           <p><b>Time:</b> ${sec.Time}</p>
           <p><b>Days:</b> ${sec.Days.join(", ")}</p>
