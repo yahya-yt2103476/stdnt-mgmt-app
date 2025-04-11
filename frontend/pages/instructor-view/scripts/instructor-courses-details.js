@@ -20,11 +20,8 @@ var testingSmth = null;
 const urlParams = new URLSearchParams(window.location.search);
 const instructorName = urlParams.get("instructorName"); // not used
 const courseId = Number(urlParams.get("courseId"));
-const sectionId = parseInt(urlParams.get("sectionId"));
-const courseShortName = urlParams
-  .get("courseShortName")
-  .replace(/\s/g, "")
-  .trim();
+const sectionId = Number(parseInt(urlParams.get("sectionId")));
+const courseShortName = urlParams.get("courseShortName").replace(/\s/g, "").trim();
 
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
@@ -68,10 +65,8 @@ function main() {
   }
 
   const courseInfo = document.querySelector(".courseInfoInner");
-  courseInfo.innerHTML = displayCourseInfo(
-    instructorCourses(),
-    instructorSections()
-  );
+  courseInfo.innerHTML = displayCourseInfo(instructorCourses(),instructorSections());
+
   displayEnrolledStudents(enrolledStudents());
 
   const assignmentForm = document.querySelector(".assignmentForm");

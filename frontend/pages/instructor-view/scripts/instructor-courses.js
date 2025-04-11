@@ -23,11 +23,8 @@ let instructorSections = () => {
   );
 };
 let instructorCourses = () => {
-  const instructorSectionCourseIds = instructorSections().map(
-    (section) => section.courseId
-  );
-  return allCourses.filter((course) =>
-    instructorSectionCourseIds.includes(course.id)
+  const instructorSectionCourseIds = instructorSections().map((section) => section.courseId);
+  return allCourses.filter((course) => instructorSectionCourseIds.includes(course.id)
   );
 };
 
@@ -49,6 +46,10 @@ function main() {
 
   const mainContent = document.querySelector(".coursesContainer");
   let neededInfo = filterIntoOne(instructorCourses(), instructorSections());
+
+  console.log("Smth i wanna see");
+  console.log(neededInfo[0].totalEnrolled);  
+
   mainContent.innerHTML = loadCourses(
     neededInfo,
     instructorCourses(),
