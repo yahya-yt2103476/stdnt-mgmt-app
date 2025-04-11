@@ -24,18 +24,6 @@
     "userType": "Instructor"
   },
   {
-    "id": 6,
-    "email": "kareem@example.com",
-    "password": "pass123",
-    "userType": "Student"
-  },
-  {
-    "id": 7,
-    "email": "zainab@example.com",
-    "password": "pass123",
-    "userType": "Student"
-  },
-  {
     "id": 8,
     "email": "yousef@example.com",
     "password": "pass123",
@@ -48,32 +36,26 @@
     "userType": "Instructor"
   },
   {
-    "id": 10,
-    "email": "mahmoud@example.com",
-    "password": "pass123",
-    "userType": "Student"
-  },
-  {
-    "id": 11,
-    "email": "Hamdon@example.com",
-    "password": "pass123",
-    "userType": "Student"
-  },
-  {
     "id": 1092,
     "email": "ayoob988@gmail.com",
     "password": "pass123",
     "userType": "Admin"
   },
   {
-    "id": 1187,
-    "email": "fatima@example.com",
+    "id": 7903,
+    "email": "a.mohammed19063@gmail.com",
     "password": "pass123",
     "userType": "Student"
   },
   {
-    "id": 2172,
-    "email": "a.mohammed19063@gmail.com",
+    "id": 1445,
+    "email": "ayoob988+1@gmail.com",
+    "password": "pass123",
+    "userType": "Student"
+  },
+  {
+    "id": 6578,
+    "email": "fatima@example.com",
     "password": "pass123",
     "userType": "Student"
   }

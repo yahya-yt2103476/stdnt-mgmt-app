@@ -1,25 +1,26 @@
 [
   {
-    "id": 7,
-    "name": "zainab Al-Sulaiti",
+    "id": 1445,
+    "name": "ayoub theStudent2",
     "completedCourses": [],
-    "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
-    "gpa": 3.6,
-    "major": "Computer Engineering"
+    "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
+    "gpa": "0.0",
+    "major": "Computer Science"
   },
   {
-    "id": 2172,
-    "name": "Ayoub theStudent",
+    "id": 7903,
+    "name": "ayoub TheStudent",
     "completedCourses": [],
-    "registeredCourses": [{ "courseId": 6, "SectionId": 5 }],
-    "gpa": 3.6,
-    "major": "Computer Engineering"
+    "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
+    "gpa": "0.0",
+    "major": "Computer Science"
   },
   {
-    "name" : "zainab Al-Sulaiti",
-    "id": 1187,
-    "email": "fatima@example.com",
-    "password": "pass123",
-    "userType": "Student"
+    "id": 6578,
+    "name": "fatima Al-sulaiti",
+    "completedCourses": [],
+    "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
+    "gpa": "0.0",
+    "major": "Computer Science"
   }
 ]

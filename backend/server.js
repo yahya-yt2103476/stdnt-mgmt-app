@@ -71,10 +71,20 @@ app.get("/api/students/:id", async (request, res) => {
 })
 
 //send an object to the endpoint, u receive a message whether modified or not
-app.post("/api/students", async (request, res) => {
+app.put("/api/students", async (request, res) => {
     const student = request.body;
     try {
         const result = await studentRepo.UpdateStudent(student);
+        res.status(200).json({ message: "Student updated", result });
+    } catch (error) {
+        console.error("Error updating student:", error);
+    }
+});
+
+app.post("/api/students", async (request, res) => {
+    const student = request.body;
+    try {
+        const result = await studentRepo.AddStudent(student);
         res.status(200).json({ message: "Student updated", result });
     } catch (error) {
         console.error("Error updating student:", error);

@@ -7,7 +7,7 @@ import {
 
 import { createStudent } from "../../../services/student-service.js";
 import { createInstructor } from "../../../services/instructor-service.js";
-import { updateStudent } from "../../../services/student-service.js";
+import { AddStudent } from "../../../services/student-service.js";
 import { updateInstructor } from "../../../services/instructor-service.js";
 import { updateAdmin } from "../../../services/admin-service.js";
 
@@ -166,11 +166,9 @@ async function main() {
     }
     switch (user.userType) {
       case "Student":
-        await updateStudent({
+        await AddStudent({
           id: randomId,
           name: user.name,
-          email: user.email,
-          password: user.password,
           gpa: "0.0",
           major: user.Major,
           completedCourses: [],

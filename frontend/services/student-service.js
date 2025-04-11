@@ -20,16 +20,19 @@ async function createStudent(data) {
   return await saveDataToApi('/students', newStudent);
 }
 
+async function AddStudent(student) {
+  return await saveDataToApi('/students', student);
+}
+
 async function updateStudent(data) {
   if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
     console.log('Major should be either Computer Engineering or Computer Science');
     console.log(`entered major: ${data.major}`);
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
-  const students = await fetchDataFromApi('/students'); 
-  const maxId = students.reduce((max, student) => Math.max(max, student.id), 0);
+
   const updatedStudent = {
-    id: data.id || maxId + 1,
+    id: data.id,
     name: data.name,
     completedCourses: data.completedCourses || [],
     registeredCourses: data.registeredCourses || [],
@@ -37,7 +40,7 @@ async function updateStudent(data) {
     major: data.major
   };
 
-  return await saveDataToApi(`/students`, updatedStudent);
+  return await saveDataToApi(`/students`, updatedStudent, "PUT");
 }
 
 async function fetchAllStudents() {
@@ -78,5 +81,6 @@ export {
   fetchAllStudents,
   fetchStudentById,
   deleteStudentById,
-  addCourseToRegisteredCourses
+  addCourseToRegisteredCourses,
+  AddStudent
 }; 
