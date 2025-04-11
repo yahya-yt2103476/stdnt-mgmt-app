@@ -17,8 +17,7 @@
 }
 
 .card-header {
-  background-color: #b7b7b792;
-  color: white;
+  background-color: #f5f5f592;
   padding: 7px;
   font-size: 1.2rem;
   font-weight: bold;
@@ -26,7 +25,7 @@
   justify-content: space-between;
 }
 .courseId {
-  background-color: #92929292;
+  background-color: #dadada92;
   padding: 0.5px 5px;
   border-radius: 5px;
 }
