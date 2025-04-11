@@ -90,9 +90,9 @@ function renderCourses(coursesToRender) {
         <div class="card-body">
           <div class="card-section">
             <p class="category">${course.category}</p>
-            <p><strong>Course Name:</strong> ${course.name}</p>
-            <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
-            <p><strong>Prerequisites:</strong> 
+            <p><b>Course Name:</b> ${course.name}</p>
+            <p><b>Credit Hours:</b> ${course.creditHours}</p>
+            <p><b>Prerequisites:</b> 
               ${prerequisiteNames}
             </p>
           </div>
@@ -128,14 +128,14 @@ async function loadsections(courseid) {
   }
 
   // handle no sections available
-  if (courseSections.length === 0) {
+  if (sections.length === 0) {
     sectionsContainer.innerHTML = `<b><div class="msg">No available sections for this course...</div></b>`;
     toggleButton.textContent = "View Sections";
     return;
   }
 
   // display each section
-  for (const sec of courseSections) {
+  for (const sec of sections) {
     // calculate remaining seats
     const enrolledCount = sec.enrolledStudents.length;
     const remainingSeats = sec.capacity - enrolledCount;
@@ -164,20 +164,21 @@ async function loadsections(courseid) {
       <div class="sectionsCard">
         <div class="sectionHeader">
           <p class="section-id">Section ${sec.id}</p>
-          <p class="section-instructor">${sec.instructorName}</p>
+          <p class="section-instructor">Instructor: ${sec.instructorName}</p>
         </div>
 
         <div class="sectionInfo">
-          <p><strong>Course:</strong> ${sec.courseShortName}</p>
-          <p><strong>Semester:</strong> ${sec.semester}</p>
-          <p><strong>Time:</strong> ${sec.Time}</p>
-          <p><strong>Days:</strong> ${sec.Days.join(", ")}</p>
+          <p><b>Course:</b> ${sec.courseShortName}</p>
+          <p><b>Semester:</b> ${sec.semester}</p>
+          <p><b>Time:</b> ${sec.Time}</p>
+          <p><b>Days:</b> ${sec.Days.join(", ")}</p>
         </div>
 
         <div class="sectionCapacity">
-          <p><strong>Capacity:</strong> ${sec.capacity}</p>
-          <p><strong>Enrolled:</strong> ${enrolledCount}</p>
-          <p><strong>Remaining:</strong> ${remainingSeats}</p>
+          <p><b>Capacity:</b> ${sec.capacity}</p>
+          <p><b>Enrolled:</b> ${enrolledCount}</p>
+          <p><b>Remaining:</b> ${remainingSeats}</p>
+          <p><b>Status:</b> ${sec.status}</p>
         </div>
 
         <div class="registerContainer">
