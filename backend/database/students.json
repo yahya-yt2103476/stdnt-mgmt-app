@@ -1,10 +1,1 @@
-[
-  {
-    "id": 7,
-    "name": "zainab Al-Sulaiti",
-    "completedCourses": [],
-    "registeredCourses": [],
-    "gpa": 3.6,
-    "major": "Computer Engineering"
-  }
-]
+[{"id":2172,"name":"ayoub TheStudent","completedCourses":[],"registeredCourses":[{"courseId":6,"SectionId":5}],"gpa":"0.0","major":"Computer Science"}]

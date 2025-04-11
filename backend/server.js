@@ -335,6 +335,17 @@ app.post("/api/registration", async (request, res) => {
     }
 });
 
+//send an object to the endpoint, u receive a message whether modified or not
+app.put("/api/registration", async (request, res) => {
+    const registration = request.body;
+    try {
+        const result = await registrationsRepo.UpdateRegistration(registration);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error("Error updating registration:", error);
+    }
+});
+
 //send an id to the endpoint, u receive a message whether deleted or not
 app.delete("/api/registration/:id", async (request, res) => {
     const registrationId = request.params.id;

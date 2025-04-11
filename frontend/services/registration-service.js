@@ -35,7 +35,7 @@ async function fetchRegistrationById(registrationId) {
 }
 
 async function updateRegistrationData(registrationData) {
-  return await saveDataToApi('/registration', registrationData);
+  return await saveDataToApi('/registration', registrationData, "PUT");
 }
 
 async function deleteRegistrationById(registrationId) {
