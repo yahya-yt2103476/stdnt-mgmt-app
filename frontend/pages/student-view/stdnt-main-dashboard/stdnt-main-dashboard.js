@@ -7,7 +7,7 @@ const logoutbtn = document.querySelector("#logOutBtn");
 const welcomeMessage = document.querySelector("#welcomeMsg");
 
 const student = await fetchStudentById(
-  sessionStorage.getItem("authenticated_user_id")
+  parseInt(sessionStorage.getItem("authenticated_user_id"))
 );
 console.log(student);
 let studentFullName = student.name.split(" ");

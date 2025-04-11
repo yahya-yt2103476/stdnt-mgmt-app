@@ -5,6 +5,12 @@ import {
   fetchUserById,
 } from "../../../services/user-service.js";
 
+import { createStudent } from "../../../services/student-service.js";
+import { createInstructor } from "../../../services/instructor-service.js";
+import { updateStudent } from "../../../services/student-service.js";
+import { updateInstructor } from "../../../services/instructor-service.js";
+import { updateAdmin } from "../../../services/admin-service.js";
+
 async function main() {
   const icons = [];
 
@@ -26,7 +32,11 @@ async function main() {
   std_icn.addEventListener("click", () => handleUserType("Student"));
   Inst_icn.addEventListener("click", () => handleUserType("Instructor"));
   Admin_icn.addEventListener("click", () => handleUserType("Admin"));
-  form.addEventListener("submit", handleLoginUser);
+  if (window.location.pathname.includes("login_page.html")) {
+    form.addEventListener("submit", handleLoginUser);
+  } else {
+    console.log("not login page");
+  }
 
   function handleUserType(e) {
     icons.forEach((i) => {
@@ -38,14 +48,29 @@ async function main() {
       usertype = e;
       std_icn.style.transform = "scale(1.05)";
       std_icn.style.color = "Black";
+      if (window.location.pathname.includes("signup.html")) {
+        document.querySelector("#Major").style.display = "block";
+        document.querySelector("label[for='Major']").style.display = "block";
+
+      }
     } else if (e === "Instructor") {
       usertype = e;
       Inst_icn.style.transform = "scale(1.05)";
       Inst_icn.style.color = "Black";
+      if (window.location.pathname.includes("signup.html")) {
+        document.querySelector("#Major").style.display = "none";
+        document.querySelector("label[for='Major']").style.display = "none";
+
+      }
     } else if (e === "Admin") {
       usertype = e;
       Admin_icn.transform = "scale(1.05)";
       Admin_icn.style.color = "Black";
+      if (window.location.pathname.includes("signup.html")) {
+        document.querySelector("#Major").style.display =
+          "none";
+        document.querySelector("label[for='Major']").style.display = "none";
+      }
     }
   }
 
@@ -103,28 +128,74 @@ async function main() {
     window.location.href = page;
     sessionStorage.setItem("authenticated_user_id", `${user.id}`);
   }
-  async function handleRegisterUser(e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-    let formObject = {};
 
+  async function handleRegisterUser(event) {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    let formObject = {};
     formData.forEach((value, key) => {
       formObject[key] = value;
     });
-    console.log(formObject);
 
-    if (formObject.password != formObject.confirmPassword) {
-      alert("Password and Confirm Password do not match");
-      return;
-    }
-
+    const randomId = Math.floor(Math.random() * 10000);
     const user = {
+      id: randomId,
       ...formObject,
       userType: usertype,
     };
 
+    if (formObject.password !== formObject.confirmPassword) {
+      alert("Password and Confirm Password do not match");
+      return;
+    }
+
+    if (!usertype) {
+      alert("Please select a user type");
+      return;
+    }
+
+    if ((!formObject.email || !formObject.password || !formObject.name)) {
+      alert("Please fill all the fields");
+      return;
+    }
+
+    if ((user.userType == "Student") && !formObject.Major) {
+      alert("Please Choose a major");
+      return;
+    }
+    switch (user.userType) {
+      case "Student":
+        await updateStudent({
+          id: randomId,
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          gpa: "0.0",
+          major: user.Major,
+          completedCourses: [],
+          registeredCourses: [],
+        });
+        break;
+
+      case "Instructor":
+        await updateInstructor({
+          id: randomId,
+          name: user.name,
+        }, "POST");
+        break;
+
+      case "Admin":
+        await updateAdmin({
+          id: randomId,
+          name: user.name,
+        }, "POST");
+        break;
+    }
+
     await createUser(user);
-    alert("User created successfully");
+    alert("User created successfully, click OK to go to login page");
+    window.location.href = "/frontend/pages/login/login_page.html";
   }
 }
 

@@ -1,14 +1,3 @@
 [
-  {
-    "id": 2,
-    "name": "Dr. Omar Hassan"
-  },
-  {
-    "id": 5,
-    "name": "Dr. Layla Mohamed"
-  },
-  {
-    "id": 9,
-    "name": "Dr. aisha Al-Muraikhi"
-  }
+  { "id": 2, "name": "Dr. Omar Hassan" }
 ]

@@ -41,6 +41,13 @@ class adminRepo{
             return "No admin with specified Id"
         }
     }
+    //Adding a new admin
+    async createAdmin(Admin){
+        const admins = await this.getAdmins()
+        admins.push(Admin)
+        await fs.writeJSON(this.AdminsFilePath, admins)
+        return "Admin added successfully"
+    }
 }
 
 export default new adminRepo();

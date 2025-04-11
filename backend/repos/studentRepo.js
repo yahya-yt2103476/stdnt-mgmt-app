@@ -62,6 +62,15 @@ class studentRepo {
 
     }
 
+    //Add a new Student. Pass the *Student Object*
+    async AddStudent(studentData) {
+        const studs = await this.GetStudents();
+        const maxID = studs.reduce((max, student) => Math.max(max, student.id), 0);
+        studs.push(studentData)
+        await fs.writeJSON(this.StudentsFilePath, studs)
+        return "student added Successfully"
+    }
+
 }
 
 

@@ -6,36 +6,5 @@
     "registeredCourses": [],
     "gpa": 3.6,
     "major": "Computer Engineering"
-  },
-  {
-    "id": 10,
-    "name": "mahmoud Al-Qudeimat",
-    "completedCourses": [],
-    "registeredCourses": [],
-    "gpa": 3.6,
-    "major": "Computer Engineering"
-  },
-  {
-    "id": 11,
-    "name": "Hamdon Omar",
-    "completedCourses": [],
-    "gpa": 3.6,
-    "major": "Computer Engineering"
-  },
-  {
-    "id": 6,
-    "name": "kareem Al-Kuwari",
-    "completedCourses": [{ "courseId": 6, "sectionId": 20, "grade": "B+" }],
-    "registeredCourses": [],
-    "gpa": 1.9,
-    "major": "Computer Science"
-  },
-  {
-    "id": 3,
-    "name": "fatima Al-Mansoori",
-    "completedCourses": [],
-    "registeredCourses": [{ "courseId": 6, "SectionId": 20 }],
-    "gpa": 2.8,
-    "major": "Computer Science"
   }
 ]

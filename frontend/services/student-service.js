@@ -2,6 +2,10 @@ import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-servic
 
 async function createStudent(data) {
   if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
+    console.log('Major should be either Computer Engineering or Computer Science');
+    console.log(`entered major: ${data.major}`);
+    
+    
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
   const newStudent = {
@@ -18,10 +22,14 @@ async function createStudent(data) {
 
 async function updateStudent(data) {
   if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
+    console.log('Major should be either Computer Engineering or Computer Science');
+    console.log(`entered major: ${data.major}`);
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
+  const students = await fetchDataFromApi('/students'); 
+  const maxId = students.reduce((max, student) => Math.max(max, student.id), 0);
   const updatedStudent = {
-    id: data.id,
+    id: data.id || maxId + 1,
     name: data.name,
     completedCourses: data.completedCourses || [],
     registeredCourses: data.registeredCourses || [],

@@ -1,8 +1,7 @@
 import { fetchDataFromApi, saveDataToApi } from "./api-service.js";
 
 async function createAdmin(data) {
-  const admins = await fetchAllAdmins();
-  const maxId = admins.reduce((max, admin) => Math.max(max, admin.id), 0);
+  
 
   const newAdmin = {
     id: maxId + 1,
@@ -12,12 +11,16 @@ async function createAdmin(data) {
   return await saveDataToApi("/admins", newAdmin);
 }
 
-async function updateAdmin(adminData) {
-  if (!adminData.id) {
-    throw new Error("Admin ID is required for updating");
-  }
+async function updateAdmin(adminData, method) {
+  !method && (method = "POST"); // Default to POST if method is not provided
+  const admins = await fetchAllAdmins();
+  const maxId = admins.reduce((max, admin) => Math.max(max, admin.id), 0);
+  const newAdmin = {
+    id: adminData.id,
+    ...adminData
+  };
 
-  return await saveDataToApi(`/admins/${adminData.id}`, adminData, "PUT");
+  return await saveDataToApi(`/admins`, newAdmin, method);
 }
 
 async function fetchAllAdmins() {

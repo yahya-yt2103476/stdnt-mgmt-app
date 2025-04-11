@@ -16,7 +16,7 @@ async function createUser(data = {}) {
     userType: data.userType
   };
   
-  return await saveDataToApi('/users', newUser);
+  return await saveDataToApi('/users', newUser, "POST");
 }
 
 async function updateUser(data) {

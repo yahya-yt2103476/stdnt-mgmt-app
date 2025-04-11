@@ -16,9 +16,12 @@ import publishedCoursesRepo from './repos/publishedCoursesRepo.js';
 const app = express()
 const PORT = 3001;
 
-app.use(cors({
-
-}))
+app.use(cors(
+    //allow all origins
+    {
+        origin: '*'
+    }
+));
 app.use(express.json())
 
 //entry
@@ -59,7 +62,7 @@ app.get("/api/students/", async (request, res) => {
 //send an id to the endpoint, u receive an object of student
 app.get("/api/students/:id", async (request, res) => {
     try {
-        const id = request.params.id;
+    const id = request.params.id;
         const user = await studentRepo.GetStudent(id)
         res.json(user)
     } catch (e) {
@@ -105,16 +108,28 @@ app.get("/api/instructors/:id", async (request, res) => {
     res.json(user)
 })
 
-//send an object to the endpoint, u receive a message whether modified or not
+//send an object to the endpoint, u receive a message whether added or not
 app.post("/api/instructors", async (request, res) => {
     const instructor = request.body;
     try {
-        const result = await instructorRepo.UpdateInstructor(instructor);
+        const result = await instructorRepo.UpdateInstructor(instructor, "POST");
         res.status(200).json({ message: "Instructor updated", result });
     } catch (error) {
         console.error("Error updating instructor:", error);
     }
 });
+
+//send an id to the endpoint, u receive a message whether modified or not
+app.put("/api/instructors", async (request, res) => {
+    const instructor = request.body;
+    try {
+        const result = await instructorRepo.UpdateInstructor(instructor, "PUT");
+        res.status(200).json({ message: "Instructor updated", result });
+    } catch (error) {
+        console.error("Error updating instructor:", error);
+    }
+});
+
 
 //send an id to the endpoint, u receive a message whether deleted or not
 app.delete("/api/instructors/:id", async (request, res) => {
@@ -142,7 +157,7 @@ app.get("/api/admins/:id", async (request, res) => {
 })
 
 //send an object to the endpoint, u receive a message whether modified or not
-app.post("/api/admins", async (request, res) => {
+app.put("/api/admins", async (request, res) => {
     const admin = request.body;
     try {
         const result = await adminRepo.UpdateAdmin(admin);
@@ -152,6 +167,16 @@ app.post("/api/admins", async (request, res) => {
     }
 });
 
+//send an id to the endpoint, u receive a message whether added or not
+app.post("/api/admins", async (request, res) => {
+    const admin = request.body;
+    try {
+        const result = await adminRepo.createAdmin(admin);
+        res.status(200).json({ message: "Admin updated", result });
+    } catch (error) {
+        console.error("Error updating admin:", error);
+    }
+});
 
 //endpoints for courses
 
@@ -378,6 +403,8 @@ app.listen(PORT, () => {
     console.log("user related endpoints:");
     console.log("GET /api/users");
     console.log("GET /api/users/:id for a specific user\n");
+    console.log("POST /api/users to create a new user\n");
+    
 
     console.log("student related endpoints:");
     console.log("GET /api/students");
