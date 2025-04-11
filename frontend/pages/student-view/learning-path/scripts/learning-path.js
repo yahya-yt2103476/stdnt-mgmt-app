@@ -1,58 +1,23 @@
 import { fetchStudentById } from "../../../../services/student-service.js";
 import { createCourseCard } from './components/course-card.js';
+<<<<<<< Updated upstream
 import { logoutCurrentUser } from '../../../../../frontend/services/logout.js';
+=======
+import { LogoutCurrentUser } from '../../../../services/logout.js';
+import { fetchCourseById } from '../../../../services/course-service.js';
+import { fetchSectionById } from '../../../../services/section-service.js';
+>>>>>>> Stashed changes
 
 let studentId = sessionStorage.getItem("authenticated_user_id");
 let student;
 
-async function fetchCourseDetails(courseId) {
-    try {
-        const response = await fetch('/backend/database/courses.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const courses = await response.json();
-        const course = courses.find(c => c.id === parseInt(courseId));
-        console.log('Found course:', course, 'for ID:', courseId);
-        return course;
-    } catch (error) {
-        console.error('Error fetching course details:', error);
-        return null;
-    }
-}
-
-async function fetchSectionDetails(sectionId) {
-    try {
-        if (!sectionId) {
-            console.warn('Section ID is undefined or null');
-            return null;
-        }
-
-        const response = await fetch('/backend/database/sections.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const sections = await response.json();
-        
-        const section = sections.find(s => s.id === parseInt(sectionId));
-        console.log('Found section:', section, 'for ID:', sectionId);
-        return section;
-    } catch (error) {
-        console.error('Error fetching section details:', error);
-        return null;
-    }
-}
-
 async function fetchCategories() {
     try {
-        const response = await fetch('/api/courses');
+        const response = await fetch('/backend/database/categories.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const courses = await response.json();
-        // Extract unique categories from courses
-        const categories = [...new Set(courses.map(course => course.category))];
-        console.log('Extracted categories:', categories);
+        const categories = await response.json();
         return categories;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -62,7 +27,9 @@ async function fetchCategories() {
 
 function normalizeCategory(category) {
     if (!category) return '';
-    const normalized = category.toLowerCase().trim();
+    // Convert to string first to handle non-string inputs
+    const categoryStr = String(category);
+    const normalized = categoryStr.toLowerCase().trim();
     return normalized === 'general programming' ? 'programming' : normalized;
 }
 
@@ -132,8 +99,8 @@ async function processCourses(student) {
         for (const registeredCourse of student.registeredCourses) {
             try {
                 console.log('Processing course ID:', registeredCourse.courseId, 'Section ID:', registeredCourse.SectionId);
-                const courseDetails = await fetchCourseDetails(registeredCourse.courseId);
-                const sectionDetails = await fetchSectionDetails(registeredCourse.SectionId);
+                const courseDetails = await fetchCourseById(registeredCourse.courseId);
+                const sectionDetails = await fetchSectionById(registeredCourse.SectionId);
                 
                 console.log('Fetched course details:', courseDetails);
                 console.log('Fetched section details:', sectionDetails);
@@ -168,7 +135,7 @@ async function processCourses(student) {
         console.log('Processing completed courses:', student.completedCourses);
         for (const completedCourse of student.completedCourses) {
             try {
-                const courseDetails = await fetchCourseDetails(completedCourse.courseId);
+                const courseDetails = await fetchCourseById(completedCourse.courseId);
                 console.log('Fetched completed course details:', courseDetails);
                 
                 if (courseDetails) {
