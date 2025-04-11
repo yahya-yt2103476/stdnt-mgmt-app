@@ -16,5 +16,14 @@
     "creditHours": 5,
     "category": "programming",
     "prerequisites": []
+  },
+  {
+    "shortName": "CMPS151",
+    "name": "Programming Concepts",
+    "description": "This subject provides a foundational understanding of the core principles and ideas that underpin all programming languages. It explores essential topics such as data types, control flow (loops and conditionals), functions, data structures (like arrays and objects), and fundamental algorithms. The goal is to equip learners with a language-agnostic mental framework for problem-solving and software development, enabling them to grasp the logic and structure behind writing effective code, regardless of the specific programming language they choose to use.",
+    "creditHours": 3,
+    "category": "programming",
+    "prerequisites": [],
+    "id": 8
   }
 ]

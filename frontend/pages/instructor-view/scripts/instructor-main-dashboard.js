@@ -6,6 +6,11 @@ const courseInterestsCard = document.getElementById("courseInterests");
 const logoutbtn = document.querySelector("#logOutBtn");
 const welcomeMessage = document.querySelector("#welcomeMsg");
 
+const indtructorId = sessionStorage.getItem("authenticated_user_id");
+
+console.log("I am supposed to be instructor_Id: ",indtructorId);
+
+
 const instructor = await fetchInstructorById(
   sessionStorage.getItem("authenticated_user_id")
 );
@@ -23,6 +28,7 @@ logoutbtn.addEventListener("click", logoutCurrentUser);
 
 yourCoursesCard.addEventListener("click", function () {
   window.location.href = "../views/instructor-courses.html";
+  sessionStorage.setItem("instructor_id", `${indtructorId}`);
 });
 
 courseInterestsCard.addEventListener("click", function () {
