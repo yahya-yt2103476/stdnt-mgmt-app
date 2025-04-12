@@ -2,10 +2,6 @@ import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-servic
 
 async function createStudent(data) {
   if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
-    console.log('Major should be either Computer Engineering or Computer Science');
-    console.log(`entered major: ${data.major}`);
-    
-    
     throw new Error('Major should be either Computer Engineering or Computer Science');
   }
   const newStudent = {
