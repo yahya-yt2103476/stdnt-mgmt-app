@@ -1,7 +1,10 @@
 import { fetchAllCourses, deleteCourseById } from '../../../../services/course-service.js';
-import { fetchSectionsByCourseId } from '../../../../services/section-service.js';
+import { fetchSectionsByCourseId, createSection, deleteSectionById } from '../../../../services/section-service.js';
 import { courseCard } from '../components/course-card.js';
 import { sectionCard } from '../components/section-card.js';
+import { fetchAllInstructors } from '../../../../services/instructor-service.js';
+import { fetchAllPublishedCourses } from '../../../../services/published-courses-service.js';
+import { createSectionCard, setupSectionFormListeners } from "../controllers/publish-courses-controller.js";
 
 let courses = [];
 let coursesContainer;
@@ -139,35 +142,37 @@ function addDropdownHandlers() {
     });
 }
 
-function renderHybridView(activeCourses, inactiveCourses) {
+async function renderHybridView(activeCourses, inactiveCourses) {
     const container = document.getElementById('coursesContainer');
     if (!container) {
         console.error('Courses container not found');
         return;
     }
-
+    const activeCoursesCards = await Promise.all(
+        activeCourses.map(course => createCourseCardWithButtons(course, true))
+    );
+    
+    const inactiveCoursesCards = await Promise.all(
+        inactiveCourses.map(course => createCourseCardWithButtons(course, false))
+    );
     container.innerHTML = `
         <div class="courses-group active-courses">
             <div class="dropdown-header" data-target="active-courses-list">
-                <h3>Active Courses (In Progress & Open Registration) (${activeCourses.length})</h3>
+                <h3>Active Courses (In Progress & Open Registration) (${activeCoursesCards.length})</h3>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="courses-list" id="active-courses-list">
-                ${activeCourses.map(course => {
-                    return createCourseCardWithButtons(course, true);
-                }).join('')}
+                ${activeCoursesCards.join('')}
             </div>
         </div>
         
         <div class="courses-group inactive-courses">
             <div class="dropdown-header" data-target="inactive-courses-list">
-                <h3>Inactive Courses (${inactiveCourses.length})</h3>
+                <h3>Inactive Courses (${inactiveCoursesCards.length})</h3>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="courses-list" id="inactive-courses-list">
-                ${inactiveCourses.map(course => {
-                    return createCourseCardWithButtons(course, false);
-                }).join('')}
+                ${inactiveCoursesCards.join('')}
             </div>
         </div>
     `;
@@ -176,14 +181,39 @@ function renderHybridView(activeCourses, inactiveCourses) {
     addDropdownHandlers();
     addButtonEventListeners();
 }
+async function isAvailableCourseForSection(courseId) {
+    try {
+        const publishedCourses = await fetchAllPublishedCourses();
+        const instructors = await fetchAllInstructors();
+        
+        // Check if course is published for next semester
+        const publishedCourse = publishedCourses.find(pc => pc.courseId === courseId);
+        if (!publishedCourse) return false;
+        
+        // Check if deadline has passed
+        const isDeadlinePassed = new Date() > new Date(publishedCourse.submissionDeadline);
+        if (!isDeadlinePassed) return false;
+        
+        // Check if instructors list is not empty
+        return instructors && instructors.length > 0;
+    } catch (error) {
+        console.error('Error checking course availability:', error);
+        return false;
+    }
+}
 
-function createCourseCardWithButtons(course, hasActiveSections) {
+async function  createCourseCardWithButtons(course, hasActiveSections) {
     console.log('Creating card for course:', course); 
+
+    const addSectionsButton = await isAvailableCourseForSection(course.id) 
+        ? `<button class="add-sections-btn" data-course-id="${course.id}">Add Sections</button>` 
+        : '';
     return `
         <div class="course-card ${hasActiveSections ? 'active' : 'inactive'}" data-course-id="${course.id}">
             <div class="course-header">
                 <h4>${course.name}</h4>
                 <span class="course-id">${course.id}</span>
+                ${addSectionsButton}
             </div>
             <div class="course-info">
                 <p class="category">${course.category.charAt(0).toUpperCase() + course.category.slice(1)}</p>
@@ -472,6 +502,151 @@ function addButtonEventListeners() {
                             });
                     }
                     break;
+            }
+        });
+    });
+
+    // Add listener for Add Sections button
+    document.querySelectorAll('.add-sections-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const courseId = e.target.dataset.courseId;
+        
+            try {
+                const publishedCourses = await fetchAllPublishedCourses();
+                const course = courses.find(c => c.id.toString() === courseId);
+                const publishedInfo = publishedCourses.find(pc => pc.courseId.toString() === courseId);
+                
+                if (!course || !publishedInfo) {
+                    console.error('Course or published info not found');
+                    return;
+                }
+
+                // Create overlay container
+                const overlay = document.createElement('div');
+                overlay.className = 'section-form-overlay';
+                
+                // Create form container
+                const formContainer = document.createElement('div');
+                formContainer.className = 'section-form-container';
+                
+                // Add close button
+                const closeButton = document.createElement('button');
+                closeButton.className = 'close-overlay';
+                closeButton.innerHTML = '&times;';
+                closeButton.onclick = () => overlay.remove();
+
+                // Generate and display the form
+                const formHtml = await createSectionCard(course, publishedInfo);
+                formContainer.innerHTML = formHtml;
+
+                // Setup form listeners with custom success handler
+                const form = formContainer.querySelector(`#sectionForm_${courseId}`);
+                form.onsubmit = async (e) => {
+                    e.preventDefault();
+                    try {
+                        const selectedDays = Array.from(form.querySelectorAll(`input[name="days_${courseId}"]:checked`))
+                            .map(checkbox => checkbox.value);
+
+                        if (selectedDays.length === 0) {
+                            alert('Please select at least one day');
+                            return;
+                        }
+
+                        const startTime = form.querySelector(`#timeStart_${courseId}`).value;
+                        const endTime = form.querySelector(`#timeEnd_${courseId}`).value;
+
+                        if (startTime >= endTime) {
+                            alert('End time must be after start time');
+                            return;
+                        }
+
+                        const sectionData = {
+                            courseId: parseInt(courseId),
+                            instructorId: parseInt(form.querySelector(`#instructor_${courseId}`).value),
+                            schedule: {
+                                days: selectedDays,
+                                timeStart: startTime,
+                                timeEnd: endTime
+                            },
+                            location: form.querySelector(`#location_${courseId}`).value,
+                            courseContent: form.querySelector(`#content_${courseId}`).value,
+                            semester: publishedInfo.semester,
+                            isRegistrationClosed: false
+                        };
+
+                        await createSection(sectionData);
+                        alert('Section created successfully!');
+                        overlay.remove();
+                        await loadCourses(); // Refresh the view
+                        renderCalendarView(); // Re-render the calendar
+                    } catch (error) {
+                        console.error('Error creating section:', error);
+                        alert('Failed to create section. Please try again.');
+                    }
+                };
+
+                // Add cancel button event listener
+                const cancelButton = formContainer.querySelector('.cancel-btn');
+                if (cancelButton) {
+                    cancelButton.addEventListener('click', () => overlay.remove());
+                }
+                
+                // Close overlay when clicking outside
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        overlay.remove();
+                    }
+                });
+                
+                // Assemble overlay
+                formContainer.insertBefore(closeButton, formContainer.firstChild);
+                overlay.appendChild(formContainer);
+                document.body.appendChild(overlay);
+
+                // Add styles if not already present
+                if (!document.querySelector('#overlay-styles')) {
+                    const styles = document.createElement('style');
+                    styles.id = 'overlay-styles';
+                    styles.textContent = `
+                        .section-form-overlay {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0, 0, 0, 0.5);
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            z-index: 1000;
+                        }
+                        .section-form-container {
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            max-width: 500px;
+                            width: 90%;
+                            max-height: 80vh;
+                            overflow-y: auto;
+                            position: relative;
+                        }
+                        .close-overlay {
+                            position: absolute;
+                            right: 10px;
+                            top: 10px;
+                            background: none;
+                            border: none;
+                            font-size: 24px;
+                            cursor: pointer;
+                            padding: 5px;
+                        }
+                    `;
+                    document.head.appendChild(styles);
+                }
+
+            } catch (error) {
+                console.error('Error creating section:', error);
             }
         });
     });
