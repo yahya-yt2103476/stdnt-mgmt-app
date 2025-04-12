@@ -1,12 +1,5 @@
-import {
-  createUser,
-  updateUser,
-  fetchAllUsers,
-  fetchUserById,
-} from "../../../services/user-service.js";
+import { createUser, fetchAllUsers } from "../../../services/user-service.js";
 
-import { createStudent } from "../../../services/student-service.js";
-import { createInstructor } from "../../../services/instructor-service.js";
 import { AddStudent } from "../../../services/student-service.js";
 import { updateInstructor } from "../../../services/instructor-service.js";
 import { updateAdmin } from "../../../services/admin-service.js";
@@ -104,7 +97,6 @@ async function main() {
           break;
 
         case "Admin":
-          // Ayoub: Working now
           loadPage(user, "../admin/views/admin-dashboard.html");
           break;
       }
@@ -193,7 +185,7 @@ async function main() {
 
     await createUser(user);
     alert("User created successfully, click OK to go to login page");
-    window.location.href = "/frontend/pages/login/login_page.html";
+    window.location.href = "/frontend/pages/login/views/login_page.html";
   }
 }
 
