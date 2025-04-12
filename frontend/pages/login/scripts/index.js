@@ -97,7 +97,7 @@ async function main() {
           break;
 
         case "Admin":
-          loadPage(user, "../admin/views/admin-dashboard.html");
+          loadPage(user, "/frontend/pages/admin/views/admin-dashboard.html");
           break;
       }
     } else if (usertype == undefined) {
