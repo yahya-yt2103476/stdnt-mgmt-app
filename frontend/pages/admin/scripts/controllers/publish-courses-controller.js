@@ -115,7 +115,7 @@ export async function setupSectionFormListeners(courseId, publishedInfo) {
 
             await createSection(sectionData);
             alert('Section created successfully!');
-            await loadCourses(); // Refresh the view
+            await loadCourses(); 
         } catch (error) {
             console.error('Error creating section:', error);
             alert('Failed to create section. Please try again.');
@@ -177,7 +177,6 @@ function createPublishedCourseCard(course, publishedInfo) {
     `;
 }
 
-// Add these new functions
 async function handleDeletePublishedCourse(event) {
     const card = event.target.closest('.published-course');
     const publishedId = card.dataset.publishedId;
@@ -200,7 +199,6 @@ async function handleEditPublishedCourse(event) {
     
     if (!publishedCourse) return;
 
-    // Get modal elements
     const modal = document.getElementById('editCourseModal');
     if (!modal) {
         console.error('Edit course modal not found in DOM');
@@ -227,14 +225,11 @@ async function handleEditPublishedCourse(event) {
         deadline.getHours().toString().padStart(2, '0') + ':' +
         deadline.getMinutes().toString().padStart(2, '0');
 
-    // Populate form with current values
     semesterInput.value = publishedCourse.semester;
     deadlineInput.value = formattedDate;
 
-    // Show modal
     modal.style.display = 'block';
 
-    // Handle form submission
     form.onsubmit = async (e) => {
         e.preventDefault();
         
@@ -251,7 +246,7 @@ async function handleEditPublishedCourse(event) {
             };
             
             await updatePublishedCourse(updatedCourse);
-            await loadCourses(); // Refresh the list
+            await loadCourses(); 
             modal.style.display = 'none';
         } catch (error) {
             console.error('Error updating published course:', error);
@@ -259,12 +254,10 @@ async function handleEditPublishedCourse(event) {
         }
     };
 
-    // Handle modal close
     closeBtn.onclick = () => {
         modal.style.display = 'none';
     };
 
-    // Close modal when clicking outside
     window.onclick = (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
@@ -272,7 +265,6 @@ async function handleEditPublishedCourse(event) {
     };
 }
 
-// Modify renderPublishedCourses to add event listeners
 function renderPublishedCourses() {
     if (!publishedCoursesContainer) return;
     
@@ -330,7 +322,6 @@ function renderPublishedCourses() {
         </div>
     `;
 
-    // Add event listeners
     document.querySelectorAll('.published-course .edit-btn').forEach(btn => {
         btn.addEventListener('click', handleEditPublishedCourse);
     });
@@ -342,7 +333,6 @@ function renderPublishedCourses() {
 
 async function loadCourses() {
     try {
-        // Fetch all courses and published courses
         allCourses = await fetchAllCourses();
         publishedCourses = await fetchAllPublishedCourses();
         
@@ -351,24 +341,19 @@ async function loadCourses() {
             return;
         }
 
-        // Get IDs of all published courses
         const publishedCourseIds = publishedCourses.map(pc => pc.courseId.toString());
         console.log('Published course IDs:', publishedCourseIds);
         
-        // Filter out courses that have already been published
         const availableCourses = allCourses.filter(course => 
             !publishedCourseIds.includes(course.id.toString())
         );
         
-        // Populate dropdown with available courses
         courseDropdown.innerHTML = `
             <option value="">Select a course to add...</option>
             ${availableCourses.map(course => `
                 <option value="${course.id}">${course.name} (ID: ${course.id})</option>
             `).join('')}
         `;
-
-        // Display published courses
         renderPublishedCourses();
 
         if (loadingIndicator) {

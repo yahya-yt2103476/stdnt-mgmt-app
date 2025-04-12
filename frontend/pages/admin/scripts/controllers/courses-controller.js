@@ -4,7 +4,7 @@ import { courseCard } from '../components/course-card.js';
 import { sectionCard } from '../components/section-card.js';
 import { fetchAllInstructors } from '../../../../services/instructor-service.js';
 import { fetchAllPublishedCourses } from '../../../../services/published-courses-service.js';
-import { createSectionCard, setupSectionFormListeners } from "../controllers/publish-courses-controller.js";
+import { createSectionCard } from "../controllers/publish-courses-controller.js";
 
 let courses = [];
 let coursesContainer;
@@ -415,23 +415,6 @@ function navigateToAddCourse() {
   window.location.href = 'course-details-view.html?mode=add';
 }
 
-function renderSemesterStatusView() {
-    const coursesWithFutureSections = [];
-    const coursesWithoutFutureSections = [];
-    
-    courses.forEach(course => {
-        if (course.sections && course.sections.some(section => 
-            isSemesterFuture(section.semester) || 
-            (isSemesterCurrent(section.semester) && !section.isRegistrationClosed))) {
-            coursesWithFutureSections.push(course);
-        } else {
-            coursesWithoutFutureSections.push(course);
-        }
-    });
-    
-    renderCourseLists(coursesWithFutureSections, coursesWithoutFutureSections);
-}
-
 function addButtonEventListeners() {
     document.querySelectorAll('.course-actions button').forEach(button => {
         button.addEventListener('click', async (e) => {
@@ -506,7 +489,6 @@ function addButtonEventListeners() {
         });
     });
 
-    // Add listener for Add Sections button
     document.querySelectorAll('.add-sections-btn').forEach(button => {
         button.addEventListener('click', async (e) => {
             e.stopPropagation();
@@ -522,25 +504,25 @@ function addButtonEventListeners() {
                     return;
                 }
 
-                // Create overlay container
+                
                 const overlay = document.createElement('div');
                 overlay.className = 'section-form-overlay';
                 
-                // Create form container
+                
                 const formContainer = document.createElement('div');
                 formContainer.className = 'section-form-container';
                 
-                // Add close button
+                
                 const closeButton = document.createElement('button');
                 closeButton.className = 'close-overlay';
                 closeButton.innerHTML = '&times;';
                 closeButton.onclick = () => overlay.remove();
 
-                // Generate and display the form
+                
                 const formHtml = await createSectionCard(course, publishedInfo);
                 formContainer.innerHTML = formHtml;
 
-                // Setup form listeners with custom success handler
+                
                 const form = formContainer.querySelector(`#sectionForm_${courseId}`);
                 form.onsubmit = async (e) => {
                     e.preventDefault();
@@ -578,33 +560,33 @@ function addButtonEventListeners() {
                         await createSection(sectionData);
                         alert('Section created successfully!');
                         overlay.remove();
-                        await loadCourses(); // Refresh the view
-                        renderCalendarView(); // Re-render the calendar
+                        await loadCourses();
+                        renderCalendarView(); 
                     } catch (error) {
                         console.error('Error creating section:', error);
                         alert('Failed to create section. Please try again.');
                     }
                 };
 
-                // Add cancel button event listener
+                
                 const cancelButton = formContainer.querySelector('.cancel-btn');
                 if (cancelButton) {
                     cancelButton.addEventListener('click', () => overlay.remove());
                 }
                 
-                // Close overlay when clicking outside
+                
                 overlay.addEventListener('click', (e) => {
                     if (e.target === overlay) {
                         overlay.remove();
                     }
                 });
                 
-                // Assemble overlay
+                
                 formContainer.insertBefore(closeButton, formContainer.firstChild);
                 overlay.appendChild(formContainer);
                 document.body.appendChild(overlay);
 
-                // Add styles if not already present
+                
                 if (!document.querySelector('#overlay-styles')) {
                     const styles = document.createElement('style');
                     styles.id = 'overlay-styles';

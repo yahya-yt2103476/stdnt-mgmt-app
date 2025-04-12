@@ -45,24 +45,20 @@ async function init() {
   
   document.getElementById('addPrereqBtn').addEventListener('click', addPrerequisiteField);
   
-  // Add event listener for Add Section button
   document.getElementById('addSectionButton').addEventListener('click', () => {
     window.location.href = `section-details-view.html?mode=add&courseId=${courseId}`;
   });
   
   courseForm.addEventListener('submit', saveForm);
   
-  // Load data
   try {
     allCourses = await fetchAllCourses();
     
     if (courseId) {
-      // First try to get from session storage
       const storedCourse = sessionStorage.getItem('currentCourse');
       if (storedCourse) {
         currentCourse = JSON.parse(storedCourse);
       } else {
-        // Fallback to fetching from API
         currentCourse = await fetchCourseById(courseId);
       }
       
@@ -82,7 +78,6 @@ async function init() {
         editMode.classList.remove('hidden');
       }
     } else if (mode === 'add') {
-      // Handle add course mode
       currentCourse = {
         shortName: '',
         name: '',
@@ -93,11 +88,9 @@ async function init() {
       };
       sections = [];
       
-      // Hide view mode and show edit mode
       viewMode.classList.add('hidden');
       editMode.classList.remove('hidden');
       
-      // Update heading for add mode
       const editModeHeading = editMode.querySelector('h2');
       if (editModeHeading) {
         editModeHeading.textContent = 'Add New Course';
@@ -150,14 +143,12 @@ function displaySections() {
     </div>
   `).join('');
   
-  // Add click event to section cards
   const sectionCards = document.querySelectorAll('.section-card');
   sectionCards.forEach(card => {
     card.addEventListener('click', () => {
       const sectionId = card.getAttribute('data-id');
       window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseId}`;
     });
-    // Add pointer cursor to show it's clickable
     card.style.cursor = 'pointer';
   });
 }
@@ -169,10 +160,8 @@ function fillEditForm() {
   document.getElementById('creditHours').value = currentCourse.creditHours || 3;
   document.getElementById('category').value = currentCourse.category || 'programming';
   
-  // Clear prerequisites container
   prerequisitesContainer.innerHTML = '';
   
-  // Add existing prerequisites
   if (currentCourse.prerequisites && currentCourse.prerequisites.length > 0) {
     currentCourse.prerequisites.forEach(prereqId => {
       addPrerequisiteField(prereqId);
@@ -189,13 +178,11 @@ function addPrerequisiteField(selectedValue = '') {
   const select = document.createElement('select');
   select.className = 'prereq-select';
   
-  // Add empty option
   const emptyOption = document.createElement('option');
   emptyOption.value = '';
   emptyOption.textContent = '-- Select prerequisite --';
   select.appendChild(emptyOption);
   
-  // Add all courses except current one
   allCourses.forEach(course => {
     if (courseId && course.id == courseId) return;
     
@@ -225,7 +212,6 @@ async function saveForm(event) {
   event.preventDefault();
   
   try {
-    // Get form values
     const updatedCourse = {
       id: courseId ? parseInt(courseId) : undefined,
       shortName: document.getElementById('shortName').value,
@@ -240,22 +226,18 @@ async function saveForm(event) {
     
     console.log('About to save course:', updatedCourse);
     
-    // Save the course
     let savedCourse;
     if (courseId) {
       savedCourse = await updateCourse(updatedCourse);
-      // Update session storage with new data
       sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     } else {
       savedCourse = await createCourse(updatedCourse);
       sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     }
     
-    // Only redirect to view mode for existing courses
     if (savedCourse && savedCourse.id) {
       window.location.href = `course-details-view.html?id=${savedCourse.id}`;
     } else {
-      // Fallback if something went wrong
       window.location.href = 'courses-view.html';
     }
   } catch (error) {

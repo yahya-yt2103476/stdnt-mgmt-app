@@ -72,7 +72,13 @@ async function loadCourses() {
             fetchAllPublishedCourses()
         ]);
 
-        if (!Array.isArray(publishedCourses) || publishedCourses.length === 0) {
+        
+        const activePublishedCourses = publishedCourses.filter(course => {
+            const deadline = new Date(course.submissionDeadline);
+            return deadline > new Date();
+        });
+
+        if (!Array.isArray(activePublishedCourses) || activePublishedCourses.length === 0) {
             coursesContainer.innerHTML = `
                 <div class="no-courses">
                     <p>No courses are currently available for the next semester.</p>
@@ -81,7 +87,7 @@ async function loadCourses() {
             return;
         }
 
-        const courseCards = await Promise.all(publishedCourses.map(async (publishedCourse) => {
+        const courseCards = await Promise.all(activePublishedCourses.map(async (publishedCourse) => {
             const course = allCourses.find(c => c.id === publishedCourse.courseId);
             if (!course) return '';
             return createCourseCard(course, publishedCourse);
