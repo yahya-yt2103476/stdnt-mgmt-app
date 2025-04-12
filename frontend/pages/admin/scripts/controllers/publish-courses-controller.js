@@ -1,13 +1,131 @@
 import { fetchAllCourses } from '../../../../services/course-service.js';
-import { createPublishedCourse, fetchAllPublishedCourses } from '../../../../services/published-courses-service.js';
+import { fetchInstructorById } from '../../../../services/instructor-service.js';
+import { 
+    createPublishedCourse, 
+    fetchAllPublishedCourses,
+    deletePublishedCourse,
+    updatePublishedCourse,
+} from '../../../../services/published-courses-service.js';
+import { createSection } from '../../../../services/section-service.js';
 let selectedCoursesContainer;
 let loadingIndicator;
 let courseDropdown;
 let addCourseBtn;
 let targetSemester;
 let allCourses = [];
+let publishedCourses = [];
 let selectedCourses = new Set();
+let publishedCoursesContainer;
 
+export async function createSectionCard(course, publishedInfo) {
+    const instructorIds = await publishedInfo.instructors;
+    const instructor=await fetchInstructorById(instructorIds[0]);
+    console.log("Instructor: ",instructor);
+    return `
+        <div class="section-form-card" data-course-id="${course.id}">
+            <h3>Create New Section for ${course.name}</h3>
+            <form id="sectionForm_${course.id}" class="section-form">
+                <div class="form-group">
+                    <label for="instructor_${course.id}">Instructor:</label>
+                    <select id="instructor_${course.id}" required>
+                        <option value="">Select an instructor...</option>
+                        ${`
+                            <option value="${instructor.id}">${instructor.name}</option>
+                        `}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Class Days:</label>
+                    <div class="days-group">
+                        <label><input type="checkbox" name="days_${course.id}" value="Monday"> Monday</label>
+                        <label><input type="checkbox" name="days_${course.id}" value="Tuesday"> Tuesday</label>
+                        <label><input type="checkbox" name="days_${course.id}" value="Wednesday"> Wednesday</label>
+                        <label><input type="checkbox" name="days_${course.id}" value="Thursday"> Thursday</label>
+                        <label><input type="checkbox" name="days_${course.id}" value="Friday"> Friday</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="timeStart_${course.id}">Start Time:</label>
+                        <input type="time" id="timeStart_${course.id}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeEnd_${course.id}">End Time:</label>
+                        <input type="time" id="timeEnd_${course.id}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location_${course.id}">Location:</label>
+                    <input type="text" id="location_${course.id}" placeholder="Building and Room Number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="content_${course.id}">Course Content:</label>
+                    <textarea id="content_${course.id}" rows="4" placeholder="Enter course content and description" required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="create-btn">Create Section</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+export async function setupSectionFormListeners(courseId, publishedInfo) {
+    const form = document.getElementById(`sectionForm_${courseId}`);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const selectedDays = Array.from(form.querySelectorAll(`input[name="days_${courseId}"]:checked`))
+            .map(checkbox => checkbox.value);
+
+        if (selectedDays.length === 0) {
+            alert('Please select at least one day');
+            return;
+        }
+
+        const startTime = form.querySelector(`#timeStart_${courseId}`).value;
+        const endTime = form.querySelector(`#timeEnd_${courseId}`).value;
+
+        if (startTime >= endTime) {
+            alert('End time must be after start time');
+            return;
+        }
+
+        try {
+            const sectionData = {
+                courseId: parseInt(courseId),
+                instructorId: parseInt(form.querySelector(`#instructor_${courseId}`).value),
+                schedule: {
+                    days: selectedDays,
+                    timeStart: startTime,
+                    timeEnd: endTime
+                },
+                location: form.querySelector(`#location_${courseId}`).value,
+                courseContent: form.querySelector(`#content_${courseId}`).value,
+                semester: publishedInfo.semester,
+                isRegistrationClosed: false
+            };
+
+            await createSection(sectionData);
+            alert('Section created successfully!');
+            await loadCourses(); 
+        } catch (error) {
+            console.error('Error creating section:', error);
+            alert('Failed to create section. Please try again.');
+        }
+    });
+
+    form.querySelector('.cancel-btn').addEventListener('click', () => {
+        form.reset();
+    });
+}
 function createCourseCard(course) {
     return `
         <div class="course-card" data-course-id="${course.id}">
@@ -25,22 +143,218 @@ function createCourseCard(course) {
     `;
 }
 
+function createPublishedCourseCard(course, publishedInfo) {
+    const deadlineDate = new Date(publishedInfo.submissionDeadline);
+    const isDeadlinePassed = new Date() > deadlineDate;
+    
+    return `
+        <div class="course-card published-course ${isDeadlinePassed ? 'deadline-passed' : ''}" data-course-id="${course.id}" data-published-id="${publishedInfo.id}">
+            <div class="course-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div class="header-content">
+                    <h4>${course.name}</h4>
+                    <span class="course-id">ID: ${course.id}</span>
+                </div>
+                <div class="card-actions">
+                    <button class="edit-btn action-btn" onclick="event.stopPropagation()">Edit</button>
+                    <button class="delete-btn action-btn" onclick="event.stopPropagation()">Delete</button>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+            </div>
+            <div class="course-details">
+                <div class="course-info">
+                    <p class="category">Category: ${course.category.charAt(0).toUpperCase() + course.category.slice(1)}</p>
+                    <p class="prerequisites">Prerequisites: ${course.prerequisites?.join(', ') || 'None'}</p>
+                    <p class="credit-hours">Credit Hours: ${course.creditHours}</p>
+                    <p class="semester"><strong>Published for:</strong> ${publishedInfo.semester}</p>
+                    <p class="published-date"><strong>Published on:</strong> ${new Date(publishedInfo.publishedDate).toLocaleDateString()}</p>
+                    <p class="deadline ${isDeadlinePassed ? 'expired' : ''}">
+                        <strong>Submission Deadline:</strong> ${deadlineDate.toLocaleDateString()} ${deadlineDate.toLocaleTimeString()}
+                        ${isDeadlinePassed ? '<span class="deadline-status">(Expired)</span>' : ''}
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+async function handleDeletePublishedCourse(event) {
+    const card = event.target.closest('.published-course');
+    const publishedId = card.dataset.publishedId;
+    
+    if (confirm('Are you sure you want to delete this published course?')) {
+        try {
+            await deletePublishedCourse(publishedId);
+            await loadCourses(); // Refresh the list
+        } catch (error) {
+            console.error('Error deleting published course:', error);
+            alert('Failed to delete the published course. Please try again.');
+        }
+    }
+}
+
+async function handleEditPublishedCourse(event) {
+    const card = event.target.closest('.published-course');
+    const publishedId = card.dataset.publishedId;
+    const publishedCourse = publishedCourses.find(pc => pc.id.toString() === publishedId);
+    
+    if (!publishedCourse) return;
+
+    const modal = document.getElementById('editCourseModal');
+    if (!modal) {
+        console.error('Edit course modal not found in DOM');
+        alert('Edit functionality is not available at the moment.');
+        return;
+    }
+
+    const form = document.getElementById('editCourseForm');
+    const semesterInput = document.getElementById('editSemester');
+    const deadlineInput = document.getElementById('editDeadline');
+    const closeBtn = document.getElementById('closeModal');
+
+    if (!form || !semesterInput || !deadlineInput || !closeBtn) {
+        console.error('Required modal elements not found');
+        alert('Edit functionality is not available at the moment.');
+        return;
+    }
+
+    // Format the date properly for the datetime-local input
+    const deadline = new Date(publishedCourse.submissionDeadline);
+    const formattedDate = deadline.getFullYear().toString().padStart(4, '0') + '-' +
+        (deadline.getMonth() + 1).toString().padStart(2, '0') + '-' +
+        deadline.getDate().toString().padStart(2, '0') + 'T' +
+        deadline.getHours().toString().padStart(2, '0') + ':' +
+        deadline.getMinutes().toString().padStart(2, '0');
+
+    semesterInput.value = publishedCourse.semester;
+    deadlineInput.value = formattedDate;
+
+    modal.style.display = 'block';
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const newDeadline = new Date(deadlineInput.value);
+            if (isNaN(newDeadline.getTime())) {
+                throw new Error('Invalid date format');
+            }
+
+            const updatedCourse = {
+                ...publishedCourse,
+                semester: semesterInput.value,
+                submissionDeadline: newDeadline.toISOString()
+            };
+            
+            await updatePublishedCourse(updatedCourse);
+            await loadCourses(); 
+            modal.style.display = 'none';
+        } catch (error) {
+            console.error('Error updating published course:', error);
+            alert('Failed to update the published course. Please ensure the date format is correct.');
+        }
+    };
+
+    closeBtn.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+}
+
+function renderPublishedCourses() {
+    if (!publishedCoursesContainer) return;
+    
+    if (!publishedCourses.length) {
+        publishedCoursesContainer.innerHTML = `
+            <h2>Published Courses</h2>
+            <p class="no-courses">No courses have been published yet.</p>
+        `;
+        return;
+    }
+    
+    const publishedCourseCards = publishedCourses.map(publishedCourse => {
+        const course = allCourses.find(c => c.id === publishedCourse.courseId);
+        if (!course) return '';
+        return createPublishedCourseCard(course, publishedCourse);
+    }).join('');
+    
+    publishedCoursesContainer.innerHTML = `
+        <style>
+            .course-header {
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .dropdown-arrow {
+                transition: transform 0.3s ease;
+            }
+            
+            .course-details {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+            
+            .published-course.expanded .course-details {
+                max-height: 500px;
+                padding: 1rem;
+            }
+            
+            .published-course.expanded .dropdown-arrow {
+                transform: rotate(180deg);
+            }
+        </style>
+        <h2>Published Courses</h2>
+        <div class="published-courses-list">
+            ${publishedCourseCards}
+        </div>
+    `;
+
+    document.querySelectorAll('.published-course .edit-btn').forEach(btn => {
+        btn.addEventListener('click', handleEditPublishedCourse);
+    });
+
+    document.querySelectorAll('.published-course .delete-btn').forEach(btn => {
+        btn.addEventListener('click', handleDeletePublishedCourse);
+    });
+}
+
 async function loadCourses() {
     try {
         allCourses = await fetchAllCourses();
+        publishedCourses = await fetchAllPublishedCourses();
         
         if (!Array.isArray(allCourses)) {
             console.error('Courses data is not an array:', allCourses);
             return;
         }
 
+        const publishedCourseIds = publishedCourses.map(pc => pc.courseId.toString());
+        console.log('Published course IDs:', publishedCourseIds);
+        
+        const availableCourses = allCourses.filter(course => 
+            !publishedCourseIds.includes(course.id.toString())
+        );
         
         courseDropdown.innerHTML = `
             <option value="">Select a course to add...</option>
-            ${allCourses.map(course => `
+            ${availableCourses.map(course => `
                 <option value="${course.id}">${course.name} (ID: ${course.id})</option>
             `).join('')}
         `;
+        renderPublishedCourses();
 
         if (loadingIndicator) {
             loadingIndicator.classList.add('hidden');
@@ -259,6 +573,7 @@ async function init() {
     courseDropdown = document.getElementById('courseDropdown');
     addCourseBtn = document.getElementById('addCourseBtn');
     targetSemester = document.getElementById('targetSemester');
+    publishedCoursesContainer = document.getElementById('publishedCoursesContainer');
 
     if (!selectedCoursesContainer || !courseDropdown || !targetSemester) {
         console.error('Required elements not found:', {
@@ -268,8 +583,7 @@ async function init() {
         });
         return;
     }
-    let allPublishedCourses=await  fetchAllPublishedCourses();
-    console.log(allPublishedCourses);
+    
     console.log('All required elements found, proceeding with initialization');
     populateSemesterDropdown();
     setupEventListeners();

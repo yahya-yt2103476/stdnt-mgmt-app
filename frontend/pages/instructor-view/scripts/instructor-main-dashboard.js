@@ -1,5 +1,5 @@
 import { logoutCurrentUser } from "../../../services/logout.js";
-import { fetchInstructorById,fetchAllInstructors } from "../../../services/instructor-service.js";
+import { fetchInstructorById} from "../../../services/instructor-service.js";
 
 const yourCoursesCard = document.getElementById("yourCourses");
 const courseInterestsCard = document.getElementById("courseInterests");

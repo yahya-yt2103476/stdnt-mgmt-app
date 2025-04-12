@@ -28,8 +28,59 @@
         .course-card {
             margin-bottom: 20px;
             padding: 20px;
+        }
+        .course-card {
             border: 1px solid #ddd;
             border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .course-header {
+            padding: 1rem;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .course-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .course-card.expanded .course-details {
+            max-height: 500px;
+            padding: 1rem;
+        }
+
+        .course-card.expanded .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .course-info {
+            margin-bottom: 1rem;
+        }
+
+        .course-info p {
+            margin: 0.5rem 0;
+        }
+
+        .interest-btn, .interest-label {
+            margin-top: 1rem;
+            display: inline-block;
         }
 
         .instructor-list {

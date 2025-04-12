@@ -11,28 +11,33 @@ function createCourseCard(course, publishedInfo) {
     
     return `
         <div class="course-card" data-course-id="${course.id}">
-            <div class="course-header">
-                <h3>${course.name}</h3>
-                <span class="course-id">ID: ${course.id}</span>
+            <div class="course-header" onclick="this.parentElement.classList.toggle('expanded')">
+                <div class="header-content">
+                    <h3>${course.name}</h3>
+                    <span class="course-id">ID: ${course.id}</span>
+                </div>
+                <span class="dropdown-arrow">▼</span>
             </div>
-            <div class="course-info">
-                <p><strong>Category:</strong> ${course.category}</p>
-                <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
-                <p><strong>Semester:</strong> ${publishedInfo.semester}</p>
-                <p><strong>Prerequisites:</strong> ${course.prerequisites?.join(', ') || 'None'}</p>
+            <div class="course-details">
+                <div class="course-info">
+                    <p><strong>Category:</strong> ${course.category}</p>
+                    <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
+                    <p><strong>Semester:</strong> ${publishedInfo.semester}</p>
+                    <p><strong>Prerequisites:</strong> ${course.prerequisites?.join(', ') || 'None'}</p>
+                </div>
+                <div class="instructor-list">
+                    <p><strong>Interested Instructors:</strong> ${instructors.length}</p>
+                </div>
+                ${isInterested ? 
+                    `<span class="interest-label">Interest Registered</span>` :
+                    `<button 
+                        class="interest-btn" 
+                        data-published-course-id="${publishedInfo.id}"
+                    >
+                        Register Interest
+                    </button>`
+                }
             </div>
-            <div class="instructor-list">
-                <p><strong>Interested Instructors:</strong> ${instructors.length}</p>
-            </div>
-            ${isInterested ? 
-                `<span class="interest-label">Interest Registered</span>` :
-                `<button 
-                    class="interest-btn" 
-                    data-published-course-id="${publishedInfo.id}"
-                >
-                    Register Interest
-                </button>`
-            }
         </div>
     `;
 }
@@ -67,7 +72,13 @@ async function loadCourses() {
             fetchAllPublishedCourses()
         ]);
 
-        if (!Array.isArray(publishedCourses) || publishedCourses.length === 0) {
+        
+        const activePublishedCourses = publishedCourses.filter(course => {
+            const deadline = new Date(course.submissionDeadline);
+            return deadline > new Date();
+        });
+
+        if (!Array.isArray(activePublishedCourses) || activePublishedCourses.length === 0) {
             coursesContainer.innerHTML = `
                 <div class="no-courses">
                     <p>No courses are currently available for the next semester.</p>
@@ -76,7 +87,7 @@ async function loadCourses() {
             return;
         }
 
-        const courseCards = await Promise.all(publishedCourses.map(async (publishedCourse) => {
+        const courseCards = await Promise.all(activePublishedCourses.map(async (publishedCourse) => {
             const course = allCourses.find(c => c.id === publishedCourse.courseId);
             if (!course) return '';
             return createCourseCard(course, publishedCourse);

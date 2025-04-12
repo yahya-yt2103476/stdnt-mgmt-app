@@ -26,14 +26,6 @@ let instructorCourses = () => {
   );
 };
 
-//delete TESTING
-console.log("Testing Logs");
-
-console.log(instructorSections());
-console.log(instructorCourses());
-console.log(currentInstructor);
-//delete
-
 function main() {
   const backButton = document.querySelector("#backBtn");
   if (backButton) {

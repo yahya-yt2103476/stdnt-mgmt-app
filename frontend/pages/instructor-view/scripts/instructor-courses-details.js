@@ -1,40 +1,16 @@
-import { fetchInstructorById } from "../../../services/instructor-service.js"; // not used
 import { fetchAllCourses } from "../../../services/course-service.js";
-import {
-  fetchAllSections,
-  updateSection,
-} from "../../../services/section-service.js";
-import {
-  fetchAllRegistrations,
-  updateRegistrationData,
-  createAndSaveRegistration,
-} from "../../../services/registration-service.js";
-import {
-  fetchAllStudents,
-  fetchStudentById,
-} from "../../../services/student-service.js";
+import {fetchAllSections,updateSection} from "../../../services/section-service.js";
+import {fetchAllRegistrations,updateRegistrationData} from "../../../services/registration-service.js";
+import {fetchAllStudents} from "../../../services/student-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
-var testingSmth = null;
+var gradesOutPut = null;
 
 const urlParams = new URLSearchParams(window.location.search);
-const instructorName = urlParams.get("instructorName"); // not used
 const courseId = Number(urlParams.get("courseId"));
 const sectionId = Number(parseInt(urlParams.get("sectionId")));
-const courseShortName = urlParams
-  .get("courseShortName")
-  .replace(/\s/g, "")
-  .trim();
-
-//test
-console.log("Course ID");
-console.log(courseId);
-console.log("Section ID");
-console.log(sectionId);
-
-
-//test  
+const courseShortName = urlParams.get("courseShortName").replace(/\s/g, "").trim();
 
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
@@ -64,10 +40,6 @@ let instructorRegistrations = () => {
 };
 
 let instructorRegistrationsList = instructorRegistrations();
-
-console.log(courseShortName);
-console.log("we are the students: ");
-console.log(enrolledStudents());
 
 function main() {
   const backButton = document.querySelector("#backBtn");
@@ -172,7 +144,6 @@ function handleAssignmentUpload(e, instructorSection) {
   }
 }
 
-// we'll need to change
 async function updateSectionList(instructorSection) {
   updateSection(sectionId, instructorSection);
 }
@@ -284,37 +255,6 @@ function populateStudentSelect(registrations, enrolledStudentsList) {
   }
 }
 
-// function handleFinalGradeSubmit(e, registrations) {
-//     e.preventDefault();
-
-//     const studentFinalGradeDiv = document.querySelector('.finalGradeForm');
-//     if (!studentFinalGradeDiv) {
-//         console.error("Error: .studentFinalGrade div not found in the HTML.");
-//         return;
-//     }
-
-//     const gradeInputs = studentFinalGradeDiv.querySelectorAll('input.grade'); //input.grade will select all inpuys with class grades
-//     console.log("Found grade input elements:", gradeInputs);
-
-//     gradeInputs.forEach(input => {
-//         const studentId = parseInt(input.dataset.studentId);
-//         const finalGrade = parseInt(input.value);
-//         console.log(`Processing student ID: ${studentId}, Final Grade entered: ${finalGrade}`);
-
-//         // Find the matching registration and update the grade
-//         const registrationToUpdate = registrations.find(reg => reg.studentId === studentId);
-
-//         if (registrationToUpdate && finalGrade && finalGrade <= 110 && finalGrade >= 0) {
-//             registrationToUpdate.grade = finalGrade;
-//             console.log(`Updated grade for student ID ${studentId} to ${finalGrade} in registrations.`);//testing
-//         } else {
-//             console.warn(`No matching registration found for student ID ${studentId}.`);
-//         }
-//     });
-
-//     console.log("Updated registrations:", registrations);
-// }
-
 function handleFinalGradeSubmit(e, registrations) {
   e.preventDefault();
 
@@ -341,20 +281,14 @@ function handleFinalGradeSubmit(e, registrations) {
     return reg; // if the condition evaluates to false i'm keeping the object the same
   });
 
-  console.log("Updated registrations:", updatedRegistrations); //testing
   instructorRegistrationsList = updatedRegistrations;
-  console.log(instructorRegistrationsList); // testing
-
-  testingSmth = compareAndUpdateLists(
+  
+  gradesOutPut = compareAndUpdateLists(
     allRegistrations,
     instructorRegistrationsList
-  ); //testing
-  console.log("I am testingSmth :", testingSmth); //testing
-
-  // updateRegistrationList(compareAndUpdateLists(allRegistrations,instructorRegistrationsList));
-  // updateRegistrationList(testingSmth)
-
-  testingSmth.forEach((e) => updateRegistrationList(e));
+  ); 
+  console.log("I am testingSmth :", gradesOutPut); 
+  gradesOutPut.forEach((e) => updateRegistrationList(e));
   alert("Grades have been submitted");
 }
 
@@ -376,63 +310,3 @@ async function updateRegistrationList(registrations) {
 const logoutbtn = document.querySelector("#logOutBtn");
 logoutbtn.addEventListener("click", logoutCurrentUser);
 
-// /*
-
-// <ul>
-//         <li>Course Name: Deep Learning</li>
-//         <li>Course Code: CMPS497</li>
-//         <li>Semester: Sp25</li>
-//         <li>
-//             <table>
-//                 <caption><b>Schedule</b></caption>
-
-//                 <tr>
-//                     <td>Day</td> <td>Time</td>
-//                 </tr>
-
-//                 <tr>
-//                     <td>Sunday</td> <td>11:00-11:50 (AM)</td>
-//                 </tr>
-
-//                 <tr>
-//                     <td>Tuesday</td> <td>11:00-11:50 (AM)</td>
-//                 </tr>
-
-//                 <tr>
-//                     <td>Thursday</td> <td>11:00-11:50 (AM)</td>
-//                 </tr>
-//             </table>
-//         </li>
-
-//         <li>Location: H07-BL204</li>
-//     </ul>
-
-// */
-
-// /*
-// <div class="studentList">
-//           <h2>Enrolled Students</h2>
-//           <table>
-//             <thead>
-//               <tr>
-//                 <th>Name</th>
-//                 <th>QUID</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               <tr>
-//                 <td>Mamoud</td>
-//                 <td>001</td>
-//               </tr>
-//               <tr>
-//                 <td>Ahmed</td>
-//                 <td>002</td>
-//               </tr>
-//               <tr>
-//                 <td>Khalid</td>
-//                 <td>003</td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </div>
-//  */
