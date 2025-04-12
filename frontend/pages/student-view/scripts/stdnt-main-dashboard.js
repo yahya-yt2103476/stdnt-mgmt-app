@@ -20,9 +20,9 @@ welcomeMessage.innerHTML = `Welcome back ${studentFirstName} ${studentLastName}!
 logoutbtn.addEventListener("click", logoutCurrentUser);
 
 coursesRegistrationCard.addEventListener("click", function () {
-  window.location.href = "../stdnt-registration/stdnt-registration.html";
+  window.location.href = "../views/stdnt-registration.html";
 });
 
 learningPathCard.addEventListener("click", function () {
-  window.location.href = "../learning-path/pages/learning-path-page.html";
+  window.location.href = "../views/learning-path-page.html";
 });
