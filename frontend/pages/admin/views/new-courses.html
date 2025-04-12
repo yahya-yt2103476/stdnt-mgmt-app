@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Course Section Planning</title>
     <link rel="stylesheet" href="../../../styles/navigation.css" />
-    <link rel="stylesheet" href="../styles/admin-styles.css">
-    <link rel="stylesheet" href="../styles/courses-styles.css">
-    <link rel="stylesheet" href="../styles/course-card.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../../../styles/footer.css" />
+    <link rel="stylesheet" href="../styles/admin-styles.css" />
+    <link rel="stylesheet" href="../styles/courses-styles.css" />
+    <link rel="stylesheet" href="../styles/course-card.css" />
+  </head>
+  <body>
     <header>
       <nav>
         <div class="nav-links">
@@ -28,57 +29,95 @@
       </nav>
     </header>
     <div class="container">
-        <h1>Course Section Planning</h1>
-        
-        <div class="planning-info">
-            <h3>Select courses for next semester sections</h3>
-            <p>Choose which courses will be offered in the upcoming semester.</p>
+      <h1>Course Section Planning</h1>
+
+      <div class="planning-info">
+        <h3>Select courses for next semester sections</h3>
+        <p>Choose which courses will be offered in the upcoming semester.</p>
+      </div>
+
+      <div class="actions">
+        <div class="semester-group">
+          <select id="targetSemester" class="semester-select">
+            <!-- Options will be populated dynamically -->
+          </select>
+          <div class="form-group deadline-group">
+            <label for="submissionDeadline">Submission Deadline:</label>
+            <input type="datetime-local" id="submissionDeadline" required />
+          </div>
         </div>
-        
-        <div class="actions">
-            <div class="semester-group">
-                <select id="targetSemester" class="semester-select">
-                    <!-- Options will be populated dynamically -->
-                </select>
-                <div class="form-group deadline-group">
-                    <label for="submissionDeadline">Submission Deadline:</label>
-                    <input type="datetime-local" id="submissionDeadline" required>
-                </div>
-            </div>
-            <div class="add-course-container">
-                <select id="courseDropdown" class="course-select">
-                    <option value="">Select a course to add...</option>
-                </select>
-                <button id="addCourseBtn" class="action-btn add-btn">Add Course</button>
-            </div>
+        <div class="add-course-container">
+          <select id="courseDropdown" class="course-select">
+            <option value="">Select a course to add...</option>
+          </select>
+          <button id="addCourseBtn" class="action-btn add-btn">
+            Add Course
+          </button>
         </div>
-        
-        <div class="filters">
-            <div class="search-bar">
-                <input type="text" id="courseSearch" placeholder="Search courses...">
-            </div>
-            <div class="category-filter">
-                <select id="categoryFilter">
-                    <option value="all">All Categories</option>
-                    <option value="programming">Programming</option>
-                    <option value="mathematics">Mathematics</option>
-                    <option value="database">Database</option>
-                </select>
-            </div>
+      </div>
+
+      <div class="filters">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="courseSearch"
+            placeholder="Search courses..."
+          />
         </div>
-        
-        <div class="courses-wrapper">
-            <div id="selectedCoursesContainer">
-                <h2>Selected Courses</h2>
-                <div id="loadingIndicator">Loading courses...</div>
-            </div>
+        <div class="category-filter">
+          <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="programming">Programming</option>
+            <option value="mathematics">Mathematics</option>
+            <option value="database">Database</option>
+          </select>
         </div>
-        
-        <div class="publish-action">
-            <button id="publishCoursesBtn" class="primary-btn">Publish Courses</button>
+      </div>
+
+      <div class="courses-wrapper">
+        <div id="selectedCoursesContainer">
+          <h2>Selected Courses</h2>
+          <div id="loadingIndicator">Loading courses...</div>
         </div>
+      </div>
+
+      <div class="publish-action">
+        <button id="publishCoursesBtn" class="primary-btn">
+          Publish Courses
+        </button>
+      </div>
     </div>
-    <div id="publishedCoursesContainer" class="published-courses-container"></div>
-    <script type="module" src="../scripts/controllers/publish-courses-controller.js"></script>
-</body>
+    <div
+      id="publishedCoursesContainer"
+      class="published-courses-container"
+    ></div>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>QU Resgiteration Portal</h3>
+          <p>Qatar University - CSE Department</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">University Website</a></li>
+            <li><a href="#">CSE Department</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: cse-support@qu.edu.qa</p>
+          <p>Phone: +974 4403-5555</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Qatar University. All rights reserved.</p>
+      </div>
+    </footer>
+    <script
+      type="module"
+      src="../scripts/controllers/publish-courses-controller.js"
+    ></script>
+  </body>
 </html>
