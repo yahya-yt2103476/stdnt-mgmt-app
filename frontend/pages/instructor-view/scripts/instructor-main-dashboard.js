@@ -16,8 +16,8 @@ async function init() {
     let name =  instructor.name;
     let instructorFullName =  name.split(" ");
     console.log(instructorFullName);
-    let instructorFirstName =instructorFullName[0].charAt(0).toUpperCase() + instructorFullName[0].slice(1)+" "+ instructorFullName[1].charAt(0).toUpperCase() + instructorFullName[1].slice(1);
-    let instructorLastName = instructorFullName[2].charAt(0).toUpperCase() + instructorFullName[2].slice(1);
+    let instructorFirstName =instructorFullName[0].charAt(0).toUpperCase() + instructorFullName[0].slice(1)
+    let instructorLastName = instructorFullName[instructorFullName.length - 1].charAt(0).toUpperCase() + instructorFullName[instructorFullName.length - 1].slice(1);
     console.log(instructorFirstName);
     console.log(instructorLastName);
     
