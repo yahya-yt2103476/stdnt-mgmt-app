@@ -29,7 +29,7 @@ async function init() {
   
   // Set up event listeners
   document.getElementById('backButton').addEventListener('click', () => {
-    window.location.href = `course-details-view.html?id=${courseId}`;
+    window.location.href =`courses-view.html?id=${courseId}`;
   });
   
   document.getElementById('cancelBtn').addEventListener('click', () => {
@@ -120,9 +120,10 @@ async function init() {
   }
 }
 
-function displaySectionDetails() {
+async function displaySectionDetails() {
+  let course=await fetchCourseById(currentSection.courseId);
   sectionDetails.innerHTML = `
-    <h2>Section for ${currentCourse.shortName} - ${currentCourse.name}</h2>
+    <h2>Section for ${course.shortName} - ${course.name}</h2>
     <p><strong>Instructor:</strong> ${currentSection.instructorName}</p>
     <p><strong>Schedule:</strong> ${currentSection.Days.join(', ')} at ${currentSection.Time}</p>
     <p><strong>Location:</strong> ${currentSection.location || 'TBD'}</p>

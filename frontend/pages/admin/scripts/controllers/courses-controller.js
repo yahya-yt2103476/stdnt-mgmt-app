@@ -309,30 +309,6 @@ function clearCoursesContainer() {
   return false;
 }
 
-function renderListView() {
-  if (clearCoursesContainer()) return;
-  
-  coursesContainer.className = 'list-view';
-  
-    const wrapper = document.createElement('div');
-    wrapper.className = 'courses-vertical-layout';
-    
-    courses.forEach(course => {
-    const card = courseCard(course, {
-      onView: () => navigateToCourseDetails(course.id),
-      onEdit: () => window.location.href = `course-details-view.html?id=${course.id}&mode=edit`,
-      onDelete: () => deleteCourseById(course.id).then(() => window.location.reload())
-    });
-    
-        const cardWrapper = document.createElement('div');
-        cardWrapper.className = 'course-wrapper';
-        cardWrapper.appendChild(card);
-        wrapper.appendChild(cardWrapper);
-  });
-    
-    coursesContainer.appendChild(wrapper);
-}
-
 function renderCalendarView() {
   if (clearCoursesContainer()) return;
   

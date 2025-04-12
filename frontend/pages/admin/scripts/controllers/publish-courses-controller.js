@@ -202,17 +202,7 @@ async function handleEditPublishedCourse(event) {
     // Create modal elements dynamically
     const modal = document.createElement('div');
     modal.className = 'modal';
-    modal.style.cssText = `
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    `;
+    modal.style.cssText = `position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);display: flex;justify-content: center;align-items: center;`;
 
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';

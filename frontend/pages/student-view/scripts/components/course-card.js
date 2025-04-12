@@ -2,15 +2,6 @@
 function createCourseCard(courseName, status, grade, semester, category) {
     const card = document.createElement('div');
     card.className = 'course-card';
-    
-    
-    const getStatusColor = (status) => {
-        const statusLower = status?.toLowerCase() || '';
-        return statusLower === 'completed' ? '#4CAF50' : 
-               statusLower === 'in-progress' ? '#2196F3' : 
-               '#FFC107';
-    };
-
 
     const normalizedCategory = category ? 
         (category.toLowerCase() === 'general programming' ? 'programming' : category.toLowerCase()) : 
@@ -51,36 +42,6 @@ function createCourseCard(courseName, status, grade, semester, category) {
     `;
 
     return card;
-}
-
-
-function renderCourseCards(courses, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Container with id '${containerId}' not found`);
-        return;
-    }
-
-
-    container.style.display = 'grid';
-    container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
-    container.style.gap = '2rem';
-    container.style.padding = '2rem';
-    container.style.maxWidth = '1200px';
-    container.style.margin = '0 auto';
-
-    container.innerHTML = '';
-
-    courses.forEach(course => {
-        const card = createCourseCard(
-            course.name,
-            course.status,
-            course.grade,
-            course.semester,
-            course.category
-        );
-        container.appendChild(card);
-    });
 }
 
 export { createCourseCard };

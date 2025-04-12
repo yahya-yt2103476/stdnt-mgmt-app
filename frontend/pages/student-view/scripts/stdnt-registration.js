@@ -100,7 +100,7 @@ async function loadsections(courseid) {
   const courseShortName = courses.find((c) => c.id == courseid).shortName;
 
   // get sections for this specific course
-  let sections = await fetchSectionsByCourseId(courseid);
+  let sectionsById = await fetchSectionsByCourseId(courseid);
 
   const sectionsContainer = document.getElementById(`sections-${courseid}`);
   const toggleButton = document.getElementById(`toggle-${courseid}`);
@@ -113,14 +113,14 @@ async function loadsections(courseid) {
   }
 
   // handle no sections available
-  if (sections.length === 0) {
+  if (sectionsById.length === 0) {
     sectionsContainer.innerHTML = `<b><div class="msg">No available sections for this course...</div></b>`;
     toggleButton.textContent = "View Sections";
     return;
   }
 
   // display each section
-  for (const sec of sections) {
+  for (const sec of sectionsById) {
     // calculate remaining seats
     const enrolledCount = sec.enrolledStudents.length;
     const remainingSeats = sec.capacity - enrolledCount;
@@ -186,6 +186,19 @@ async function registerForSection(event, sectionId, courseId) {
 
   console.log("sectionId: ", sectionId);
   console.log("courseId: ", courseId);
+
+  // check if student is already registered for this course
+  const isRegisteredForCourse = registrations.some(
+    (r) =>
+      r.studentId == currentStudentInfo.id &&
+      sections.find((s) => s.id == r.sectionId)?.courseId == courseId &&
+      r.status !== "cancelled"
+  );
+
+  if (isRegisteredForCourse) {
+    alert("You are already are/were registered in a section for this course");
+    return;
+  }
 
   // condition - check prerequisites
   const course = courses.find((c) => c.id == courseId);
