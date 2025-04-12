@@ -109,7 +109,7 @@ function loadCourses(courseData, instructorCourses, instructorSections) {
             <p><b>Total Enrolled Students: </b>${course.totalEnrolled}</p>
           </div>
           <div class="card-footer">
-            <a href="../views/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${matchingSection.id}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
+            <a href="../views/instructor-courses-details.html?courseId=${matchingCourse.id}&sectionId=${course.sectionId}&instructorName=${instructorName}&courseShortName=${course.shortName}" class="view-course-btn">View Course</a>
           </div>
         </div>
       </div>

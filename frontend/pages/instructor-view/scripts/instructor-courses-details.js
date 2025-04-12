@@ -27,6 +27,15 @@ const courseShortName = urlParams
   .replace(/\s/g, "")
   .trim();
 
+//test
+console.log("Course ID");
+console.log(courseId);
+console.log("Section ID");
+console.log(sectionId);
+
+
+//test  
+
 let allCourses = await fetchAllCourses();
 let allSections = await fetchAllSections();
 let allStudents = await fetchAllStudents();
@@ -44,7 +53,7 @@ let enrolledStudents = () => {
   return allStudents.filter(
     (student) =>
       student.registeredCourses &&
-      student.registeredCourses.find((e) => e.courseId === courseId)
+      student.registeredCourses.find((e) => e.SectionId === sectionId)
   );
 };
 
