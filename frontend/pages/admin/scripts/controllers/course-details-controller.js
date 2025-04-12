@@ -44,11 +44,7 @@ async function init() {
   });
   
   document.getElementById('addPrereqBtn').addEventListener('click', addPrerequisiteField);
-  
-  document.getElementById('addSectionButton').addEventListener('click', () => {
-    window.location.href = `section-details-view.html?mode=add&courseId=${courseId}`;
-  });
-  
+
   courseForm.addEventListener('submit', saveForm);
   
   try {
