@@ -14,7 +14,8 @@ let studentFullName = student.name.split(" ");
 let studentFirstName =
   studentFullName[0].charAt(0).toUpperCase() + studentFullName[0].slice(1);
 let studentLastName =
-  studentFullName[1].charAt(0).toUpperCase() + studentFullName[1].slice(1);
+  studentFullName[studentFullName.length - 1].charAt(0).toUpperCase() +
+  studentFullName[studentFullName.length - 1].slice(1);
 welcomeMessage.innerHTML = `Welcome back ${studentFirstName} ${studentLastName}!`;
 
 logoutbtn.addEventListener("click", logoutCurrentUser);
