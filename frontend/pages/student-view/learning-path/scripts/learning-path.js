@@ -1,24 +1,19 @@
 import { fetchStudentById } from "../../../../services/student-service.js";
 import { createCourseCard } from './components/course-card.js';
-<<<<<<< Updated upstream
-import { logoutCurrentUser } from '../../../../../frontend/services/logout.js';
-=======
-import { LogoutCurrentUser } from '../../../../services/logout.js';
-import { fetchCourseById } from '../../../../services/course-service.js';
+import { logoutCurrentUser } from '../../../../services/logout.js';
+import {fetchCourseById} from '../../../../services/course-service.js';
 import { fetchSectionById } from '../../../../services/section-service.js';
->>>>>>> Stashed changes
-
 let studentId = sessionStorage.getItem("authenticated_user_id");
 let student;
-
 async function fetchCategories() {
     try {
-        const response = await fetch('/backend/database/categories.json');
+        const response = await fetch('../../../../../backend/database/categories.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const categories = await response.json();
-        return categories;
+        const categoriesData = await response.json();
+        const categoryStr = String(categoriesData);
+        return categoryStr.split(',');
     } catch (error) {
         console.error('Error fetching categories:', error);
         return [];
@@ -27,7 +22,6 @@ async function fetchCategories() {
 
 function normalizeCategory(category) {
     if (!category) return '';
-    // Convert to string first to handle non-string inputs
     const categoryStr = String(category);
     const normalized = categoryStr.toLowerCase().trim();
     return normalized === 'general programming' ? 'programming' : normalized;
@@ -37,8 +31,6 @@ function isSemesterCurrent(semester) {
     if (!semester) return false;
     
     const now = new Date();
-    const currentYear = now.getFullYear();
-    
     const [term, year] = semester.split(' ');
     const semesterYear = parseInt(year);
     
@@ -98,9 +90,10 @@ async function processCourses(student) {
         console.log('Processing registered courses:', student.registeredCourses);
         for (const registeredCourse of student.registeredCourses) {
             try {
+                // Fix the property name to match case (SectionId vs sectionId)
                 console.log('Processing course ID:', registeredCourse.courseId, 'Section ID:', registeredCourse.SectionId);
                 const courseDetails = await fetchCourseById(registeredCourse.courseId);
-                const sectionDetails = await fetchSectionById(registeredCourse.SectionId);
+                const sectionDetails = await fetchSectionById(registeredCourse.SectionId); // Changed to match case
                 
                 console.log('Fetched course details:', courseDetails);
                 console.log('Fetched section details:', sectionDetails);
@@ -135,6 +128,7 @@ async function processCourses(student) {
         console.log('Processing completed courses:', student.completedCourses);
         for (const completedCourse of student.completedCourses) {
             try {
+                // Changed fetchCourseDetails to fetchCourseById to match the imported function
                 const courseDetails = await fetchCourseById(completedCourse.courseId);
                 console.log('Fetched completed course details:', courseDetails);
                 
@@ -211,6 +205,20 @@ function setupSectionToggles() {
 
 
 function setupNavigation() {
+    // Add classes to ensure proper styling
+    const navElement = document.querySelector('nav');
+    if (navElement) {
+        navElement.classList.add('student-nav');
+    }
+    
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        const activeLink = navLinks.querySelector('a[href="learning-path-page.html"]');
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+    }
+
     const profileBtn = document.getElementById('userBtn');
     if (profileBtn) {
         profileBtn.addEventListener('click', () => {
