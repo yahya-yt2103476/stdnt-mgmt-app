@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login page</title>
-    <link rel="stylesheet" href="css/general.css" />
+    <title>signup</title>
+    <link rel="stylesheet" href="../styles/general.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="../../styles/footer.css" />
   </head>
+
   <body>
     <main>
-      <h1>Welcome to Qatar University's CSE Resgiteration system</h1>
+      <h1>Welcome to Qatar University Resgiteration system</h1>
 
       <form action="#" id="form">
         <div class="form-group">
@@ -29,7 +30,50 @@
               <p>Admin</p>
             </i>
           </div>
+        </div>
 
+        <div class="form-group">
+          <div id="name-and-major-container">
+            <div>
+              <label for="name">
+                <p>Name:</p>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="e.g. Ahmed Ali"
+              />
+            </div>
+
+            <div>
+              <label for="Major">
+                <p>Major:</p>
+              </label>
+              <select
+                name="Major"
+                id="Major"
+                required
+                style="
+                  width: 80%;
+                  height: 40px;
+                  margin: 20px;
+                  border-radius: 8px;
+                  font-size: 16px;
+                "
+              >
+                <option value="">Select your major</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Computer Engineering">
+                  Computer Engineering
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="email">
             <p>Email:</p>
           </label>
@@ -41,6 +85,7 @@
             placeholder="e.g. Student@qu.edu.qa"
           />
         </div>
+
         <div class="form-group">
           <label for="password">
             <p>Password:</p>
@@ -54,9 +99,24 @@
           />
         </div>
         <div class="form-group">
-          <button type="submit">Sign in</button>
+          <label for="confirmPassword">
+            <p>Confirm Password:</p>
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            placeholder="e.g. Pass123"
+          />
+        </div>
+
+        <div class="form-group">
+          <button type="button" id="registerButton">Sign up</button>
           <p class="sign-in-up">
-            <a href="signup.html">New User? click here to sign up</a>
+            <a href="login_page.html"
+              >Already have an account? click here to Sign in</a
+            >
           </p>
         </div>
         <p id="indicator">Incorrect Email/Password</p>
@@ -86,6 +146,6 @@
         <p>&copy; 2024 Qatar University. All rights reserved.</p>
       </div>
     </footer>
-    <script src="scripts/index.js" type="module"></script>
+    <script src="../scripts/index.js" type="module"></script>
   </body>
 </html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Path</title>
+    <link rel="stylesheet" href="../../../styles/navigation.css" />
+    <link rel="stylesheet" href="../../../styles/footer.css" />
+    <link rel="stylesheet" href="../styles/learniong-path-course-card.css" />
+    <link rel="stylesheet" href="../styles/student-view.css" />
+    <link rel="stylesheet" href="../styles/learning-path-page.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-links">
+          <a href="../views/stdnt-main-dashboard.html">Dashboard</a>
+          <a href="../views/learning-path-page.html">Learning Path</a>
+          <a href="../views/stdnt-registration.html">Course Registration</a>
+        </div>
+        <button class="log-out-btn" id="logOutBtn">
+          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M27,3V29a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V27H7v1H25V4H7V7H5V3A1,1,0,0,1,6,2H26A1,1,0,0,1,27,3ZM10.71,20.29,7.41,17H18V15H7.41l3.3-3.29L9.29,10.29l-5,5a1,1,0,0,0,0,1.42l5,5Z"
+              fill="#000"
+            />
+          </svg>
+        </button>
+      </nav>
+    </header>
+    <div class="Filter_Courses">
+      <h2>Filter courses</h2>
+      <label>Search by name</label>
+      <input type="search" id="course-search" />
+      <div></div>
+      <label>Search by category</label>
+      <select id="category-filter">
+        <option selected>All</option>
+        <option>Math</option>
+        <option>Programming</option>
+      </select>
+    </div>
+
+    <div class="learning-path-container">
+      <div class="status-columns-container">
+        <!-- In Progress Column -->
+        <section class="course-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59-8-8 8z"
+                />
+              </svg>
+              In Progress
+            </h2>
+            <button class="toggle-section" data-section="in-progress">
+              <svg
+                class="toggle-icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M10 17l5-5-5-5v10z" />
+              </svg>
+            </button>
+          </div>
+          <div id="in-progress-courses" class="courses-grid"></div>
+        </section>
+
+        <section class="course-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                />
+              </svg>
+              Pending Courses
+            </h2>
+            <button class="toggle-section" data-section="pending">
+              <svg
+                class="toggle-icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M10 17l5-5-5-5v10z" />
+              </svg>
+            </button>
+          </div>
+          <div id="pending-courses" class="courses-grid"></div>
+        </section>
+
+        <section class="course-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
+                />
+              </svg>
+              Completed Courses
+            </h2>
+            <button class="toggle-section" data-section="completed">
+              <svg
+                class="toggle-icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M10 17l5-5-5-5v10z" />
+              </svg>
+            </button>
+          </div>
+          <div id="completed-courses" class="courses-grid"></div>
+        </section>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>QU Resgiteration Portal</h3>
+          <p>Qatar University's Computer Science Department</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">University Website</a></li>
+            <li><a href="#">CSE Department</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: cse-support@qu.edu.qa</p>
+          <p>Phone: +974 4403-5555</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Qatar University. All rights reserved.</p>
+      </div>
+    </footer>
+    <script type="module" src="../scripts/components/course-card.js"></script>
+    <script type="module" src="../scripts/learning-path.js"></script>
+  </body>
+</html>
