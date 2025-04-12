@@ -10,7 +10,7 @@ async function fetchAllPublishedCourses() {
 //fetch a specific published course by its ID    
 async function fetchPublishedCourse(courseId) {
     const response = await fetchDataFromApi(`/publishedCourses/${courseId}`);
-    return response || null;
+    return response ;
     }   
 
 //create a new published course

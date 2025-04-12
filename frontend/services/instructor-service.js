@@ -24,8 +24,8 @@ async function fetchAllInstructors() {
 }
 
 async function fetchInstructorById(instructorId) {
-  const response = await fetchDataFromApi(`/instructors/${instructorId}`);
-  return response || null;
+  const response = await fetchDataFromApi(`/instructors/${parseInt(instructorId)}`);
+  return response ;
 }
 
 async function deleteInstructorById(instructorId) {

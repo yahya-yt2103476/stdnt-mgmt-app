@@ -1,24 +1,13 @@
 import { fetchAllCourses } from '../../../services/course-service.js';
+import { updatePublishedCourse,fetchPublishedCourse,fetchAllPublishedCourses} from '../../../services/published-courses-service.js';
 
 let coursesContainer;
 let loadingIndicator;
 const instructorId = sessionStorage.getItem('authenticated_user_id');
 
-async function fetchPublishedCourses() {
-    try {
-        const response = await fetch('/backend/database/published-courses.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching published courses:', error);
-        return [];
-    }
-}
-
 function createCourseCard(course, publishedInfo) {
-    const isInterested = publishedInfo.instructors.includes(parseInt(instructorId));
+    const instructors = publishedInfo.instructors || [];
+    const isInterested = instructors.includes(parseInt(instructorId));
     
     return `
         <div class="course-card" data-course-id="${course.id}">
@@ -33,34 +22,36 @@ function createCourseCard(course, publishedInfo) {
                 <p><strong>Prerequisites:</strong> ${course.prerequisites?.join(', ') || 'None'}</p>
             </div>
             <div class="instructor-list">
-                <p><strong>Interested Instructors:</strong> ${publishedInfo.instructors.length}</p>
+                <p><strong>Interested Instructors:</strong> ${instructors.length}</p>
             </div>
-            <button 
-                class="interest-btn ${isInterested ? 'interested' : ''}" 
-                data-course-id="${course.id}"
-                ${isInterested ? 'disabled' : ''}
-            >
-                ${isInterested ? 'Interest Registered' : 'Register Interest'}
-            </button>
+            ${isInterested ? 
+                `<span class="interest-label">Interest Registered</span>` :
+                `<button 
+                    class="interest-btn" 
+                    data-published-course-id="${publishedInfo.id}"
+                >
+                    Register Interest
+                </button>`
+            }
         </div>
     `;
 }
 
-async function registerInterest(courseId) {
+async function registerInterest(publishedCourseId) {
     try {
-        const publishedCourses = await fetchPublishedCourses();
-        const courseIndex = publishedCourses.findIndex(c => c.courseId === parseInt(courseId));
+        const publishedCourse = await fetchPublishedCourse(publishedCourseId);
         
-        if (courseIndex === -1) {
-            throw new Error('Course not found in published courses');
+       
+        if (!publishedCourse.instructors) {
+            publishedCourse.instructors = [];
         }
-
-        if (!publishedCourses[courseIndex].instructors.includes(parseInt(instructorId))) {
-            publishedCourses[courseIndex].instructors.push(parseInt(instructorId));
-            
-            console.log('Updated published courses:', publishedCourses);
+        
+       
+        if (!publishedCourse.instructors.includes(parseInt(instructorId))) {
+            publishedCourse.instructors.push(parseInt(instructorId));
+            await updatePublishedCourse(publishedCourse);
+            console.log('Updated published course:', publishedCourse);
             alert('Interest registered successfully!');
-            
             await loadCourses();
         }
     } catch (error) {
@@ -73,7 +64,7 @@ async function loadCourses() {
     try {
         const [allCourses, publishedCourses] = await Promise.all([
             fetchAllCourses(),
-            fetchPublishedCourses()
+            fetchAllPublishedCourses()
         ]);
 
         if (!Array.isArray(publishedCourses) || publishedCourses.length === 0) {
@@ -95,8 +86,8 @@ async function loadCourses() {
 
         document.querySelectorAll('.interest-btn:not([disabled])').forEach(button => {
             button.addEventListener('click', async (e) => {
-                const courseId = e.target.dataset.courseId;
-                await registerInterest(courseId);
+                const publishedCourseId = e.target.dataset.publishedCourseId;
+                await registerInterest(publishedCourseId);
             });
         });
 

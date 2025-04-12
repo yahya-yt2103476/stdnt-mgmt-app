@@ -373,15 +373,14 @@ app.delete("/api/registration/:id", async (request, res) => {
 app.get("/api/publishedCourses/", async (request, res) => {
     const users = await publishedCoursesRepo.getAllPublishedCourses()
     res.json(users)
-}
-)
+});  // Fixed missing closing parenthesis and semicolon
 
 //send an id to the endpoint, u receive an object of published course
 app.get("/api/publishedCourses/:id", async (request, res) => {
     const id = request.params.id;
     const user = await publishedCoursesRepo.getPublishedCourse(id)
     res.json(user)
-})
+});
 
 //send an object of published course, u receive whether its added or not
 app.post("/api/publishedCourses", async (request, res) => {

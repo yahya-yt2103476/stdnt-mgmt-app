@@ -3,8 +3,6 @@ import { fetchAllCourses } from "../../../services/course-service.js";
 import { fetchAllSections } from "../../../services/section-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 
-// test value for instructor ID
-// let instructor_Id = 2;
 
 let instructor_Id = Number(sessionStorage.getItem('instructor_id'));
 var currentInstructor = await fetchInstructorById(instructor_Id);
@@ -147,30 +145,3 @@ main();
 
 const logoutbtn = document.querySelector("#logOutBtn");
 logoutbtn.addEventListener("click", logoutCurrentUser);
-
-
-
-
-
-
-
-/*
-
- 
-      <div class="course-card">
-        <h3>Web Development</h3>
-        <p>Category: Programming</p>
-        <p>Enrolled Students: 30</p>
-        <a href="#" class="view-course-btn">View Course</a>
-      </div>
-
-*/
-
-/*
-      <div class="course-card">
-        <h3>${course.name} (${course.id})</h3>
-        <p>Category: ${course.category}</p>
-        <p>Total Enrolled Students: ${totalEnrolled}</p>
-        <a href="#" class="view-course-btn">View Course</a>
-      </div>
- */

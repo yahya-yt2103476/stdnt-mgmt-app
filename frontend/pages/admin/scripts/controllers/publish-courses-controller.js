@@ -1,5 +1,5 @@
 import { fetchAllCourses } from '../../../../services/course-service.js';
-
+import { createPublishedCourse, fetchAllPublishedCourses } from '../../../../services/published-courses-service.js';
 let selectedCoursesContainer;
 let loadingIndicator;
 let courseDropdown;
@@ -91,11 +91,67 @@ function handleAddCourse() {
 
 function setupEventListeners() {
     addCourseBtn.addEventListener('click', handleAddCourse);
+    
+    const publishBtn = document.getElementById('publishCoursesBtn');
+    if (publishBtn) {
+        publishBtn.addEventListener('click', handlePublishCourses);
+    } else {
+        console.error('Publish courses button not found');
+    }
+}
+
+async function handlePublishCourses() {
+    if (selectedCourses.size === 0) {
+        alert('Please select at least one course to publish');
+        return;
+    }
+    
+    const semester = targetSemester.value;
+    if (!semester) {
+        alert('Please select a target semester');
+        return;
+    }
+    
+    try {
+        const publishBtn = document.getElementById('publishCoursesBtn');
+        if (publishBtn) {
+            publishBtn.disabled = true;
+            publishBtn.textContent = 'Publishing...';
+        }
+    
+        const coursesToPublish = Array.from(selectedCourses)
+            .map(courseId => allCourses.find(c => c.id.toString() === courseId.toString()));
+        
+        const publishPromises = coursesToPublish.map(course => 
+            createPublishedCourse({
+                courseId: course.id,
+                semester: semester,
+                publishedDate: new Date().toISOString()
+            })
+        );
+        
+        const results = await Promise.all(publishPromises);
+    
+        selectedCourses.clear();
+        renderSelectedCourses();
+        
+        alert(`Successfully published ${results.length} courses for ${semester}`);
+    } catch (error) {
+        console.error('Error publishing courses:', error);
+        alert('Failed to publish courses. Please try again.');
+    } finally {
+       
+        const publishBtn = document.getElementById('publishCoursesBtn');
+        if (publishBtn) {
+            publishBtn.disabled = false;
+            publishBtn.textContent = 'Publish Courses';
+        }
+    }
 }
 
 function getCurrentSemester() {
     const now = new Date();
-    const month = now.getMonth(); // 0-11
+    const month = now.getMonth();
     const year = now.getFullYear();
     
     console.log('Current date:', now);
@@ -212,11 +268,12 @@ async function init() {
         });
         return;
     }
-
+    let allPublishedCourses=await  fetchAllPublishedCourses();
+    console.log(allPublishedCourses);
     console.log('All required elements found, proceeding with initialization');
     populateSemesterDropdown();
     setupEventListeners();
     await loadCourses();
 }
 
-document.addEventListener('DOMContentLoaded', init); 
+document.addEventListener('DOMContentLoaded', init);

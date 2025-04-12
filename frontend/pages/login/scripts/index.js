@@ -111,7 +111,7 @@ async function main() {
 
         case "Admin":
           // Ayoub: Working now
-          loadPage(user, "../admin/views/courses-view.html");
+          loadPage(user, "../admin/views/admin-dashboard.html");
           break;
       }
     } else if (usertype == undefined) {
