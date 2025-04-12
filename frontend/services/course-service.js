@@ -4,7 +4,6 @@ async function createCourse(data) {
   if (!data.category || !['programming', 'math'].includes(data.category)) {
     throw new Error('Course category must be either "programming" or "math"');
   }
-  
   const newCourse = {
     shortName: data.shortName,
     name: data.name,
@@ -13,7 +12,6 @@ async function createCourse(data) {
     category: data.category,
     prerequisites: data.prerequisites || []
   };
-  
   return await saveDataToApi('/courses', newCourse);
 }
 

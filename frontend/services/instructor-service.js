@@ -1,8 +1,6 @@
 import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
 
 async function createInstructor(data) {
-  
-  
   return await saveDataToApi('/instructors', newInstructor);
 }
 
