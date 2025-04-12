@@ -1,12 +1,5 @@
-import {
-  createUser,
-  updateUser,
-  fetchAllUsers,
-  fetchUserById,
-} from "../../../services/user-service.js";
+import { createUser, fetchAllUsers } from "../../../services/user-service.js";
 
-import { createStudent } from "../../../services/student-service.js";
-import { createInstructor } from "../../../services/instructor-service.js";
 import { AddStudent } from "../../../services/student-service.js";
 import { updateInstructor } from "../../../services/instructor-service.js";
 import { updateAdmin } from "../../../services/admin-service.js";
@@ -51,7 +44,6 @@ async function main() {
       if (window.location.pathname.includes("signup.html")) {
         document.querySelector("#Major").style.display = "block";
         document.querySelector("label[for='Major']").style.display = "block";
-
       }
     } else if (e === "Instructor") {
       usertype = e;
@@ -60,15 +52,13 @@ async function main() {
       if (window.location.pathname.includes("signup.html")) {
         document.querySelector("#Major").style.display = "none";
         document.querySelector("label[for='Major']").style.display = "none";
-
       }
     } else if (e === "Admin") {
       usertype = e;
       Admin_icn.transform = "scale(1.05)";
       Admin_icn.style.color = "Black";
       if (window.location.pathname.includes("signup.html")) {
-        document.querySelector("#Major").style.display =
-          "none";
+        document.querySelector("#Major").style.display = "none";
         document.querySelector("label[for='Major']").style.display = "none";
       }
     }
@@ -97,10 +87,7 @@ async function main() {
 
       switch (user.userType) {
         case "Student":
-          loadPage(
-            user,
-            "../student-view/stdnt-main-dashboard/stdnt-main-dashboard.html"
-          );
+          loadPage(user, "../../student-view/views/stdnt-main-dashboard.html");
           break;
         case "Instructor":
           loadPage(
@@ -110,7 +97,6 @@ async function main() {
           break;
 
         case "Admin":
-          // Ayoub: Working now
           loadPage(user, "../admin/views/admin-dashboard.html");
           break;
       }
@@ -155,12 +141,12 @@ async function main() {
       return;
     }
 
-    if ((!formObject.email || !formObject.password || !formObject.name)) {
+    if (!formObject.email || !formObject.password || !formObject.name) {
       alert("Please fill all the fields");
       return;
     }
 
-    if ((user.userType == "Student") && !formObject.Major) {
+    if (user.userType == "Student" && !formObject.Major) {
       alert("Please Choose a major");
       return;
     }
@@ -177,23 +163,29 @@ async function main() {
         break;
 
       case "Instructor":
-        await updateInstructor({
-          id: randomId,
-          name: user.name,
-        }, "POST");
+        await updateInstructor(
+          {
+            id: randomId,
+            name: user.name,
+          },
+          "POST"
+        );
         break;
 
       case "Admin":
-        await updateAdmin({
-          id: randomId,
-          name: user.name,
-        }, "POST");
+        await updateAdmin(
+          {
+            id: randomId,
+            name: user.name,
+          },
+          "POST"
+        );
         break;
     }
 
     await createUser(user);
     alert("User created successfully, click OK to go to login page");
-    window.location.href = "/frontend/pages/login/login_page.html";
+    window.location.href = "/frontend/pages/login/views/login_page.html";
   }
 }
 

@@ -1,7 +1,11 @@
-import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
+import {
+  fetchDataFromApi,
+  saveDataToApi,
+  deleteDataFromApi,
+} from "./api-service.js";
 
 async function createCourse(data) {
-  if (!data.category || !['programming', 'math'].includes(data.category)) {
+  if (!data.category || !["programming", "math"].includes(data.category)) {
     throw new Error('Course category must be either "programming" or "math"');
   }
   const newCourse = {
@@ -10,13 +14,14 @@ async function createCourse(data) {
     description: data.description,
     creditHours: data.creditHours || 3,
     category: data.category,
-    prerequisites: data.prerequisites || []
+    prerequisites: data.prerequisites || [],
   };
-  return await saveDataToApi('/courses', newCourse);
+
+  return await saveDataToApi("/courses", newCourse);
 }
 
 async function fetchAllCourses() {
-  const response = await fetchDataFromApi('/courses');
+  const response = await fetchDataFromApi("/courses");
   return response || [];
 }
 
@@ -31,13 +36,25 @@ async function deleteCourseById(courseId) {
 
 async function updateCourse(courseData) {
   if (!courseData.id) {
-    throw new Error('Course ID is required for updates');
+    throw new Error("Course ID is required for updates");
   }
-  
-  if (!courseData.category || !['programming', 'math'].includes(courseData.category)) {
-    throw new Error('Course category must be either "programming" or "math"');
+
+  if (
+    !courseData.category ||
+    ![
+      "cybersecurity",
+      "ai",
+      "data Science",
+      "math",
+      "Physics",
+      "programming",
+    ].includes(courseData.category)
+  ) {
+    throw new Error(
+      'Course category must be one of the following: "cybersecurity", "ai", "data science", "math", "physics", "programming"'
+    );
   }
-  
+
   const updatedCourse = {
     id: courseData.id,
     shortName: courseData.shortName,
@@ -45,16 +62,16 @@ async function updateCourse(courseData) {
     description: courseData.description,
     creditHours: courseData.creditHours || 3,
     category: courseData.category,
-    prerequisites: courseData.prerequisites || []
+    prerequisites: courseData.prerequisites || [],
   };
-  
+
   return await saveDataToApi(`/courses/${courseData.id}`, updatedCourse);
 }
 
-export { 
-  createCourse, 
-  fetchAllCourses, 
-  fetchCourseById, 
+export {
+  createCourse,
+  fetchAllCourses,
+  fetchCourseById,
   deleteCourseById,
-  updateCourse 
-}; 
+  updateCourse,
+};

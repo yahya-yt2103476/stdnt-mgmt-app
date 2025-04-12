@@ -1,37 +1,21 @@
 import {
-  createSection,
-  updateSection,
   fetchAllSections,
-  fetchSectionById,
   fetchSectionsByCourseId,
-  fetchSectionsBySemester,
-  deleteSectionById,
   addStudentToSection,
 } from "../../../services/section-service.js";
 
-import { fetchUserById } from "../../../services/user-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
-import {
-  fetchAllCourses,
-  fetchCourseById,
-} from "../../../services/course-service.js";
+import { fetchAllCourses } from "../../../services/course-service.js";
 
 import {
   createAndSaveRegistration,
   fetchAllRegistrations,
-  fetchRegistrationById,
-  updateRegistrationData,
-  deleteRegistrationById,
 } from "../../../services/registration-service.js";
 
 import {
-  createStudent,
-  updateStudent,
-  fetchAllStudents,
   fetchStudentById,
-  deleteStudentById,
   addCourseToRegisteredCourses,
 } from "../../../services/student-service.js";
 
@@ -114,11 +98,10 @@ function renderCourses(coursesToRender) {
 
 async function loadsections(courseid) {
   const courseShortName = courses.find((c) => c.id == courseid).shortName;
-  let sections = await fetchSectionsByCourseId(courseid);
+
   // get sections for this specific course
-  // const courseSections = sections.filter(
-  //   (section) => section.courseId == courseid
-  // );
+  let sections = await fetchSectionsByCourseId(courseid);
+
   const sectionsContainer = document.getElementById(`sections-${courseid}`);
   const toggleButton = document.getElementById(`toggle-${courseid}`);
 
@@ -195,15 +178,16 @@ async function loadsections(courseid) {
 window.loadsections = loadsections;
 
 async function registerForSection(event, sectionId, courseId) {
-  //edge case to do: a student can't register a course if he/she is already registered for that course
-  // check if the student is already registered for the course, just a different section
+  // edge case to do: a student can't register a course if he/she is already registered for that course
+
+  // condition - check if the student is already registered for the course, just a different section
   event.preventDefault();
   console.log(event);
 
   console.log("sectionId: ", sectionId);
   console.log("courseId: ", courseId);
 
-  // condition  - check prerequisites
+  // condition - check prerequisites
   const course = courses.find((c) => c.id == courseId);
   const hasPrerequisites = course.prerequisites.every((prereq) =>
     currentStudentInfo.completedCourses?.some((c) => c.courseId === prereq)
@@ -223,14 +207,11 @@ async function registerForSection(event, sectionId, courseId) {
     Grade: "",
   };
 
-  //   //-----------------------------------------
   try {
     await createAndSaveRegistration(newRegistration);
   } catch (err) {
     console.error("Error creating registration: ", err);
   }
-
-  //   //-----------------------------------------
 
   let sectionIndex = sections.findIndex((section) => section.id == sectionId);
   sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);

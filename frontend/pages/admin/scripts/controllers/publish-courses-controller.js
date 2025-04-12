@@ -199,70 +199,87 @@ async function handleEditPublishedCourse(event) {
     
     if (!publishedCourse) return;
 
-    const modal = document.getElementById('editCourseModal');
-    if (!modal) {
-        console.error('Edit course modal not found in DOM');
-        alert('Edit functionality is not available at the moment.');
-        return;
-    }
+    // Create modal elements dynamically
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.cssText = `
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    `;
 
-    const form = document.getElementById('editCourseForm');
-    const semesterInput = document.getElementById('editSemester');
-    const deadlineInput = document.getElementById('editDeadline');
-    const closeBtn = document.getElementById('closeModal');
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modalContent.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 400px;
+    `;
 
-    if (!form || !semesterInput || !deadlineInput || !closeBtn) {
-        console.error('Required modal elements not found');
-        alert('Edit functionality is not available at the moment.');
-        return;
-    }
+    const form = document.createElement('form');
+    form.innerHTML = `
+        <h2>Edit Published Course</h2>
+        <div class="form-group">
+            <label>Semester:</label>
+            <input type="text" id="editSemester" required>
+        </div>
+        <div class="form-group">
+            <label>Submission Deadline:</label>
+            <input type="datetime-local" id="editDeadline" required>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="cancel-btn">Cancel</button>
+            <button type="submit" class="save-btn">Save Changes</button>
+        </div>
+    `;
 
-    // Format the date properly for the datetime-local input
+    // Set initial values
+    const semesterInput = form.querySelector('#editSemester');
+    const deadlineInput = form.querySelector('#editDeadline');
+    
     const deadline = new Date(publishedCourse.submissionDeadline);
-    const formattedDate = deadline.getFullYear().toString().padStart(4, '0') + '-' +
-        (deadline.getMonth() + 1).toString().padStart(2, '0') + '-' +
-        deadline.getDate().toString().padStart(2, '0') + 'T' +
-        deadline.getHours().toString().padStart(2, '0') + ':' +
-        deadline.getMinutes().toString().padStart(2, '0');
-
+    const formattedDate = deadline.toISOString().slice(0, 16);
+    
     semesterInput.value = publishedCourse.semester;
     deadlineInput.value = formattedDate;
 
-    modal.style.display = 'block';
-
+    // Handle form submission
     form.onsubmit = async (e) => {
         e.preventDefault();
-        
         try {
-            const newDeadline = new Date(deadlineInput.value);
-            if (isNaN(newDeadline.getTime())) {
-                throw new Error('Invalid date format');
-            }
-
             const updatedCourse = {
                 ...publishedCourse,
                 semester: semesterInput.value,
-                submissionDeadline: newDeadline.toISOString()
+                submissionDeadline: new Date(deadlineInput.value).toISOString()
             };
             
             await updatePublishedCourse(updatedCourse);
-            await loadCourses(); 
-            modal.style.display = 'none';
+            await loadCourses();
+            modal.remove();
         } catch (error) {
-            console.error('Error updating published course:', error);
-            alert('Failed to update the published course. Please ensure the date format is correct.');
+            console.error('Error updating course:', error);
+            alert('Update failed: ' + error.message);
         }
     };
 
-    closeBtn.onclick = () => {
-        modal.style.display = 'none';
+    // Handle cancellation
+    form.querySelector('.cancel-btn').onclick = () => modal.remove();
+
+    // Close modal on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
     };
 
-    window.onclick = (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    };
+    modalContent.appendChild(form);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
 }
 
 function renderPublishedCourses() {
