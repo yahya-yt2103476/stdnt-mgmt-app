@@ -1,23 +1,22 @@
 import { NextResponse } from 'next/server';
-import UserRepo from '../../repos/user-repo';
+import UserRepo from '../../../repos/user-repo';
 
 const userRepo = new UserRepo();
 
 export async function GET(request, { params }) {
     
     try {
+        const id = params.id;
+        const user = await userRepo.findById(id);
 
-    const { id } = params.id;
-    const user = await userRepo.findById(id);
+        if (!user) {
+            return NextResponse.json(
+                { error: "User not found" },
+                { status: 404 }
+            )
+        }
 
-    if (!user) {
-        return NextResponse.json(
-            { error: "User not found" },
-            { status: 404 }
-        )
-    }
-
-    return NextResponse.json(user);
+        return NextResponse.json(user);
 
     } catch (error) {
         return NextResponse.json(
@@ -31,12 +30,11 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
     try {
+        const id = params.id;
+        const userData = await request.json();
 
-    const { id } = params.id;
-    const userData = await request.json();
-
-    const updatedUser = await userRepo.update(id, userData);
-    return NextResponse.json(updatedUser);
+        const updatedUser = await userRepo.update(id, userData);
+        return NextResponse.json(updatedUser);
 
     } catch (error) {
         return NextResponse.json(
@@ -50,7 +48,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
     try {
-        const { id } = params.id;
+        const id = params.id;
         await userRepo.delete(id);
         return NextResponse.json(
             { message: "User deleted successfully" },

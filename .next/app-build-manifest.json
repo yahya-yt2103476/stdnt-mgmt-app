@@ -1,30 +1,54 @@
 {
   "pages": {
-    "/pages/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/pages/dashboard/page.css",
-      "static/chunks/app/pages/dashboard/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/layout.js"
     ],
-    "/api/users/route": [
+    "/api/sections/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/users/route.js"
+      "static/chunks/app/api/sections/route.js"
     ],
-    "/api/[...all]/route": [
+    "/api/courses/published/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/[...all]/route.js"
+      "static/chunks/app/api/courses/published/route.js"
     ],
-    "/_not-found/page": [
+    "/api/courses/completed/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/api/courses/completed/route.js"
+    ],
+    "/api/courses/prerequisites/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/prerequisites/route.js"
+    ],
+    "/api/courses/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/[id]/route.js"
+    ],
+    "/api/registrations/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/registrations/route.js"
+    ],
+    "/api/sections/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/sections/[id]/route.js"
+    ],
+    "/api/sections/days/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/sections/days/route.js"
+    ],
+    "/api/sections/days/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/sections/days/[id]/route.js"
     ]
   }
 }

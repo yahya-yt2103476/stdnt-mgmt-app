@@ -23,6 +23,31 @@ enum Status {
   CANCELLED
 }
 
+enum CourseCategory {
+  MATH
+  SCIENCE
+  COMPUTER_SCIENCE
+  ENGINEERING
+  BUSINESS
+  ARTS
+  HUMANITIES
+  SOCIAL_SCIENCES
+  HEALTH
+  OTHER
+}
+
+enum Semester {
+  FALL2023
+  SPRING2024
+  SUMMER2024
+  FALL2024
+  SPRING2025
+  SUMMER2025
+  FALL2025
+  SPRING2026
+  SUMMER2026
+}
+
 model User {
   id               Int           @id @default(autoincrement())
   email            String        @unique
@@ -67,12 +92,12 @@ model Student {
 }
 
 model Course {
-  id               Int           @id @default(autoincrement())
-  shortName        String        @unique
+  id               Int             @id @default(autoincrement())
+  shortName        String          @unique
   name             String
   description      String
   creditHours      Int
-  category         String
+  category         CourseCategory
   prerequisites    CoursePrerequisite[] @relation("PrerequisiteToCourse")
   isPrerequisite   CoursePrerequisite[] @relation("CourseToPrerequisite")
 
@@ -98,7 +123,7 @@ model Section {
   instructorId     Int
   capacity         Int
   status           Status        @default(OPEN)
-  semester         String
+  semester         Semester
   time             String
   location         String
   courseContent    String?
@@ -148,7 +173,7 @@ model CompletedCourse {
 model PublishedCourse {
   id                 Int         @id @default(autoincrement())
   courseId           Int
-  semester           String
+  semester           Semester
   publishedDate      DateTime    @default(now())
   submissionDeadline DateTime?
 
@@ -156,9 +181,3 @@ model PublishedCourse {
   
   @@unique([courseId, semester])
 }
-
-model Category {
-  id               Int           @id @default(autoincrement())
-  name             String        @unique
-}
-

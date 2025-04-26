@@ -197,11 +197,6 @@ exports.Prisma.PublishedCourseScalarFieldEnum = {
   submissionDeadline: 'submissionDeadline'
 };
 
-exports.Prisma.CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -217,10 +212,35 @@ exports.UserType = exports.$Enums.UserType = {
   STUDENT: 'STUDENT'
 };
 
+exports.CourseCategory = exports.$Enums.CourseCategory = {
+  MATH: 'MATH',
+  SCIENCE: 'SCIENCE',
+  COMPUTER_SCIENCE: 'COMPUTER_SCIENCE',
+  ENGINEERING: 'ENGINEERING',
+  BUSINESS: 'BUSINESS',
+  ARTS: 'ARTS',
+  HUMANITIES: 'HUMANITIES',
+  SOCIAL_SCIENCES: 'SOCIAL_SCIENCES',
+  HEALTH: 'HEALTH',
+  OTHER: 'OTHER'
+};
+
 exports.Status = exports.$Enums.Status = {
   OPEN: 'OPEN',
   APPROVED: 'APPROVED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.Semester = exports.$Enums.Semester = {
+  FALL2023: 'FALL2023',
+  SPRING2024: 'SPRING2024',
+  SUMMER2024: 'SUMMER2024',
+  FALL2024: 'FALL2024',
+  SPRING2025: 'SPRING2025',
+  SUMMER2025: 'SUMMER2025',
+  FALL2025: 'FALL2025',
+  SPRING2026: 'SPRING2026',
+  SUMMER2026: 'SUMMER2026'
 };
 
 exports.Prisma.ModelName = {
@@ -234,8 +254,7 @@ exports.Prisma.ModelName = {
   SectionDay: 'SectionDay',
   Registration: 'Registration',
   CompletedCourse: 'CompletedCourse',
-  PublishedCourse: 'PublishedCourse',
-  Category: 'Category'
+  PublishedCourse: 'PublishedCourse'
 };
 
 /**

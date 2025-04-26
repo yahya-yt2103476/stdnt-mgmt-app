@@ -21,7 +21,6 @@ async function main() {
     const admins = await readJsonFile('admins.json');
     const instructors = await readJsonFile('instructors.json');
     const students = await readJsonFile('students.json');
-    const categories = await readJsonFile('categories.json');
     const courses = await readJsonFile('courses.json');
     const coursePrerequisites = await readJsonFile('course-prerequisites.json');
     const sections = await readJsonFile('sections.json');
@@ -39,7 +38,6 @@ async function main() {
       prisma.publishedCourse.deleteMany(),
       prisma.coursePrerequisite.deleteMany(),
       prisma.course.deleteMany(),
-      prisma.category.deleteMany(),
       prisma.student.deleteMany(),
       prisma.instructor.deleteMany(),
       prisma.admin.deleteMany(),
@@ -93,17 +91,6 @@ async function main() {
           major: student.major,
           gpa: student.gpa,
           userId: student.userId,
-        },
-      });
-    }
-
-    // Seed categories
-    console.log('Seeding categories...');
-    for (const category of categories) {
-      await prisma.category.create({
-        data: {
-          id: category.id,
-          name: category.name,
         },
       });
     }
