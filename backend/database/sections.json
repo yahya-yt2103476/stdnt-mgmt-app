@@ -1,67 +1,134 @@
 [
 	{
+		"id": 1,
+		"courseId": 6,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "Spring 2025",
+		"time": "02:00 02:50",
+		"location": "H07 A132",
+		"courseContent": ""
+	},
+	{
+		"id": 2,
 		"courseId": 7,
-		"instructorName": "Omar Hassan",
+		"instructorId": 2,
 		"capacity": 30,
-		"enrolledStudents": [
-
-		],
-		"status": "open",
+		"status": "OPEN",
 		"semester": "Spring 2025",
-		"Time": "05:00 05:50",
-		"Days": [
-			"Sunday",
-			"Tuesday",
-			"Thursday"
-		],
+		"time": "05:00 05:50",
 		"location": "H07 A128",
-		"courseContent": [
-
-		],
-		"id": 2
+		"courseContent": ""
 	},
 	{
+		"id": 3,
 		"courseId": 6,
-		"instructorName": "Omar Hassan",
+		"instructorId": 2,
 		"capacity": 30,
-		"enrolledStudents": [
-
-		],
-		"status": "open",
+		"status": "OPEN",
 		"semester": "Spring 2026",
-		"Time": "03:00 03:50",
-		"Days": [
-			"Sunday",
-			"Tuesday",
-			"Thursday"
-		],
+		"time": "03:00 03:50",
 		"location": "H07 A132",
-		"courseContent": [
-
-		],
-		"id": 3
+		"courseContent": ""
 	},
 	{
-		"courseId": 6,
-		"instructorName": "Omar Hassan",
+		"id": 4,
+		"courseId": 8,
+		"instructorId": 2,
+		"capacity": 25,
+		"status": "OPEN",
+		"semester": "Fall 2025",
+		"time": "09:00 09:50",
+		"location": "H07 B201",
+		"courseContent": ""
+	},
+	{
+		"id": 5,
+		"courseId": 9,
+		"instructorId": 2,
+		"capacity": 35,
+		"status": "OPEN",
+		"semester": "Fall 2025",
+		"time": "11:00 12:15",
+		"location": "H07 C110",
+		"courseContent": ""
+	},
+	{
+		"id": 6,
+		"courseId": 10,
+		"instructorId": 2,
 		"capacity": 30,
-		"enrolledStudents": [
-			1445,
-			7903,
-			6578
-		],
-		"status": "open",
+		"status": "OPEN",
 		"semester": "Spring 2025",
-		"Time": "02:00 02:50",
-		"Days": [
-			"Sunday",
-			"Tuesday",
-			"Thursday"
-		],
-		"location": "H07 A132",
-		"courseContent": [
-
-		],
-		"id": 1
+		"time": "01:00 02:15",
+		"location": "H07 A150",
+		"courseContent": ""
+	},
+	{
+		"id": 7,
+		"courseId": 11,
+		"instructorId": 2,
+		"capacity": 40,
+		"status": "OPEN",
+		"semester": "Fall 2025",
+		"time": "10:00 10:50",
+		"location": "H07 D105",
+		"courseContent": ""
+	},
+	{
+		"id": 8,
+		"courseId": 12,
+		"instructorId": 2,
+		"capacity": 45,
+		"status": "OPEN",
+		"semester": "Spring 2025",
+		"time": "08:00 09:15",
+		"location": "H07 E220",
+		"courseContent": ""
+	},
+	{
+		"id": 9,
+		"courseId": 13,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "Summer 2025",
+		"time": "04:00 05:15",
+		"location": "H07 B110",
+		"courseContent": ""
+	},
+	{
+		"id": 10,
+		"courseId": 14,
+		"instructorId": 2,
+		"capacity": 40,
+		"status": "OPEN",
+		"semester": "Fall 2025",
+		"time": "02:00 03:15",
+		"location": "H07 F130",
+		"courseContent": ""
+	},
+	{
+		"id": 11,
+		"courseId": 15,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "Spring 2026",
+		"time": "11:00 12:15",
+		"location": "H07 A140",
+		"courseContent": ""
+	},
+	{
+		"id": 12,
+		"courseId": 9,
+		"instructorId": 2,
+		"capacity": 35,
+		"status": "OPEN",
+		"semester": "Summer 2025",
+		"time": "01:00 02:15",
+		"location": "H07 A120",
+		"courseContent": ""
 	}
 ]

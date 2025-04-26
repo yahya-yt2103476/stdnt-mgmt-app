@@ -3,60 +3,60 @@
     "id": 1,
     "email": "ahmad@example.com",
     "password": "pass123",
-    "userType": "Admin"
+    "userType": "ADMIN"
   },
   {
     "id": 2,
     "email": "omar@example.com",
     "password": "pass123",
-    "userType": "Instructor"
+    "userType": "INSTRUCTOR"
   },
   {
     "id": 4,
     "email": "mohammed@example.com",
     "password": "pass123",
-    "userType": "Admin"
+    "userType": "ADMIN"
   },
   {
     "id": 5,
     "email": "layla@example.com",
     "password": "pass123",
-    "userType": "Instructor"
+    "userType": "INSTRUCTOR"
   },
   {
     "id": 8,
     "email": "yousef@example.com",
     "password": "pass123",
-    "userType": "Admin"
+    "userType": "ADMIN"
   },
   {
     "id": 9,
     "email": "aisha@example.com",
     "password": "pass123",
-    "userType": "Instructor"
+    "userType": "INSTRUCTOR"
   },
   {
     "id": 1092,
     "email": "ayoob988@gmail.com",
     "password": "pass123",
-    "userType": "Admin"
+    "userType": "ADMIN"
   },
   {
     "id": 7903,
     "email": "a.mohammed19063@gmail.com",
     "password": "pass123",
-    "userType": "Student"
+    "userType": "STUDENT"
   },
   {
     "id": 1445,
     "email": "ayoob988+1@gmail.com",
     "password": "pass123",
-    "userType": "Student"
+    "userType": "STUDENT"
   },
   {
     "id": 6578,
     "email": "fatima@example.com",
     "password": "pass123",
-    "userType": "Student"
+    "userType": "STUDENT"
   }
 ]

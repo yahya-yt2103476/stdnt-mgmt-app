@@ -1,1 +1,8 @@
-[["cybersecurity", "ai", "data Science", "math", "physics", "programming"]]
+[
+  { "id": 1, "name": "cybersecurity" },
+  { "id": 2, "name": "ai" },
+  { "id": 3, "name": "data science" },
+  { "id": 4, "name": "math" },
+  { "id": 5, "name": "physics" },
+  { "id": 6, "name": "programming" }
+]

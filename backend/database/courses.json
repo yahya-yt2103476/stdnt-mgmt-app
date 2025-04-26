@@ -1,1 +1,82 @@
-[{"id":6,"shortName":"CMPS101","name":"Introduction to Computer Science","description":"Fundamental concepts of computer science and programming","creditHours":3,"category":"programming","prerequisites":[]},{"shortName":"CMPS151","name":"Programming Concepts","description":"This subject provides a foundational understanding of the core principles and ideas that underpin all programming languages. It explores essential topics such as data types, control flow (loops and conditionals), functions, data structures (like arrays and objects), and fundamental algorithms. The goal is to equip learners with a language-agnostic mental framework for problem-solving and software development, enabling them to grasp the logic and structure behind writing effective code, regardless of the specific programming language they choose to use.","creditHours":3,"category":"programming","prerequisites":[],"id":8},{"id":7,"shortName":"CMPS208","name":"Artificial Intelligence","description":"This course introduces the basics of artificial intelligence.","creditHours":5,"category":"programming","prerequisites":[]}]
+[
+    {
+        "id": 6,
+        "shortName": "CMPS101",
+        "name": "Introduction to Computer Science",
+        "description": "Fundamental concepts of computer science and programming",
+        "creditHours": 3,
+        "category": "programming"
+    },
+    {
+        "id": 7,
+        "shortName": "CMPS208",
+        "name": "Artificial Intelligence",
+        "description": "This course introduces the basics of artificial intelligence.",
+        "creditHours": 5,
+        "category": "ai"
+    },
+    {
+        "id": 8,
+        "shortName": "CMPS151",
+        "name": "Programming Concepts",
+        "description": "This subject provides a foundational understanding of the core principles and ideas that underpin all programming languages.",
+        "creditHours": 3,
+        "category": "programming"
+    },
+    {
+        "id": 9,
+        "shortName": "CMPS210",
+        "name": "Data Structures and Algorithms",
+        "description": "Advanced data structures and algorithmic techniques for efficient programming",
+        "creditHours": 4,
+        "category": "programming"
+    },
+    {
+        "id": 10,
+        "shortName": "CMPS310",
+        "name": "Machine Learning",
+        "description": "Fundamentals of machine learning algorithms and applications",
+        "creditHours": 4,
+        "category": "ai"
+    },
+    {
+        "id": 11,
+        "shortName": "CMPS250",
+        "name": "Database Systems",
+        "description": "Design and implementation of database management systems",
+        "creditHours": 3,
+        "category": "data science"
+    },
+    {
+        "id": 12,
+        "shortName": "MATH204",
+        "name": "Calculus II",
+        "description": "Advanced calculus concepts including integration techniques and applications",
+        "creditHours": 3,
+        "category": "math"
+    },
+    {
+        "id": 13,
+        "shortName": "CMPS320",
+        "name": "Cybersecurity Fundamentals",
+        "description": "Introduction to cybersecurity principles and practices",
+        "creditHours": 3,
+        "category": "cybersecurity"
+    },
+    {
+        "id": 14,
+        "shortName": "PHYS101",
+        "name": "General Physics I",
+        "description": "Mechanics, heat, and thermodynamics for science and engineering students",
+        "creditHours": 4,
+        "category": "physics"
+    },
+    {
+        "id": 15,
+        "shortName": "CMPS350",
+        "name": "Web Development",
+        "description": "Building modern web applications using current technologies",
+        "creditHours": 3,
+        "category": "programming"
+    }
+]

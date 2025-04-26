@@ -1,0 +1,164 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  ADMIN
+  INSTRUCTOR
+  STUDENT
+}
+
+enum Status {
+  OPEN
+  APPROVED
+  CANCELLED
+}
+
+model User {
+  id               Int           @id @default(autoincrement())
+  email            String        @unique
+  password         String 
+  userType         UserType
+
+  admin            Admin?        @relation("UserToAdmin")
+  instructor       Instructor?   @relation("UserToInstructor")
+  student          Student?      @relation("UserToStudent")
+}
+
+model Admin {
+  id               Int           @id @default(autoincrement())
+  name             String        
+  userId           Int           @unique
+
+  
+  user             User          @relation("UserToAdmin", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Instructor {
+  id               Int           @id @default(autoincrement())
+  name             String        
+  userId           Int           @unique
+
+  
+  user             User          @relation("UserToInstructor", fields: [userId], references: [id], onDelete: Cascade)
+  sections         Section[]
+}
+
+model Student {
+  id               Int           @id @default(autoincrement())
+  name             String
+  major            String
+  gpa              Float         @default(0.0)
+  userId           Int           @unique
+
+  
+  user             User          @relation("UserToStudent", fields: [userId], references: [id], onDelete: Cascade)
+  registrations    Registration[]
+  completedCourses CompletedCourse[]
+}
+
+model Course {
+  id               Int           @id @default(autoincrement())
+  shortName        String        @unique
+  name             String
+  description      String
+  creditHours      Int
+  category         String
+  prerequisites    CoursePrerequisite[] @relation("PrerequisiteToCourse")
+  isPrerequisite   CoursePrerequisite[] @relation("CourseToPrerequisite")
+
+  sections         Section[]
+  publishedCourses PublishedCourse[]
+  completedCourses CompletedCourse[]
+}
+
+model CoursePrerequisite {
+  id               Int           @id @default(autoincrement())
+  courseId         Int
+  prerequisiteId   Int
+
+  course           Course        @relation("PrerequisiteToCourse", fields: [courseId], references: [id], onDelete: Cascade)
+  prerequisite     Course        @relation("CourseToPrerequisite", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+  
+  @@unique([courseId, prerequisiteId])
+}
+
+model Section {
+  id               Int           @id @default(autoincrement())
+  courseId         Int
+  instructorId     Int
+  capacity         Int
+  status           Status        @default(OPEN)
+  semester         String
+  time             String
+  location         String
+  courseContent    String?
+
+  
+  course           Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  instructor       Instructor    @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  registrations    Registration[]
+  sectionDays      SectionDay[]
+}
+
+model SectionDay {
+  id              Int      @id @default(autoincrement())
+  sectionId       Int
+  day             String
+  
+  section         Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  
+  @@unique([sectionId, day])
+}
+
+model Registration {
+  id               Int           @id @default(autoincrement())
+  studentId        Int
+  sectionId        Int
+  grade            String?
+  status           Status        @default(OPEN)
+
+  section          Section       @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  student          Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  @@unique([studentId, sectionId])
+}
+
+model CompletedCourse {
+  id               Int           @id @default(autoincrement())
+  studentId        Int
+  courseId         Int
+  grade            String?
+
+  student          Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course           Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([studentId, courseId])
+}
+
+model PublishedCourse {
+  id                 Int         @id @default(autoincrement())
+  courseId           Int
+  semester           String
+  publishedDate      DateTime    @default(now())
+  submissionDeadline DateTime?
+
+  course             Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([courseId, semester])
+}
+
+model Category {
+  id               Int           @id @default(autoincrement())
+  name             String        @unique
+}
+

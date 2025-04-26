@@ -2,25 +2,43 @@
   {
     "id": 1445,
     "name": "ayoub theStudent2",
-    "completedCourses": [],
+    "completedCourses": [
+      { "courseId": 6, "grade": "A" },
+      { "courseId": 8, "grade": "B+" },
+      { "courseId": 12, "grade": "A-" }
+    ],
     "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
-    "gpa": "0.0",
-    "major": "Computer Science"
+    "gpa": 3.67,
+    "major": "Computer Science",
+    "userId": 1445
   },
   {
     "id": 7903,
     "name": "ayoub TheStudent",
-    "completedCourses": [],
+    "completedCourses": [
+      { "courseId": 6, "grade": "A-" },
+      { "courseId": 8, "grade": "B" },
+      { "courseId": 14, "grade": "B+" },
+      { "courseId": 12, "grade": "A" }
+    ],
     "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
-    "gpa": "0.0",
-    "major": "Computer Science"
+    "gpa": 3.58,
+    "major": "Computer Science",
+    "userId": 7903
   },
   {
     "id": 6578,
     "name": "fatima Al-sulaiti",
-    "completedCourses": [],
+    "completedCourses": [
+      { "courseId": 6, "grade": "A+" },
+      { "courseId": 8, "grade": "A" },
+      { "courseId": 9, "grade": "A-" },
+      { "courseId": 12, "grade": "B+" },
+      { "courseId": 14, "grade": "A-" }
+    ],
     "registeredCourses": [{ "courseId": 6, "SectionId": 1 }],
-    "gpa": "0.0",
-    "major": "Computer Science"
+    "gpa": 3.84,
+    "major": "Computer Science",
+    "userId": 6578
   }
 ]
