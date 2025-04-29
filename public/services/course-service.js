@@ -1,77 +1,122 @@
-import {
-  fetchDataFromApi,
-  saveDataToApi,
-  deleteDataFromApi,
-} from "./api-service.js";
-
-async function createCourse(data) {
-  if (!data.category || !["programming", "math"].includes(data.category)) {
-    throw new Error('Course category must be either "programming" or "math"');
-  }
-  const newCourse = {
-    shortName: data.shortName,
-    name: data.name,
-    description: data.description,
-    creditHours: data.creditHours || 3,
-    category: data.category,
-    prerequisites: data.prerequisites || [],
-  };
-
-  return await saveDataToApi("/courses", newCourse);
-}
-
-async function fetchAllCourses() {
-  const response = await fetchDataFromApi("/courses");
-  return response || [];
-}
-
-async function fetchCourseById(courseId) {
-  const response = await fetchDataFromApi(`/courses/${courseId}`);
-  return response || null;
-}
-
-async function deleteCourseById(courseId) {
-  return await deleteDataFromApi(`/courses/${courseId}`);
-}
-
-async function updateCourse(courseData) {
-  if (!courseData.id) {
-    throw new Error("Course ID is required for updates");
+class CourseService {
+  constructor() {
+    this.baseUrl = '/api/courses';
   }
 
-  if (
-    !courseData.category ||
-    ![
-      "cybersecurity",
-      "ai",
-      "data Science",
-      "math",
-      "Physics",
-      "programming",
-    ].includes(courseData.category)
-  ) {
-    throw new Error(
-      'Course category must be one of the following: "cybersecurity", "ai", "data science", "math", "physics", "programming"'
-    );
+  async getAllCourses() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch courses');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      throw error;
+    }
   }
 
-  const updatedCourse = {
-    id: courseData.id,
-    shortName: courseData.shortName,
-    name: courseData.name,
-    description: courseData.description,
-    creditHours: courseData.creditHours || 3,
-    category: courseData.category,
-    prerequisites: courseData.prerequisites || [],
-  };
+  async getCourseById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching course ${id}:`, error);
+      throw error;
+    }
+  }
 
-  return await saveDataToApi(`/courses/${courseData.id}`, updatedCourse);
+  async getCoursesByCategory(category) {
+    try {
+      const response = await fetch(`${this.baseUrl}?category=${category}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch courses by category');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching courses by category ${category}:`, error);
+      throw error;
+    }
+  }
+
+  async getCourseByShortName(shortName) {
+    try {
+      const response = await fetch(`${this.baseUrl}?shortName=${shortName}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch course by short name');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching course by short name ${shortName}:`, error);
+      throw error;
+    }
+  }
+
+  async createCourse(courseData) {
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(courseData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to create course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error creating course:', error);
+      throw error;
+    }
+  }
+
+  async updateCourse(id, courseData) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(courseData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to update course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error updating course ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteCourse(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to delete course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error deleting course ${id}:`, error);
+      throw error;
+    }
+  }
 }
 
-export {
-  createCourse,
-  fetchAllCourses,
-  fetchCourseById,
-  deleteCourseById,
-  updateCourse,
-};
+export default new CourseService();

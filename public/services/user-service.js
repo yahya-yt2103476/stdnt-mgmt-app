@@ -1,49 +1,94 @@
-import { fetchDataFromApi, saveDataToApi } from './api-service.js';
-
-async function createUser(data = {}) {
-  const validUserTypes = ['Admin', 'Instructor', 'Student'];
-  if (!data.userType || !validUserTypes.includes(data.userType)) {
-    throw new Error('UserType must be either Admin, Instructor or Student');
+class UserService {
+  constructor() {
+    this.baseUrl = '/api/users';
   }
-  
-  const users = await fetchAllUsers();
-  const maxId = users.reduce((max, user) => Math.max(max, user.id), 0);
-  
-  const newUser = {
-    id: data.id || maxId + 1,
-    email: data.email,
-    password: data.password,
-    userType: data.userType
-  };
-  
-  return await saveDataToApi('/users', newUser, "POST");
-}
 
-async function updateUser(data) {
-  const validUserTypes = ['Admin', 'Instructor', 'Student'];
-  if (!data.userType || !validUserTypes.includes(data.userType)) {
-    throw new Error('UserType must be either Admin, Instructor or Student');
+  async getAllUsers() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch users 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching users 0_0:', error);
+      throw error;
+    }
   }
-  
-  const updatedUser = {
-    id: data.id,
-    email: data.email,
-    password: data.password,
-    userType: data.userType
-  };
-  
-  return await saveDataToApi(`/users/${data.id}`, updatedUser);
+
+  async getUserById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch user 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching user ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async createUser(userData) {
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to create user 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error creating user 0_0:', error);
+      throw error;
+    }
+  }
+
+  async updateUser(id, userData) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to update user 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error updating user ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteUser(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to delete user');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error deleting user ${id}:`, error);
+      throw error;
+    }
+  }
 }
 
-async function fetchAllUsers() {
-  const response = await fetchDataFromApi('/users');
-  return response || [];
-}
-
-// Fetch a specific user by ID
-async function fetchUserById(userId) {
-  const response = await fetchDataFromApi(`/users/${userId}`);
-  return response || null;
-}
-
-export { createUser, updateUser, fetchAllUsers, fetchUserById }; 
+export default new UserService();

@@ -6,9 +6,11 @@ export async function GET(request) {
         const completedCourses = await CompletedCourseRepo.findAll();
         return NextResponse.json(completedCourses);
     } catch (error) {
-        return NextResponse.json({ error: "Completed course retrieval failed 0_0", details: error.message },
-            { status: 500 }
-        );
+        console.error("Error fetching completed courses:", error);
+        return NextResponse.json({ 
+            error: "Completed course retrieval failed", 
+            details: error.message 
+        }, { status: 500 });
     }
 }
 
@@ -18,8 +20,10 @@ export async function POST(request) {
         const completedCourse = await CompletedCourseRepo.create(completedCourseData);
         return NextResponse.json(completedCourse, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: "Completed course creation failed 0_0", details: error.message },
-            { status: 500 }
-        );
+        console.error("Error creating completed course:", error);
+        return NextResponse.json({ 
+            error: "Completed course creation failed", 
+            details: error.message 
+        }, { status: 500 });
     }
 }

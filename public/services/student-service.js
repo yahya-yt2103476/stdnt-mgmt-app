@@ -1,82 +1,94 @@
-import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
-
-async function createStudent(data) {
-  if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
-    throw new Error('Major should be either Computer Engineering or Computer Science');
-  }
-  const newStudent = {
-    id: data.id,
-    name: data.name,
-    completedCourses: data.completedCourses || [],
-    registeredCourses: data.registeredCourses || [],
-    gpa: data.gpa || 0,
-    major: data.major
-  };
-
-  return await saveDataToApi('/students', newStudent);
-}
-
-async function AddStudent(student) {
-  return await saveDataToApi('/students', student);
-}
-
-async function updateStudent(data) {
-  if (data.major && !["Computer Science", "Computer Engineering"].includes(data.major)) {
-    console.log('Major should be either Computer Engineering or Computer Science');
-    console.log(`entered major: ${data.major}`);
-    throw new Error('Major should be either Computer Engineering or Computer Science');
+class StudentService {
+  constructor() {
+    this.baseUrl = '/api/students';
   }
 
-  const updatedStudent = {
-    id: data.id,
-    name: data.name,
-    completedCourses: data.completedCourses || [],
-    registeredCourses: data.registeredCourses || [],
-    gpa: data.gpa || 0,
-    major: data.major
-  };
-
-  return await saveDataToApi(`/students`, updatedStudent, "PUT");
-}
-
-async function fetchAllStudents() {
-  const response = await fetchDataFromApi('/students');
-  return response || [];
-}
-
-async function fetchStudentById(studentId) {
-  const response = await fetchDataFromApi(`/students/${studentId}`);
-  return response || null;
-}
-
-async function deleteStudentById(studentId) {
-  return await deleteDataFromApi(`/students/${studentId}`);
-}
-
-async function addCourseToRegisteredCourses(courseId, SectionId, studentId) {
-  parseInt(studentId);
-  parseInt(courseId);
-  parseInt(SectionId);
-  const student = await fetchStudentById(studentId);
-  if (!student) {
-    throw new Error('Student not found');
+  async getAllStudents() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch students 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching students 0_0:', error);
+      throw error;
+    }
   }
 
-  const updatedStudent = {
-    ...student,
-    registeredCourses: [...student.registeredCourses, { courseId, SectionId }]
-  };
+  async getStudentById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch student 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching student ${id}:`, error);
+      throw error;
+    }
+  }
 
-  return await updateStudent(updatedStudent);
+  async createStudent(studentData) {
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to create student 0-0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error creating student 0_0:', error);
+      throw error;
+    }
+  }
 
+  async updateStudent(id, studentData) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to update student 0.0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error updating student ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteStudent(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to delete student 0.0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error deleting student ${id}:`, error);
+      throw error;
+    }
+  }
 }
 
-export {
-  createStudent,
-  updateStudent,
-  fetchAllStudents,
-  fetchStudentById,
-  deleteStudentById,
-  addCourseToRegisteredCourses,
-  AddStudent
-}; 
+export default new StudentService();

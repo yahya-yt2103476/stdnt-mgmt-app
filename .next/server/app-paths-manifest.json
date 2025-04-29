@@ -1,5 +1,4 @@
 {
-  "/api/sections/[id]/route": "app/api/sections/[id]/route.js",
-  "/api/sections/days/[id]/route": "app/api/sections/days/[id]/route.js",
-  "/api/sections/days/route": "app/api/sections/days/route.js"
+  "/api/admins/route": "app/api/admins/route.js",
+  "/api/admins/[id]/route": "app/api/admins/[id]/route.js"
 }

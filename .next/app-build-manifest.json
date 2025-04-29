@@ -1,54 +1,24 @@
 {
   "pages": {
-    "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/layout.js"
-    ],
-    "/api/sections/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/sections/route.js"
-    ],
-    "/api/courses/published/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/courses/published/route.js"
-    ],
     "/api/courses/completed/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/courses/completed/route.js"
     ],
-    "/api/courses/prerequisites/route": [
+    "/api/courses/completed/[id]/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/courses/prerequisites/route.js"
+      "static/chunks/app/api/courses/completed/[id]/route.js"
     ],
-    "/api/courses/[id]/route": [
+    "/api/admins/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/courses/[id]/route.js"
+      "static/chunks/app/api/admins/route.js"
     ],
-    "/api/registrations/route": [
+    "/api/admins/[id]/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/registrations/route.js"
-    ],
-    "/api/sections/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/sections/[id]/route.js"
-    ],
-    "/api/sections/days/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/sections/days/route.js"
-    ],
-    "/api/sections/days/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/sections/days/[id]/route.js"
+      "static/chunks/app/api/admins/[id]/route.js"
     ]
   }
 }

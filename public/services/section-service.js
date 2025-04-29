@@ -1,84 +1,164 @@
-import { fetchDataFromApi, saveDataToApi, deleteDataFromApi } from './api-service.js';
-
-async function createSection(data) {
-  const newSection = {
-    courseId: data.courseId,
-    courseShortName: data.courseShortName,
-    instructorName: data.instructorName,
-    capacity: data.capacity || 30,
-    enrolledStudents: data.enrolledStudents || [],
-    status: data.status || 'open',
-    semester: data.semester,
-    Time: data.Time,
-    Days: data.Days || [],
-    location: data.location,
-    courseContent: data.courseContent || []
-  };
-  
-  return await saveDataToApi('/sections', newSection);
-}
-
-async function addStudentToSection(sectionId, studentId) {
-  const section = await fetchSectionById(sectionId);
-  if (section) {
-    section.enrolledStudents.push(parseInt(studentId));
-    return await saveDataToApi('/sections', section);
+class SectionService {
+  constructor() {
+    this.baseUrl = '/api/sections';
   }
-  throw new Error('Section not found');
-  
-  
+
+  async getAllSections() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch sctions 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching sections 0_0:', error);
+      throw error;
+    }
+  }
+
+  async getSectionById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch section 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching section ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async createSection(sectionData) {
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sectionData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to create section 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error creating section 0_0:', error);
+      throw error;
+    }
+  }
+
+  async updateSection(id, sectionData) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sectionData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to update section 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error updating section ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deleteSection(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to delete section 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error deleting section ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async getSectionsByCourse(courseId) {
+    try {
+      const response = await fetch(`${this.baseUrl}?courseId=${courseId}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to ftch sections for course 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching sections for course ${courseId}:`, error);
+      throw error;
+    }
+  }
+
+  async getSectionsBySemester(semester) {
+    try {
+      const response = await fetch(`${this.baseUrl}?semester=${semester}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch sections for semester 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching sections for semester ${semester}:`, error);
+      throw error;
+    }
+  }
+
+  async getSectionsByInstructor(instructorId) {
+    try {
+      const response = await fetch(`${this.baseUrl}?instructorId=${instructorId}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch sections for instructor 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching sections for instructor ${instructorId}:`, error);
+      throw error;
+    }
+  }
+
+  async getSectionsByCourseAndSemester(courseId, semester) {
+    try {
+      const response = await fetch(`${this.baseUrl}?courseId=${courseId}&semester=${semester}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch sections for course and semester 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching sections for course ${courseId} and semester ${semester}:`, error);
+      throw error;
+    }
+  }
+
+  async getSectionsByStatus(status) {
+    try {
+      const response = await fetch(`${this.baseUrl}?status=${status}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details + 'Failed to fetch sections by status 0_0');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching sections by status ${status}:`, error);
+      throw error;
+    }
+  }
 }
 
-async function updateSection(sectionId, data) {
-  const updatedSection = {
-    id: sectionId,
-    courseId: data.courseId,
-    courseShortName: data.courseShortName,
-    instructorName: data.instructorName,
-    capacity: data.capacity || 30,
-    enrolledStudents: data.enrolledStudents || [],
-    status: data.status || 'open',
-    semester: data.semester,
-    Time: data.Time,
-    Days: data.Days || [],
-    location: data.location,
-    courseContent: data.courseContent || []
-  };
-  
-  return await saveDataToApi('/sections', updatedSection);
-}
-
-async function fetchAllSections() {
-  const response = await fetchDataFromApi('/sections');
-  return response || [];
-}
-
-async function fetchSectionById(sectionId) {
-  const response = await fetchDataFromApi(`/sections/${sectionId}`);
-  return response || null;
-}
-
-async function fetchSectionsByCourseId(courseId) {
-  const response = await fetchDataFromApi(`/sections/course/${courseId}`);
-  return response || [];
-}
-
-async function fetchSectionsBySemester(semester) {
-  const response = await fetchDataFromApi(`/sections/semester/${semester}`);
-  return response || [];
-}
-
-async function deleteSectionById(sectionId) {
-  return await deleteDataFromApi(`/sections/${sectionId}`);
-}
-
-export { 
-  createSection,
-  updateSection,
-  fetchAllSections, 
-  fetchSectionById, 
-  fetchSectionsByCourseId,
-  fetchSectionsBySemester,
-  deleteSectionById,
-  addStudentToSection
-}; 
+export default new SectionService();

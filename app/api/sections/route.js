@@ -61,7 +61,8 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const section = await SectionRepo.create(request.body);
+        const sectionData = await request.json();
+        const section = await SectionRepo.create(sectionData);
         return NextResponse.json(section);
     } catch (error) {
         return NextResponse.json({ error: "Section creation failed 0_0", details: error.message },

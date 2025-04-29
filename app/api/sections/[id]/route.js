@@ -3,7 +3,7 @@ import SectionRepo from '../../../repos/section-repo';
 
 export async function GET(request, { params }) {
     try {
-        const id = params.id;
+        const id = parseInt(params.id);
         const section = await SectionRepo.findById(id);
         return NextResponse.json(section);
     } catch (error) {
@@ -14,8 +14,9 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
     try {
-        const id = params.id;
-        const section = await SectionRepo.update(id, request.body);
+        const id = parseInt(params.id);
+        const sectionData = await request.json();
+        const section = await SectionRepo.update(id, sectionData);
         return NextResponse.json(section);
     } catch (error) {
         return NextResponse.json({ error: "Section update failed 0_0", details: error.message },
@@ -25,7 +26,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
     try {
-        const id = params.id;
+        const id = parseInt(params.id);
         const section = await SectionRepo.delete(id);
         return NextResponse.json(section);
     } catch (error) {

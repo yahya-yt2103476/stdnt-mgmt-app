@@ -4,13 +4,12 @@ import CourseRepo from '../../repos/course-repo';
 const courseRepo = new CourseRepo();
 
 export async function GET(request) {
-
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const shortName = searchParams.get('shortName');
 
     try {
-        if (!(category || shortName || instructorId || studentId)) {
+        if (!(category || shortName)) {
             const courses = await courseRepo.findAll();
             return NextResponse.json(courses);
         } else if (category) {

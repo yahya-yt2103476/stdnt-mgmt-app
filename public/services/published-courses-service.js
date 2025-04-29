@@ -1,45 +1,108 @@
-import { fetchDataFromApi, deleteDataFromApi,saveDataToApi } from "./api-service.js";
+class PublishedCoursesService {
+  constructor() {
+    this.baseUrl = '/api/courses/published';
+  }
 
-
-//fetch all published courses
-async function fetchAllPublishedCourses() {
-    const response = await fetchDataFromApi("/publishedCourses");
-    return response || [];
+  async getAllPublishedCourses() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch published courses');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching published courses:', error);
+      throw error;
     }
+  }
 
-//fetch a specific published course by its ID    
-async function fetchPublishedCourse(courseId) {
-    const response = await fetchDataFromApi(`/publishedCourses/${courseId}`);
-    return response ;
-    }   
-
-//create a new published course
-async function createPublishedCourse(data) {
-    const publishedCourses = await fetchAllPublishedCourses();
-    const maxId = publishedCourses.reduce((max, course) => Math.max(max, course.id), 0);
-
-    const newCourse = {
-        id: maxId + 1,
-        ...data,
-    };
-
-    return await saveDataToApi("/publishedCourses", newCourse);
-}    
-
-//delete a published course by its ID
-async function deletePublishedCourse(courseId) {
-    return await deleteDataFromApi(`/publishedCourses/${courseId}`);
-    
-}
-    
-//update a published course, send the course object
-async function updatePublishedCourse(courseData) {
-    if (!courseData.id) {
-        throw new Error("Course ID is required for updating");
+  async getPublishedCourseById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch published course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching published course ${id}:`, error);
+      throw error;
     }
+  }
 
-    return await saveDataToApi(`/publishedCourses`, courseData, "PUT");
+  async getPublishedCoursesBySemester(semester) {
+    try {
+      const response = await fetch(`${this.baseUrl}?semester=${semester}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to fetch published courses for semester');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching published courses for semester ${semester}:`, error);
+      throw error;
+    }
+  }
+
+  async createPublishedCourse(publishedCourseData) {
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(publishedCourseData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to create published course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error creating published course:', error);
+      throw error;
+    }
+  }
+
+  async updatePublishedCourse(id, publishedCourseData) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(publishedCourseData),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to update published course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error updating published course ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async deletePublishedCourse(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Failed to delete published course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error deleting published course ${id}:`, error);
+      throw error;
+    }
+  }
 }
 
-//export all functions
-export { fetchAllPublishedCourses, fetchPublishedCourse, createPublishedCourse, deletePublishedCourse, updatePublishedCourse };
+export default new PublishedCoursesService();
