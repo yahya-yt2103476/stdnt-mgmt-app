@@ -1,24 +1,16 @@
 {
   "pages": {
-    "/api/courses/completed/route": [
+    "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/courses/completed/route.js"
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
-    "/api/courses/completed/[id]/route": [
+    "/pages/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/courses/completed/[id]/route.js"
-    ],
-    "/api/admins/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/admins/route.js"
-    ],
-    "/api/admins/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/admins/[id]/route.js"
+      "static/css/app/pages/dashboard/page.css",
+      "static/chunks/app/pages/dashboard/page.js"
     ]
   }
 }
