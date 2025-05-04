@@ -5,87 +5,170 @@ import Head from "next/head";
 import "../../../public/styles/statistics.css";
 
 export default function Dashboard() {
-  const [courses, setCourses] = useState([]);
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    totalInstructors: 0,
+    highestFailCourse: { name: "", rate: 0 },
+    mostPrereqCourse: { name: "", count: 0 },
+    mostRegisteredSemester: "",
+    registrationsBySemester: [],
+    sectionStatus: { open: 0, approved: 0, pending: 0 },
+    avgGpa: 0,
+    avgCompletedCourses: 0,
+    coursesPerCategory: { core: 0, elective: 0 },
+    mostRegisteredCourse: { name: "", count: 0 },
+  });
   const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
-    // This would eventually fetch data from your Prisma backend
-    setLoading(false);
-    setCourses([
-      { id: 1, name: "Introduction to Computer Science", code: "COMP101" },
-      { id: 2, name: "Web Development", code: "COMP301" },
-      { id: 3, name: "Database Systems", code: "COMP235" },
-    ]);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const responses = await Promise.all([
+          fetch("/api/students/total-count"),
+          fetch("/api/instructors/total-count"),
+          fetch("/api/course/highest-failar"),
+          fetch("/api/course/most-prerequisites"),
+          fetch("/api/course/most-registered-semester"),
+          fetch("/api/registrations/registrations-by-semester"),
+          fetch("/api/sections/status-distribution"),
+          fetch("/api/students/average-gpa"),
+          fetch("/api/students/avg-completed-courses"),
+        ]);
 
-  const handleLogout = () => {
-    // Implement logout functionality here
-    console.log("Logging out...");
-    // Redirect to login page or perform actual logout
-  };
+        const [
+          totalStudents,
+          totalInstructors,
+          highestFailCourse,
+          mostPrereqCourse,
+          mostRegisteredSemester,
+          registrationsBySemester,
+          sectionStatus,
+          avgGpa,
+          avgCompletedCourses,
+        ] = await Promise.all(responses.map((r) => r.json()));
+
+        console.log("registrationsBySemester:", registrationsBySemester);
+        console.log("totalStudents raw:", totalStudents);
+
+        setStats({
+          totalStudents: totalStudents.totalStudents,
+          totalInstructors: totalInstructors.totalInstructors,
+          highestFailCourse,
+          mostPrereqCourse,
+          mostRegisteredSemester,
+          registrationsBySemester,
+          sectionStatus,
+          avgGpa: Number(avgGpa.avgGpa) || 0,
+          avgCompletedCourses:
+            Number(avgCompletedCourses.avgCompletedCourses) || 0,
+          coursesPerCategory: { core: 20, elective: 35 }, // TODO: Replace with real data
+          mostRegisteredCourse: { name: "CS101", count: 120 }, // TODO: Replace with real data
+        });
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Failed to load statistics");
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
       <Head>
         <title>Statistics Dashboard</title>
+        <meta name="description" content="University statistics dashboard" />
       </Head>
       <div className="dashboard-container">
         {loading ? (
-          <h3>Loading courses...</h3>
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading statistics...</p>
+          </div>
         ) : (
           <div className="stats-table">
             <h2>Statistics</h2>
+
             <div className="stat-row">
               <span className="stat-label">Total number of students</span>
-              <span className="stat-value">512</span>
+              <span className="stat-value">{stats.totalStudents}</span>
             </div>
+
             <div className="stat-row">
               <span className="stat-label">Total number of instructors</span>
-              <span className="stat-value">48</span>
+              <span className="stat-value">{stats.totalInstructors}</span>
             </div>
+
             <div className="stat-row">
-              <span className="stat-label">
-                Total number of courses per category
+              <span className="stat-label">Total courses offered</span>
+              <span className="stat-value">
+                [placeholder value] [{stats.coursesPerCategory.core}]
               </span>
-              <span className="stat-value">Core: 20, Elective: 35</span>
             </div>
+
             <div className="stat-row">
               <span className="stat-label">Most registered course</span>
-              <span className="stat-value">CS101 (120 regs)</span>
+              <span className="stat-value">
+                [placeholder value]
+                {stats.mostRegisteredCourse.name} (
+                {stats.mostRegisteredCourse.count} registrations)
+              </span>
             </div>
+
+            <div className="stat-row">
+              <span className="stat-label">Most Registered Semester</span>
+              <span className="stat-value">
+                {Array.isArray(stats.registrationsBySemester)
+                  ? stats.registrationsBySemester
+                      .map((sem) => `${sem.semester}: ${sem.count}`)
+                      .join(", ")
+                  : "Data not available"}
+              </span>
+            </div>
+
             <div className="stat-row">
               <span className="stat-label">
                 Course with highest failure rate
               </span>
-              <span className="stat-value">CS101: 12%</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Average GPA of students</span>
-              <span className="stat-value">3.12</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">
-                Completed courses per student (avg)
-              </span>
-              <span className="stat-value">7.5</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Sections status distribution</span>
               <span className="stat-value">
-                Open: 22, Approved: 18, Pending: 5
+                {stats.highestFailCourse.name}: {stats.highestFailCourse.rate}%
               </span>
             </div>
-            <div className="stat-row">
-              <span className="stat-label">
-                Registrations per semester (Or "Most Registered Semester")
-              </span>
-              <span className="stat-value">Fall: 320, Spring: 280</span>
-            </div>
+
             <div className="stat-row">
               <span className="stat-label">
                 Courses with most prerequisites
               </span>
-              <span className="stat-value">CS401 (3 prereqs)</span>
+              <span className="stat-value">
+                {stats.mostPrereqCourse.name} ({stats.mostPrereqCourse.count}{" "}
+                prereqs)
+              </span>
+            </div>
+
+            <div className="stat-row">
+              <span className="stat-label">Average GPA of students</span>
+              <span className="stat-value">{stats.avgGpa.toFixed(2)}</span>
+            </div>
+
+            <div className="stat-row">
+              <span className="stat-label">
+                Avg Completed courses per student
+              </span>
+              <span className="stat-value">
+                {stats.avgCompletedCourses.toFixed(1)}
+              </span>
+            </div>
+
+            <div className="stat-row">
+              <span className="stat-label">Sections status distribution</span>
+              <span className="stat-value">
+                Open: {stats.sectionStatus.open}, Approved:{" "}
+                {stats.sectionStatus.approved}, Pending:{" "}
+                {stats.sectionStatus.pending}
+              </span>
             </div>
           </div>
         )}
