@@ -1,9 +1,9 @@
-import { fetchAllCourses, deleteCourseById } from '../../../../services/course-service.js';
-import { fetchSectionsByCourseId, createSection, deleteSectionById } from '../../../../services/section-service.js';
+import CourseService from '../../../../services/course-service.js';
+import SectionService from '../../../../services/section-service.js';
 import { courseCard } from '../components/course-card.js';
 import { sectionCard } from '../components/section-card.js';
-import { fetchAllInstructors } from '../../../../services/instructor-service.js';
-import { fetchAllPublishedCourses } from '../../../../services/published-courses-service.js';
+import InstructorService from '../../../../services/instructor-service.js';
+import PublishedCoursesService from '../../../../services/published-courses-service.js';
 import { createSectionCard } from "../controllers/publish-courses-controller.js";
 
 let courses = [];
@@ -66,7 +66,7 @@ function isSemesterCurrent(semester) {
 async function loadCourses() {
     console.log('Loading courses...');
     try {
-  const coursesData = await fetchAllCourses();
+        const coursesData = await CourseService.getAllCourses();
         console.log('Fetched courses data:', coursesData); 
         
         if (!Array.isArray(coursesData)) {
@@ -79,8 +79,8 @@ async function loadCourses() {
         let coursesWithActiveSections = [];
         let coursesWithoutActiveSections = [];
       
-  for (const course of coursesData) {
-    const sections = await fetchSectionsByCourseId(course.id);
+        for (const course of coursesData) {
+            const sections = await SectionService.getSectionsByCourse(course.id);
             course.sections = sections;
             
             if (Array.isArray(sections)) {
@@ -183,8 +183,8 @@ async function renderHybridView(activeCourses, inactiveCourses) {
 }
 async function isAvailableCourseForSection(courseId) {
     try {
-        const publishedCourses = await fetchAllPublishedCourses();
-        const instructors = await fetchAllInstructors();
+        const publishedCourses = await PublishedCoursesService.getAllPublishedCourses();
+        const instructors = await InstructorService.getAllInstructors();
         
         // Check if course is published for next semester
         const publishedCourse = publishedCourses.find(pc => pc.courseId === courseId);
@@ -353,7 +353,7 @@ function renderCalendarView() {
 async function navigateToCourseDetails(courseId) {
     try {
         console.log('Fetching course details for:', courseId);
-        const allCourses = await fetchAllCourses();
+        const allCourses = await CourseService.getAllCourses();
         console.log('All courses:', allCourses); 
         
         const numericCourseId = parseInt(courseId);
@@ -419,7 +419,7 @@ function addButtonEventListeners() {
                 case 'delete':
                     if (confirm('Are you sure you want to delete this course?')) {
                         try {
-                            await deleteCourseById(courseId);
+                            await CourseService.deleteCourse(courseId);
                             window.location.reload();
                         } catch (error) {
                             console.error('Failed to delete course:', error);
@@ -450,7 +450,7 @@ function addButtonEventListeners() {
                 case 'delete':
                     console.log('Attempting to delete section:', sectionId);
                     if (confirm('Are you sure you want to delete this section?')) {
-                        deleteSectionById(sectionId)
+                        SectionService.deleteSection(sectionId)
                             .then(() => {
                                 console.log('Section deleted successfully:', sectionId);
                                 window.location.reload();
@@ -471,7 +471,7 @@ function addButtonEventListeners() {
             const courseId = e.target.dataset.courseId;
         
             try {
-                const publishedCourses = await fetchAllPublishedCourses();
+                const publishedCourses = await PublishedCoursesService.getAllPublishedCourses();
                 const course = courses.find(c => c.id.toString() === courseId);
                 const publishedInfo = publishedCourses.find(pc => pc.courseId.toString() === courseId);
                 
@@ -533,7 +533,7 @@ function addButtonEventListeners() {
                             isRegistrationClosed: false
                         };
 
-                        await createSection(sectionData);
+                        await SectionService.createSection(sectionData);
                         alert('Section created successfully!');
                         overlay.remove();
                         await loadCourses();

@@ -1,5 +1,5 @@
-import { fetchCourseById, createCourse, fetchAllCourses, updateCourse } from '../../../../services/course-service.js';
-import { fetchSectionsByCourseId } from '../../../../services/section-service.js';
+import CourseService from '../../../../services/course-service.js';
+import SectionService from '../../../../services/section-service.js';
 
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -48,17 +48,17 @@ async function init() {
   courseForm.addEventListener('submit', saveForm);
   
   try {
-    allCourses = await fetchAllCourses();
+    allCourses = await CourseService.getAllCourses();
     
     if (courseId) {
       const storedCourse = sessionStorage.getItem('currentCourse');
       if (storedCourse) {
         currentCourse = JSON.parse(storedCourse);
       } else {
-        currentCourse = await fetchCourseById(courseId);
+        currentCourse = await CourseService.getCourseById(courseId);
       }
       
-      sections = await fetchSectionsByCourseId(courseId);
+      sections = await SectionService.getSectionsByCourse(courseId);
       
       // Make sure sections is always an array
       if (!Array.isArray(sections)) {
@@ -224,10 +224,10 @@ async function saveForm(event) {
     
     let savedCourse;
     if (courseId) {
-      savedCourse = await updateCourse(updatedCourse);
+      savedCourse = await CourseService.updateCourse(courseId, updatedCourse);
       sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     } else {
-      savedCourse = await createCourse(updatedCourse);
+      savedCourse = await CourseService.createCourse(updatedCourse);
       sessionStorage.setItem('currentCourse', JSON.stringify(savedCourse));
     }
     

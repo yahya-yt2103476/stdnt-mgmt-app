@@ -1,12 +1,9 @@
-import { fetchAllCourses } from '../../../../services/course-service.js';
-import { fetchInstructorById } from '../../../../services/instructor-service.js';
-import { 
-    createPublishedCourse, 
-    fetchAllPublishedCourses,
-    deletePublishedCourse,
-    updatePublishedCourse,
-} from '../../../../services/published-courses-service.js';
-import { createSection } from '../../../../services/section-service.js';
+import CourseService from '../../../../services/course-service.js';
+import InstructorService from '../../../../services/instructor-service.js';
+import PublishedCoursesService from '../../../../services/published-courses-service.js';
+import SectionService from '../../../../services/section-service.js';
+import { convertToAmPmRange } from '../../../../services/format-time.js';
+
 let selectedCoursesContainer;
 let loadingIndicator;
 let courseDropdown;
@@ -19,8 +16,8 @@ let publishedCoursesContainer;
 
 export async function createSectionCard(course, publishedInfo) {
     const instructorIds = await publishedInfo.instructors;
-    const instructor=await fetchInstructorById(instructorIds[0]);
-    console.log("Instructor: ",instructor);
+    const instructor = await InstructorService.getInstructorById(instructorIds[0]);
+    console.log("Instructor: ", instructor);
     return `
         <div class="section-form-card" data-course-id="${course.id}">
             <h3>Create New Section for ${course.name}</h3>
@@ -75,6 +72,7 @@ export async function createSectionCard(course, publishedInfo) {
         </div>
     `;
 }
+
 export async function setupSectionFormListeners(courseId, publishedInfo) {
     const form = document.getElementById(`sectionForm_${courseId}`);
     if (!form) return;
@@ -113,7 +111,7 @@ export async function setupSectionFormListeners(courseId, publishedInfo) {
                 isRegistrationClosed: false
             };
 
-            await createSection(sectionData);
+            await SectionService.createSection(sectionData);
             alert('Section created successfully!');
             await loadCourses(); 
         } catch (error) {
@@ -126,6 +124,7 @@ export async function setupSectionFormListeners(courseId, publishedInfo) {
         form.reset();
     });
 }
+
 function createCourseCard(course) {
     return `
         <div class="course-card" data-course-id="${course.id}">
@@ -183,7 +182,7 @@ async function handleDeletePublishedCourse(event) {
     
     if (confirm('Are you sure you want to delete this published course?')) {
         try {
-            await deletePublishedCourse(publishedId);
+            await PublishedCoursesService.deletePublishedCourse(publishedId);
             await loadCourses(); // Refresh the list
         } catch (error) {
             console.error('Error deleting published course:', error);
@@ -250,7 +249,7 @@ async function handleEditPublishedCourse(event) {
                 submissionDeadline: new Date(deadlineInput.value).toISOString()
             };
             
-            await updatePublishedCourse(updatedCourse);
+            await PublishedCoursesService.updatePublishedCourse(publishedCourse.id, updatedCourse);
             await loadCourses();
             modal.remove();
         } catch (error) {
@@ -340,8 +339,8 @@ function renderPublishedCourses() {
 
 async function loadCourses() {
     try {
-        allCourses = await fetchAllCourses();
-        publishedCourses = await fetchAllPublishedCourses();
+        allCourses = await CourseService.getAllCourses();
+        publishedCourses = await PublishedCoursesService.getAllPublishedCourses();
         
         if (!Array.isArray(allCourses)) {
             console.error('Courses data is not an array:', allCourses);
@@ -444,7 +443,7 @@ async function handlePublishCourses() {
             .map(courseId => allCourses.find(c => c.id.toString() === courseId.toString()));
         
         const publishPromises = coursesToPublish.map(course => 
-            createPublishedCourse({
+            PublishedCoursesService.createPublishedCourse({
                 courseId: course.id,
                 semester: semester,
                 publishedDate: new Date().toISOString()

@@ -1,5 +1,5 @@
-import { fetchSectionById, createSection, updateSection } from '../../../../services/section-service.js';
-import { fetchCourseById } from '../../../../services/course-service.js';
+import SectionService from '../../../../services/section-service.js';
+import CourseService from '../../../../services/course-service.js';
 
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -42,14 +42,14 @@ async function init() {
   // Load data
   try {
     if (sectionId) {
-      currentSection = await fetchSectionById(sectionId);
+      currentSection = await SectionService.getSectionById(sectionId);
       
       if (currentSection) {
         // Try to get course from storage first
         currentCourse = getCourseFromStorage();
         if (!currentCourse) {
           // Fallback to fetching from API
-          currentCourse = await fetchCourseById(courseId || currentSection.courseId);
+          currentCourse = await CourseService.getCourseById(courseId || currentSection.courseId);
         }
         
         displaySectionDetails();
@@ -84,7 +84,7 @@ async function init() {
       // Try to get course from storage first
       currentCourse = getCourseFromStorage();
       if (!currentCourse) {
-        currentCourse = await fetchCourseById(courseId);
+        currentCourse = await CourseService.getCourseById(courseId);
       }
       
       currentSection = {
@@ -121,7 +121,7 @@ async function init() {
 }
 
 async function displaySectionDetails() {
-  let course=await fetchCourseById(currentSection.courseId);
+  let course = await CourseService.getCourseById(currentSection.courseId);
   sectionDetails.innerHTML = `
     <h2>Section for ${course.shortName} - ${course.name}</h2>
     <p><strong>Instructor:</strong> ${currentSection.instructorName}</p>
@@ -203,10 +203,10 @@ async function saveForm(event) {
     let savedSection;
     if (sectionId) {
       // Update existing section
-      savedSection = await updateSection(parseInt(sectionId), updatedSection);
+      savedSection = await SectionService.updateSection(parseInt(sectionId), updatedSection);
     } else {
       // Create new section
-      savedSection = await createSection(updatedSection);
+      savedSection = await SectionService.createSection(updatedSection);
     }
     
     console.log('Section saved, response:', savedSection);
@@ -237,7 +237,7 @@ async function approveSection() {
       status: 'approved'
     };
     
-    const savedSection = await updateSection(currentSection.id, updatedSection);
+    const savedSection = await SectionService.updateSection(currentSection.id, updatedSection);
     
     if (savedSection && savedSection.id) {
       currentSection = savedSection;
@@ -255,11 +255,8 @@ async function deleteSection() {
   if (!currentSection || !confirm('Are you sure you want to delete this section?')) return;
   
   try {
-    // Import the needed function for deletion
-    const { deleteSectionById } = await import('../../../../services/section-service.js');
-    
     // Delete the section
-    await deleteSectionById(currentSection.id);
+    await SectionService.deleteSection(currentSection.id);
     
     // Navigate back to the course details page
     window.location.href = `course-details-view.html?id=${currentSection.courseId}`;
@@ -283,7 +280,7 @@ async function cancelSection() {
     };
     
     // Save the updated section - pass the section ID and the updatedSection data
-    await updateSection(currentSection.id, updatedSection);
+    await SectionService.updateSection(currentSection.id, updatedSection);
     
     // Since the server doesn't return the updated section,
     // update the currentSection locally
