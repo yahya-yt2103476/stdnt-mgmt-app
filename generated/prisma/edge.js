@@ -239,7 +239,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\RAIZO\\Documents\\university\\Web development\\stdnt-mgmt-app\\generated\\prisma",
+      "value": "/Users/yahyataha/Desktop/uni/00-qu/cmps-350/stdnt-mgmt-app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -248,12 +248,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\RAIZO\\Documents\\university\\Web development\\stdnt-mgmt-app\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/yahyataha/Desktop/uni/00-qu/cmps-350/stdnt-mgmt-app/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -267,11 +267,12 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "file:./dev.db"
+        "value": null
       }
     }
   },

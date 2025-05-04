@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import "../../public/styles/footer.css";
 
 export default function Footer() {
   return (

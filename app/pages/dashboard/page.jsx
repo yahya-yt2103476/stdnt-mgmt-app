@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import Head from "next/head";
-import StatsDashboard from "../../components/StatsDashboard";
-import "../../../public/styles/navigation.css";
-import "../../../public/styles/footer.css";
+import "../../../public/styles/statistics.css";
 
 export default function Dashboard() {
   const [courses, setCourses] = useState([]);
@@ -36,8 +33,60 @@ export default function Dashboard() {
         {loading ? (
           <h3>Loading courses...</h3>
         ) : (
-          <div>
-            <StatsDashboard />
+          <div className="stats-table">
+            <h2>Statistics</h2>
+            <div className="stat-row">
+              <span className="stat-label">Total number of students</span>
+              <span className="stat-value">512</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">Total number of instructors</span>
+              <span className="stat-value">48</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">
+                Total number of courses per category
+              </span>
+              <span className="stat-value">Core: 20, Elective: 35</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">Most registered course</span>
+              <span className="stat-value">CS101 (120 regs)</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">
+                Course with highest failure rate
+              </span>
+              <span className="stat-value">CS101: 12%</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">Average GPA of students</span>
+              <span className="stat-value">3.12</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">
+                Completed courses per student (avg)
+              </span>
+              <span className="stat-value">7.5</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">Sections status distribution</span>
+              <span className="stat-value">
+                Open: 22, Approved: 18, Pending: 5
+              </span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">
+                Registrations per semester (Or "Most Registered Semester")
+              </span>
+              <span className="stat-value">Fall: 320, Spring: 280</span>
+            </div>
+            <div className="stat-row">
+              <span className="stat-label">
+                Courses with most prerequisites
+              </span>
+              <span className="stat-value">CS401 (3 prereqs)</span>
+            </div>
           </div>
         )}
       </div>

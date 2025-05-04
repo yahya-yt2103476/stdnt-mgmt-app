@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import "../../public/styles/navigation.css";
 
 const handleLogout = () => {
   // Implement logout functionality here
