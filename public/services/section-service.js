@@ -159,6 +159,20 @@ class SectionService {
       throw error;
     }
   }
+
+  async getSectionsStatusDistribution() {
+    try {
+      const response = await fetch(`${this.baseUrl}/status-distribution`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch section status distribution');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching section status distribution:', error);
+      throw error;
+    }
+  }
 }
 
 export default new SectionService();

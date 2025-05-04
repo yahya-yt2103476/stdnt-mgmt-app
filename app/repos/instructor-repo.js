@@ -33,6 +33,10 @@ class InstructorRepo {
             where: { id: Number(id) }
         })
     }
+
+    async getTotalInstructors() {
+        return this.prisma.instructor.count();
+    }
 }
 
 export default InstructorRepo;

@@ -117,6 +117,48 @@ class CourseService {
       throw error;
     }
   }
+
+  async getCourseWithMostPrerequisites() {
+    try {
+      const response = await fetch(`${this.baseUrl}/most-prerequistes`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch course with most prerequisites');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching course with most prerequisites:', error);
+      throw error;
+    }
+  }
+
+  async getCourseWithHighestFailureRate() {
+    try {
+      const response = await fetch(`${this.baseUrl}/highest-faliar`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch course with highest failure rate');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching course with highest failure rate:', error);
+      throw error;
+    }
+  }
+
+  async getMostRegisteredCourse() {
+    try {
+      const response = await fetch(`${this.baseUrl}/most-registered`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch most registered course');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching most registered course:', error);
+      throw error;
+    }
+  }
 }
 
 export default new CourseService();

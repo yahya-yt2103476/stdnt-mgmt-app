@@ -89,6 +89,20 @@ class InstructorService {
       throw error;
     }
   }
+
+  async getTotalInstructors() {
+    try {
+      const response = await fetch(`${this.baseUrl}/total-count`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch total instructors');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching total instructors:', error);
+      throw error;
+    }
+  }
 }
 
 export default new InstructorService();

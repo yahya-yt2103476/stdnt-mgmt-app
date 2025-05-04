@@ -89,6 +89,48 @@ class StudentService {
       throw error;
     }
   }
+
+  async getAverageStudentsGPA() {
+    try {
+      const response = await fetch(`${this.baseUrl}/average-gpa`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch average student GPA');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching average student GPA:', error);
+      throw error;
+    }
+  }
+
+  async getAverageStudentsCoursesCount() {
+    try {
+      const response = await fetch(`${this.baseUrl}/avg-completed-courses`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch average completed courses count');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching average completed courses count:', error);
+      throw error;
+    }
+  }
+
+  async getTotalStudents() {
+    try {
+      const response = await fetch(`${this.baseUrl}/total-count`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch total students');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching total students:', error);
+      throw error;
+    }
+  }
 }
 
 export default new StudentService();

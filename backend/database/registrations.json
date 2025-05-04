@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "studentId": 1445,
+    "sectionId": 1,
+    "grade": "A",
+    "status": "APPROVED"
+  },
+  {
+    "id": 2,
+    "studentId": 7903,
+    "sectionId": 1,
+    "grade": "A-",
+    "status": "APPROVED"
+  },
+  {
+    "id": 3,
+    "studentId": 6578,
+    "sectionId": 1,
+    "grade": "A+",
+    "status": "APPROVED"
+  },
+  {
+    "id": 4,
+    "studentId": 1445,
+    "sectionId": 5,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 5,
+    "studentId": 7903,
+    "sectionId": 2,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 6,
+    "studentId": 7903,
+    "sectionId": 7,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 7,
+    "studentId": 6578,
+    "sectionId": 6,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 8,
+    "studentId": 6578,
+    "sectionId": 7,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 9,
+    "studentId": 9876,
+    "sectionId": 8,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 10,
+    "studentId": 1234,
+    "sectionId": 4,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 11,
+    "studentId": 1234,
+    "sectionId": 9,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 12,
+    "studentId": 5555,
+    "sectionId": 1,
+    "grade": "F",
+    "status": "APPROVED"
+  },
+  {
+    "id": 13,
+    "studentId": 4321,
+    "sectionId": 18,
+    "grade": null,
+    "status": "OPEN"
+  },
+  {
+    "id": 14,
+    "studentId": 1445,
+    "sectionId": 13,
+    "grade": "A",
+    "status": "APPROVED"
+  },
+  {
+    "id": 15,
+    "studentId": 7903,
+    "sectionId": 13,
+    "grade": "B+",
+    "status": "APPROVED"
+  },
+  {
+    "id": 16,
+    "studentId": 6578,
+    "sectionId": 13,
+    "grade": "A",
+    "status": "APPROVED"
+  },
+  {
+    "id": 17,
+    "studentId": 9876,
+    "sectionId": 13,
+    "grade": "C+",
+    "status": "APPROVED"
+  },
+  {
+    "id": 18,
+    "studentId": 1234,
+    "sectionId": 14,
+    "grade": null,
+    "status": "CANCELLED"
+  },
+  {
+    "id": 19,
+    "studentId": 4321,
+    "sectionId": 13,
+    "grade": "A",
+    "status": "APPROVED"
+  }
+]

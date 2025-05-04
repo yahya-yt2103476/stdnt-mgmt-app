@@ -1,0 +1,117 @@
+[
+  {
+    "id": 1445,
+    "name": "Ayoub TheStudent2",
+    "completedCourses": [
+      { "courseId": 6, "grade": "A" },   
+      { "courseId": 8, "grade": "B+" },  
+      { "courseId": 12, "grade": "A-" }, 
+      { "courseId": 16, "grade": "A"}    
+    ],
+    "registeredCourses": [ 
+        { "courseId": 9, "SectionId": 5 }
+    ],
+    "gpa": 3.75, 
+    "major": "Computer Science",
+    "userId": 1445
+  },
+  {
+    "id": 7903,
+    "name": "Ayoub TheStudent",
+    "completedCourses": [
+      { "courseId": 6, "grade": "A-" },  
+      { "courseId": 8, "grade": "B" },   
+      { "courseId": 14, "grade": "B+" }, 
+      { "courseId": 12, "grade": "A" }, 
+      { "courseId": 16, "grade": "B+"}  
+
+    ],
+    "registeredCourses": [ 
+        { "courseId": 7, "SectionId": 2 },
+        { "courseId": 11, "SectionId": 7 }
+    ],
+    "gpa": 3.58,
+    "major": "Computer Science",
+    "userId": 7903
+  },
+  {
+    "id": 6578,
+    "name": "Fatima Al-Sulaiti",
+    "completedCourses": [
+      { "courseId": 6, "grade": "A+" },  
+      { "courseId": 8, "grade": "A" },   
+      { "courseId": 9, "grade": "A-" },  
+      { "courseId": 12, "grade": "B+" }, 
+      { "courseId": 14, "grade": "A-" }, 
+      { "courseId": 16, "grade": "A"}    
+    ],
+    "registeredCourses": [ 
+                           
+        { "courseId": 10, "SectionId": 6 }, 
+        { "courseId": 11, "SectionId": 7 } 
+    ],
+    "gpa": 3.84, 
+    "major": "Computer Science",
+    "userId": 6578
+  },
+  {
+    "id": 9876,
+    "name": "Mohammed Ali",
+    "completedCourses": [
+        { "courseId": 16, "grade": "C+" },
+        { "courseId": 18, "grade": "B" },  
+        { "courseId": 19, "grade": "B-"}  
+    ],
+    "registeredCourses": [ 
+        { "courseId": 12, "SectionId": 8 }
+    ],
+    "gpa": 2.77,
+    "major": "Chemistry",
+    "userId": 9876
+  },
+  {
+    "id": 1234,
+    "name": "Sara Khan",
+    "completedCourses": [
+        { "courseId": 6, "grade": "B" },  
+        { "courseId": 17, "grade": "A"}   
+    ],
+    "registeredCourses": [ 
+        { "courseId": 8, "SectionId": 4 },
+        { "courseId": 13, "SectionId": 9 }
+    ],
+    "gpa": 3.50,
+    "major": "English",
+    "userId": 1234
+  },
+   {
+    "id": 5555,
+    "name": "Khalid Ahmed",
+    "completedCourses": [
+        { "courseId": 6, "grade": "F" },  
+        { "courseId": 16, "grade": "D"}  
+    ],
+    "registeredCourses": [ 
+        { "courseId": 6, "SectionId": 1 }
+    ],
+    "gpa": 0.5,
+    "major": "Undeclared",
+    "userId": 5555
+  },
+  {
+    "id": 4321,
+    "name": "Noura Salim",
+    "completedCourses": [
+      { "courseId": 6, "grade": "A" },   
+      { "courseId": 8, "grade": "A-" },  
+      { "courseId": 9, "grade": "B+" },  
+      { "courseId": 16, "grade": "A"}    
+    ],
+    "registeredCourses": [ 
+        { "courseId": 21, "SectionId": 18 }
+    ],
+    "gpa": 3.75,
+    "major": "Mathematics",
+    "userId": 4321
+  }
+]

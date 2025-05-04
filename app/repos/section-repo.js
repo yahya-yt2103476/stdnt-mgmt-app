@@ -56,6 +56,15 @@ class SectionRepo {
     async getSectionsByTime(time) {
         return this.prisma.section.findMany({ where: { time: time } });
     }
+
+    async getSectionsStatusDistribution() {
+        return this.prisma.section.groupBy({
+            by: ['status'],
+            _count: {
+                status: true
+            }
+        })
+    }
 }
 
 export default new SectionRepo();

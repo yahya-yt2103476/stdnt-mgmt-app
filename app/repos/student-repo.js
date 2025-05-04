@@ -33,6 +33,28 @@ class StudentRepo {
             where: { id: Number(id)}
         })
     }
+
+    async getTotalStudents() {
+        return this.prisma.student.count();
+    }
+
+    async getAverageStudentsGPA() {
+        const result = await this.prisma.student.aggregate({
+            _avg: {
+                gpa: true
+            }
+        });
+        return result._avg.gpa || 0;
+    }
+
+    async getAverageStudentsCoursesCount() {
+        const result = await this.prisma.student.aggregate({
+            _avg: {
+                completedCourses: true
+            }
+        });
+        return result._avg.completedCourses || 0;
+    }
     
 }
 

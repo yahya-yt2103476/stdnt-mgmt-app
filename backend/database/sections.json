@@ -1,0 +1,200 @@
+[
+	{
+		"id": 1,
+		"courseId": 6,
+		"instructorId": 2,
+		"capacity": 3,
+		"status": "APPROVED",
+		"semester": "SPRING2025",
+		"time": "02:00 02:50",
+		"location": "H07 A132",
+		"courseContent": "Introduction to programming basics, algorithms, and data structures."
+	},
+	{
+		"id": 2,
+		"courseId": 7,
+		"instructorId": 3,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SPRING2025",
+		"time": "05:00 05:50",
+		"location": "H07 A128",
+		"courseContent": "Exploring AI concepts: search algorithms, knowledge representation, and machine learning basics."
+	},
+	{
+		"id": 3,
+		"courseId": 6,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SPRING2026",
+		"time": "03:00 03:50",
+		"location": "H07 A132",
+		"courseContent": "Further topics in introductory computer science."
+	},
+	{
+		"id": 4,
+		"courseId": 8,
+		"instructorId": 4,
+		"capacity": 25,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "09:00 09:50",
+		"location": "H07 B201",
+		"courseContent": "Core programming paradigms, control structures, and object-oriented principles."
+	},
+	{
+		"id": 5,
+		"courseId": 9,
+		"instructorId": 3,
+		"capacity": 35,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "11:00 12:15",
+		"location": "H07 C110",
+		"courseContent": "Analysis and implementation of fundamental data structures and algorithms."
+	},
+	{
+		"id": 6,
+		"courseId": 10,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SPRING2025",
+		"time": "01:00 02:15",
+		"location": "H07 A150",
+		"courseContent": "Supervised, unsupervised, and reinforcement learning techniques."
+	},
+	{
+		"id": 7,
+		"courseId": 11,
+		"instructorId": 4,
+		"capacity": 40,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "10:00 10:50",
+		"location": "H07 D105",
+		"courseContent": "Relational database models, SQL, normalization, and transaction management."
+	},
+	{
+		"id": 8,
+		"courseId": 12,
+		"instructorId": 5,
+		"capacity": 45,
+		"status": "OPEN",
+		"semester": "SPRING2025",
+		"time": "08:00 09:15",
+		"location": "H07 E220",
+		"courseContent": "Integration techniques, sequences, series, and parametric equations."
+	},
+	{
+		"id": 9,
+		"courseId": 13,
+		"instructorId": 2,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SUMMER2025",
+		"time": "04:00 05:15",
+		"location": "H07 B110",
+		"courseContent": "Network security, cryptography, access control, and security policies."
+	},
+	{
+		"id": 10,
+		"courseId": 14,
+		"instructorId": 6,
+		"capacity": 40,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "02:00 03:15",
+		"location": "H07 F130",
+		"courseContent": "Newtonian mechanics, work, energy, power, and thermodynamics."
+	},
+	{
+		"id": 11,
+		"courseId": 15,
+		"instructorId": 3,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SPRING2026",
+		"time": "11:00 12:15",
+		"location": "H07 A140",
+		"courseContent": "Client-side and server-side web development, frameworks, and APIs."
+	},
+	{
+		"id": 12,
+		"courseId": 9,
+		"instructorId": 3,
+		"capacity": 35,
+		"status": "CANCELLED",
+		"semester": "SUMMER2025",
+		"time": "01:00 02:15",
+		"location": "H07 A120",
+		"courseContent": "Advanced topics in data structures and algorithm design."
+	},
+	{
+		"id": 13,
+		"courseId": 16,
+		"instructorId": 5,
+		"capacity": 50,
+		"status": "OPEN",
+		"semester": "FALL2024",
+		"time": "10:00 11:15",
+		"location": "MTH 101",
+		"courseContent": "Introduction to differential and integral calculus."
+	},
+	{
+		"id": 14,
+		"courseId": 17,
+		"instructorId": 6,
+		"capacity": 25,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "03:00 04:15",
+		"location": "ENG 205",
+		"courseContent": "Reading and analyzing poetry, fiction, and drama."
+	},
+	{
+		"id": 15,
+		"courseId": 18,
+		"instructorId": 6,
+		"capacity": 40,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "09:00 10:15",
+		"location": "CHEM 110",
+		"courseContent": "Stoichiometry, chemical reactions, and periodic trends."
+	},
+	{
+		"id": 16,
+		"courseId": 19,
+		"instructorId": 5,
+		"capacity": 30,
+		"status": "OPEN",
+		"semester": "SPRING2025",
+		"time": "10:00 11:15",
+		"location": "HIST 100",
+		"courseContent": "Survey of major civilizations and historical events."
+	},
+	{
+		"id": 17,
+		"courseId": 20,
+		"instructorId": 4,
+		"capacity": 25,
+		"status": "OPEN",
+		"semester": "SPRING2026",
+		"time": "01:00 02:15",
+		"location": "CS 310",
+		"courseContent": "Process management, memory management, file systems, and concurrency."
+	},
+	{
+		"id": 18,
+		"courseId": 21,
+		"instructorId": 5,
+		"capacity": 35,
+		"status": "OPEN",
+		"semester": "FALL2025",
+		"time": "11:00 12:15",
+		"location": "MTH 205",
+		"courseContent": "Matrices, determinants, vector spaces, eigenvalues, and eigenvectors."
+	}
+]

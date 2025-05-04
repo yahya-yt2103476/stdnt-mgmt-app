@@ -1,0 +1,16 @@
+[
+  {"id": 1, "courseId": 7, "prerequisiteId": 6},
+  {"id": 2, "courseId": 8, "prerequisiteId": 6},
+  {"id": 3, "courseId": 9, "prerequisiteId": 6},
+  {"id": 4, "courseId": 9, "prerequisiteId": 8},
+  {"id": 5, "courseId": 10, "prerequisiteId": 7},
+  {"id": 6, "courseId": 10, "prerequisiteId": 9},
+  {"id": 7, "courseId": 11, "prerequisiteId": 8},
+  {"id": 8, "courseId": 13, "prerequisiteId": 6},
+  {"id": 9, "courseId": 15, "prerequisiteId": 8},
+  {"id": 10, "courseId": 12, "prerequisiteId": 16},
+  {"id": 11, "courseId": 20, "prerequisiteId": 9},
+  {"id": 12, "courseId": 21, "prerequisiteId": 16},
+  {"id": 13, "courseId": 10, "prerequisiteId": 21},
+  {"id": 14, "courseId": 11, "prerequisiteId": 9}
+]

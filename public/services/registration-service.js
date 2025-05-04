@@ -103,6 +103,20 @@ class RegistrationService {
       throw error;
     }
   }
+
+  async getRegistrationsBySemester() {
+    try {
+      const response = await fetch(`${this.baseUrl}/registrations-by-semester`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch registrations by semester');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching registrations by semester:', error);
+      throw error;
+    }
+  }
 }
 
 export default new RegistrationService();
