@@ -1,4 +1,5 @@
 {
-  "/api/courses/route": "app/api/courses/route.js",
-  "/api/courses/[id]/route": "app/api/courses/[id]/route.js"
+  "/api/students/avg-completed-courses/route": "app/api/students/avg-completed-courses/route.js",
+  "/api/students/[id]/route": "app/api/students/[id]/route.js",
+  "/api/sections/status-distribution/route": "app/api/sections/status-distribution/route.js"
 }

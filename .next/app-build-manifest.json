@@ -1,3 +1,59 @@
 {
-  "pages": {}
+  "pages": {
+    "/api/courses/last-added/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/last-added/route.js"
+    ],
+    "/api/courses/total-count/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/total-count/route.js"
+    ],
+    "/api/sections/most-registered-semester/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/sections/most-registered-semester/route.js"
+    ],
+    "/api/courses/most-registered/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/most-registered/route.js"
+    ],
+    "/api/courses/highest-faliar/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/highest-faliar/route.js"
+    ],
+    "/api/courses/most-prerequistes/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/most-prerequistes/route.js"
+    ],
+    "/api/courses/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/[id]/route.js"
+    ],
+    "/api/students/average-gpa/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/students/average-gpa/route.js"
+    ],
+    "/api/students/avg-completed-courses/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/students/avg-completed-courses/route.js"
+    ],
+    "/api/students/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/students/[id]/route.js"
+    ],
+    "/api/sections/status-distribution/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/sections/status-distribution/route.js"
+    ]
+  }
 }

@@ -65,6 +65,51 @@ class SectionRepo {
             }
         })
     }
+
+    async getMostRegisteredSemester() {
+        // 1. Fetch all sections, including their semester and a count of related registrations
+        const sectionsWithRegistrationCounts = await this.prisma.section.findMany({
+            select: {
+                semester: true,
+                _count: {
+                    select: { registrations: true } // Get registration count per section
+                }
+            }
+        });
+
+        // 2. Aggregate registration counts per semester in JavaScript
+        const semesterCounts = {};
+        for (const section of sectionsWithRegistrationCounts) {
+            const semester = section.semester;
+            const count = section._count.registrations; // Get the count for this section
+
+            // Initialize count for the semester if it's the first time seeing it
+            if (semesterCounts[semester] === undefined) {
+                semesterCounts[semester] = 0;
+            }
+            // Add the section's registration count to the semester's total
+            semesterCounts[semester] += count;
+        }
+
+        // 3. Find the semester with the highest total count
+        let mostRegisteredSemester = null;
+        let maxCount = -1;
+
+        for (const semester in semesterCounts) {
+            if (semesterCounts[semester] > maxCount) {
+                maxCount = semesterCounts[semester];
+                mostRegisteredSemester = semester;
+            }
+        }
+
+        // 4. Format and return the result
+        if (mostRegisteredSemester !== null) {
+            // Return in a similar structure to groupBy for consistency, if desired
+            return [{ semester: mostRegisteredSemester, count: maxCount }];
+        } else {
+            return []; // Return empty array if no sections/registrations found
+        }
+    }
 }
 
 export default new SectionRepo();

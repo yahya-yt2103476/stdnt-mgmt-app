@@ -48,12 +48,14 @@ class StudentRepo {
     }
 
     async getAverageStudentsCoursesCount() {
-        const result = await this.prisma.student.aggregate({
-            _avg: {
-                completedCourses: true
-            }
-        });
-        return result._avg.completedCourses || 0;
+        const totalStudents = await this.prisma.student.count();
+        if (totalStudents === 0) {
+            return 0; // Avoid division by zero if there are no students
+        }
+        
+        const totalCompletedCourses = await this.prisma.completedCourse.count();
+        
+        return totalCompletedCourses / totalStudents;
     }
     
 }

@@ -37,21 +37,6 @@ class RegistrationRepo {
             }
         });
     }
-
-    async getMostRegisteredSemester() {
-        return this.prisma.registration.groupBy({
-            by: ['section.semester'],
-            include: {
-                section: true
-            },
-            _count: {
-                section: true
-            },
-            orderBy: {
-                _count: 'desc'
-            }
-        })
-    }
 }
 
 export default new RegistrationRepo();

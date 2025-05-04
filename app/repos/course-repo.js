@@ -53,6 +53,10 @@ class CourseRepo {
         })
     }
 
+    async getTotalCourses() {
+        return this.prisma.course.count();
+    }
+
     async getLastAddedCourse() {
         return this.prisma.course.findFirst({
             orderBy: {
@@ -137,7 +141,37 @@ class CourseRepo {
 
         return courseWithMostPrerequisites;
     }
-    
+
+    async getMostRegisteredCourse() {
+        // Get all courses with their registrations
+        const coursesWithRegistrations = await this.prisma.course.findMany({
+            include: {
+                sections: {
+                    include: {
+                        registrations: true
+                    }
+                }
+            }
+        });
+
+        // Calculate total registrations per course
+        let maxRegistrations = 0;
+        let mostRegisteredCourse = null;
+
+        coursesWithRegistrations.forEach(course => {
+            const totalRegistrations = course.sections.reduce((sum, section) => {
+                return sum + section.registrations.length;
+            }, 0);
+
+            if (totalRegistrations > maxRegistrations) {
+                maxRegistrations = totalRegistrations;
+                mostRegisteredCourse = course;
+            }
+        });
+
+        return mostRegisteredCourse;
+    }
+        
 }
 
 export default CourseRepo;
