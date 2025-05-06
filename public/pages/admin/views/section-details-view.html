@@ -1,78 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Section Details</title>
-  <link rel="stylesheet" href="../styles/admin-styles.css">
-  <link rel="stylesheet" href="../styles/section-details-styles.css">
-</head>
-<body>
-  <div class="container">
-    <button id="backButton">Back to Course</button>
-    
-    <div id="viewMode">
-      <div id="sectionDetails"></div>
-      <h3>Enrolled Students</h3>
-      <div id="studentsList"></div>
-    </div>
-    
-    <div id="editMode" class="hidden">
-      <h2>Edit Section</h2>
-      <form id="sectionForm">
-        <div class="form-group">
-          <label for="instructorName">Instructor Name:</label>
-          <input type="text" id="instructorName" name="instructorName" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="capacity">Capacity:</label>
-          <input type="number" id="capacity" name="capacity" min="1" max="100" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="status">Status:</label>
-          <select id="status" name="status">
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="approved">Approved</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Section Details</title>
+    <link rel="stylesheet" href="../styles/admin-styles.css" />
+    <link rel="stylesheet" href="../styles/section-details-styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="backButton">Back to Course</button>
 
-        <div class="form-group">
-          <label for="semester">Semester:</label>
-          <input type="text" id="semester" name="semester" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="time">Time:</label>
-          <input type="text" id="time" name="time" required>
-        </div>
-        
-        <div class="form-group">
-          <label>Days:</label>
-          <div id="daysContainer">
-            <label><input type="checkbox" name="days" value="Sunday"> Sunday</label>
-            <label><input type="checkbox" name="days" value="Monday"> Monday</label>
-            <label><input type="checkbox" name="days" value="Tuesday"> Tuesday</label>
-            <label><input type="checkbox" name="days" value="Wednesday"> Wednesday</label>
-            <label><input type="checkbox" name="days" value="Thursday"> Thursday</label>
+      <div id="viewMode">
+        <div id="sectionDetails"></div>
+        <h3>Enrolled Students</h3>
+        <div id="studentsList"></div>
+      </div>
+
+      <div id="editMode" class="hidden">
+        <h2>Edit Section</h2>
+        <form id="sectionForm">
+          <div class="form-group">
+            <label for="instructorName">Instructor Name:</label>
+            <input
+              type="text"
+              id="instructorName"
+              name="instructorName"
+              required
+            />
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="location">Location:</label>
-          <input type="text" id="location" name="location">
-        </div>
-        
-        <button type="button" id="cancelBtn">Cancel</button>
-        <button type="submit">Save</button>
-      </form>
+
+          <div class="form-group">
+            <label for="capacity">Capacity:</label>
+            <input
+              type="number"
+              id="capacity"
+              name="capacity"
+              min="1"
+              max="100"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="approved">Approved</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="semester">Semester:</label>
+            <input type="text" id="semester" name="semester" required />
+          </div>
+
+          <div class="form-group">
+            <label for="time">Time:</label>
+            <input type="text" id="time" name="time" required />
+          </div>
+
+          <div class="form-group">
+            <label>Days:</label>
+            <div id="daysContainer">
+              <label
+                ><input type="checkbox" name="days" value="Sunday" />
+                Sunday</label
+              >
+              <label
+                ><input type="checkbox" name="days" value="Monday" />
+                Monday</label
+              >
+              <label
+                ><input type="checkbox" name="days" value="Tuesday" />
+                Tuesday</label
+              >
+              <label
+                ><input type="checkbox" name="days" value="Wednesday" />
+                Wednesday</label
+              >
+              <label
+                ><input type="checkbox" name="days" value="Thursday" />
+                Thursday</label
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" />
+          </div>
+
+          <button type="button" id="cancelBtn">Cancel</button>
+          <button type="submit">Save</button>
+        </form>
+      </div>
     </div>
-  </div>
-  
-  <script type="module" src="../scripts/controllers/section-details-controller.js"></script>
-</body>
+
+    <script
+      type="module"
+      src="../scripts/controllers/section-details-controller.js"
+    ></script>
+  </body>
 </html>
