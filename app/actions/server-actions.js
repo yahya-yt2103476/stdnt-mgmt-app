@@ -57,3 +57,45 @@ export async function createStudent(studentData) {
     return { success: false, error: error.message };
   }
 }
+
+
+// added by MEQ
+export async function submitFinalGrades(gradeUpdates) {
+
+  const registrationRepo = new RegistrationRepo();
+  const results = [];
+  
+  for (const update of gradeUpdates) {
+    const registration = await registrationRepo.getRegistrationByStudentAndSection(
+      update.studentId,
+      update.sectionId
+    );
+
+    if (!registration) {
+      results.push({
+        studentId: update.studentId,
+        success: false,
+        error: 'Registration not found'
+      });
+      continue;
+    }
+
+    const updated = await registrationRepo.update(registration.id, {
+      grade: update.grade
+    });
+
+    results.push({
+      studentId: update.studentId,
+      success: true,
+      data: updated
+    });
+  }
+
+  return {
+    success: true,
+    data: results,
+    message: 'Grades submitted successfully'
+  };
+
+}
+

@@ -5,6 +5,9 @@ import {fetchAllStudents} from "../../../services/student-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
+//for phase 2 MEQ added this import statement
+import { submitFinalGrades } from "../../../services/server-actions";
+
 var gradesOutPut = null;
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -255,41 +258,85 @@ function populateStudentSelect(registrations, enrolledStudentsList) {
   }
 }
 
-function handleFinalGradeSubmit(e, registrations) {
+// function handleFinalGradeSubmit(e, registrations) {
+//   e.preventDefault();
+
+//   const studentFinalGradeDiv = document.querySelector(".finalGradeForm");
+//   if (!studentFinalGradeDiv) {
+//     console.error("Error: .studentFinalGrade div not found in the HTML.");
+//     return registrations;
+//   }
+
+//   const gradeInputs = studentFinalGradeDiv.querySelectorAll("input.grade");
+//   console.log("Found grade input elements:", gradeInputs); //tetsing
+
+//   const updatedRegistrations = registrations.map((reg) => {
+//     const inputElement = Array.from(gradeInputs).find(
+//       (input) => parseInt(input.dataset.studentId) === reg.studentId
+//     );
+
+//     if (inputElement) {
+//       const finalGrade = parseInt(inputElement.value);
+//       if (!isNaN(finalGrade) && finalGrade <= 110 && finalGrade >= 0) {
+//         return { ...reg, grade: finalGrade }; // i am keeping everything the same and updating the grade
+//       }
+//     }
+//     return reg; // if the condition evaluates to false i'm keeping the object the same
+//   });
+
+//   instructorRegistrationsList = updatedRegistrations;
+  
+//   gradesOutPut = compareAndUpdateLists(
+//     allRegistrations,
+//     instructorRegistrationsList
+//   ); 
+//   console.log("I am testingSmth :", gradesOutPut); 
+//   gradesOutPut.forEach((e) => updateRegistrationList(e));
+//   alert("Grades have been submitted");
+// }
+//Old implementation not using server action
+
+// the change for phase 2
+
+
+async function handleFinalGradeSubmit(e, registrations) {
   e.preventDefault();
 
   const studentFinalGradeDiv = document.querySelector(".finalGradeForm");
   if (!studentFinalGradeDiv) {
     console.error("Error: .studentFinalGrade div not found in the HTML.");
-    return registrations;
+    return;
   }
 
   const gradeInputs = studentFinalGradeDiv.querySelectorAll("input.grade");
-  console.log("Found grade input elements:", gradeInputs); //tetsing
+  const gradeUpdates = [];
 
-  const updatedRegistrations = registrations.map((reg) => {
-    const inputElement = Array.from(gradeInputs).find(
-      (input) => parseInt(input.dataset.studentId) === reg.studentId
-    );
-
-    if (inputElement) {
-      const finalGrade = parseInt(inputElement.value);
-      if (!isNaN(finalGrade) && finalGrade <= 110 && finalGrade >= 0) {
-        return { ...reg, grade: finalGrade }; // i am keeping everything the same and updating the grade
-      }
+  Array.from(gradeInputs).forEach(input => {
+    const studentId = parseInt(input.dataset.studentId);
+    const finalGrade = parseInt(input.value);
+    
+    if (!isNaN(finalGrade)) {
+      gradeUpdates.push({
+        studentId,
+        sectionId, 
+        grade: finalGrade
+      });
     }
-    return reg; // if the condition evaluates to false i'm keeping the object the same
   });
 
-  instructorRegistrationsList = updatedRegistrations;
-  
-  gradesOutPut = compareAndUpdateLists(
-    allRegistrations,
-    instructorRegistrationsList
-  ); 
-  console.log("I am testingSmth :", gradesOutPut); 
-  gradesOutPut.forEach((e) => updateRegistrationList(e));
-  alert("Grades have been submitted");
+  try {
+    const result = await submitFinalGrades(gradeUpdates);
+    
+    if (result.success) {
+      alert("Grades submitted successfully!");
+      window.location.reload();
+    } else {
+      throw new Error(result.error || "Failed to submit grades");
+    }
+  } catch (error) {
+    console.error("Grade submission error:", error);
+    alert(`Error: ${error.message}`);
+  }
 }
 
 function compareAndUpdateLists(list1, list2) {

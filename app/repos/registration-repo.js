@@ -73,6 +73,18 @@ class RegistrationRepo {
       count: item._count.registrations,
     }));
   }
+
+  // MEQ added
+async getRegistrationByStudentAndSection(studentId, sectionId) {
+  return this.prisma.registration.findFirst({
+      where: {
+          studentId: Number(studentId),
+          sectionId: Number(sectionId)
+      }
+  });
+}
+
+
 }
 
 export default new RegistrationRepo();
