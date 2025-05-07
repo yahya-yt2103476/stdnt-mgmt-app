@@ -240,7 +240,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/yahyataha/Desktop/uni/00-qu/cmps-350/stdnt-mgmt-app/generated/prisma",
+      "value": "/Users/ayoubmohammed/Documents/GitHub/web Repos/stdnt-mgmt-app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -254,7 +254,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/yahyataha/Desktop/uni/00-qu/cmps-350/stdnt-mgmt-app/prisma/schema.prisma",
+    "sourceFilePath": "/Users/ayoubmohammed/Documents/GitHub/web Repos/stdnt-mgmt-app/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

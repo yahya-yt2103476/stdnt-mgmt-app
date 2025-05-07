@@ -1,19 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/students/total-count/route": "app/api/students/total-count/route.js",
-  "/api/courses/most-prerequistes/route": "app/api/courses/most-prerequistes/route.js",
-  "/api/instructors/total-count/route": "app/api/instructors/total-count/route.js",
-  "/api/courses/highest-faliar/route": "app/api/courses/highest-faliar/route.js",
-  "/api/courses/total-count/route": "app/api/courses/total-count/route.js",
-  "/api/courses/most-registered/route": "app/api/courses/most-registered/route.js",
-  "/api/courses/last-added/route": "app/api/courses/last-added/route.js",
-  "/api/sections/most-registered-semester/route": "app/api/sections/most-registered-semester/route.js",
-  "/api/students/avg-completed-courses/route": "app/api/students/avg-completed-courses/route.js",
-  "/api/sections/status-distribution/route": "app/api/sections/status-distribution/route.js",
-  "/api/students/average-gpa/route": "app/api/students/average-gpa/route.js",
-  "/api/courses/route": "app/api/courses/route.js",
-  "/api/courses/published/route": "app/api/courses/published/route.js",
-  "/api/sections/route": "app/api/sections/route.js",
-  "/api/instructors/route": "app/api/instructors/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/pages/Auth-login/page": "app/pages/Auth-login/page.js",
   "/pages/statistics-dashboard/page": "app/pages/statistics-dashboard/page.js"
 }
