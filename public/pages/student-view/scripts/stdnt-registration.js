@@ -1,53 +1,64 @@
-import {
-  fetchAllSections,
-  fetchSectionsByCourseId,
-  addStudentToSection,
-} from "../../../services/section-service.js";
+import sectionService from "../../../services/section-service.js";
 
-import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
-import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
+import { logoutCurrentUser } from "../../../services/logout.js";
+import { convertToAmPmRange } from "../../../services/format-time.js";
 
-import { fetchAllCourses } from "../../../services/course-service.js";
+import courseService from "../../../services/course-service.js";
 
-import {
-  createAndSaveRegistration,
-  fetchAllRegistrations,
-} from "../../../services/registration-service.js";
+import registrationService from "../../../services/registration-service.js";
 
-import {
-  fetchStudentById,
-  addCourseToRegisteredCourses,
-} from "../../../services/student-service.js";
+import studentService from "../../../services/student-service.js";
 
 const searchBar = document.querySelector("#searchBar");
 const coursesContainer = document.querySelector(".coursesContainer");
 const currentUserID = sessionStorage.getItem("authenticated_user_id");
 
-let courses = await fetchAllCourses();
-let sections = await fetchAllSections();
-let registrations = await fetchAllRegistrations();
-let currentStudentInfo = await fetchStudentById(currentUserID);
-console.log("student info: ", currentStudentInfo);
-renderCourses(courses);
+let allCourses = [];
+let allSections = [];
+let allRegistrations = [];
+let currentStudentInfo = null;
+
+async function initializeRegistrationPage() {
+  if (!currentUserID) {
+    console.error("User ID not found in session storage. Redirecting to login.");
+    window.location.href = "/pages/login/views/login_page.html";
+    return;
+  }
+
+  try {
+    [allCourses, allSections, allRegistrations, currentStudentInfo] =
+      await Promise.all([
+        courseService.getAllCourses(),
+        sectionService.getAllSections(),
+        registrationService.getAllRegistrations(),
+        studentService.getStudentById(currentUserID),
+      ]);
+
+    console.log("Student info: ", currentStudentInfo);
+    renderCourses(allCourses);
+  } catch (error) {
+    console.error("Error initializing registration page:", error);
+    coursesContainer.innerHTML = `<div class="msg"><b>Error loading course data. Please try again later.</b></div>`;
+  }
+}
 
 searchBar.addEventListener("input", handleSearch);
 function handleSearch() {
   const inputSearch = searchBar.value.toLowerCase();
-  if (inputSearch == "") {
-    renderCourses(courses);
+  if (inputSearch === "") {
+    renderCourses(allCourses);
     return;
   }
-  const searchResults = courses.filter(
+  const searchResults = allCourses.filter(
     (course) =>
       course.name.toLowerCase().includes(inputSearch) ||
-      course.shortName.toLowerCase().includes(inputSearch) ||
+      (course.shortName && course.shortName.toLowerCase().includes(inputSearch)) ||
       course.category.toLowerCase().includes(inputSearch)
   );
   renderCourses(searchResults);
 }
 
 function renderCourses(coursesToRender) {
-  // clear the container first
   coursesContainer.innerHTML = "";
 
   if (!coursesToRender || coursesToRender.length === 0) {
@@ -60,8 +71,8 @@ function renderCourses(coursesToRender) {
       course.prerequisites && course.prerequisites.length > 0
         ? course.prerequisites
             .map((prereqId) => {
-              const prereqCourse = courses.find((c) => c.id == prereqId);
-              return `${prereqCourse.shortName}`;
+              const prereqCourse = allCourses.find((c) => c.id == prereqId);
+              return prereqCourse ? prereqCourse.shortName : "Unknown Prereq";
             })
             .join(", ")
         : "None";
@@ -69,8 +80,8 @@ function renderCourses(coursesToRender) {
     coursesContainer.innerHTML += `
       <div class="course-card" id="course-${course.id}">
         <div class="card-header">
-          <h4 class="courseId">${course.shortName}</h4>
-          <h4 class="courseId">${course.id}</h4>
+          <h4 class="courseId">${course.shortName || 'N/A'}</h4>
+          <h4 class="courseId">ID: ${course.id}</h4>
         </div>
         <div class="card-body">
           <div class="card-section">
@@ -81,13 +92,11 @@ function renderCourses(coursesToRender) {
               ${prerequisiteNames}
             </p>
           </div>
-
           <div class="card-section description">
             <p>${course.description}</p>
           </div>
-
           <div class="card-footer">
-            <button onclick="loadsections('${course.id}')" id="toggle-${course.id}">View Sections</button>
+            <button onclick="loadSections('${course.id}')" id="toggle-${course.id}">View Sections</button>
           </div>
         </div>
         <div class="sectionsContainer" id="sections-${course.id}"></div>
@@ -96,148 +105,163 @@ function renderCourses(coursesToRender) {
   });
 }
 
-async function loadsections(courseid) {
-  const courseShortName = courses.find((c) => c.id == courseid).shortName;
+async function loadSections(courseId) {
+  const course = allCourses.find((c) => c.id == courseId);
+  const courseShortName = course ? course.shortName : "Course";
 
-  // get sections for this specific course
-  let sectionsById = await fetchSectionsByCourseId(courseid);
+  const sectionsContainer = document.getElementById(`sections-${courseId}`);
+  const toggleButton = document.getElementById(`toggle-${courseId}`);
 
-  const sectionsContainer = document.getElementById(`sections-${courseid}`);
-  const toggleButton = document.getElementById(`toggle-${courseid}`);
-
-  // toggle visibility
   if (sectionsContainer.innerHTML.trim() !== "") {
     sectionsContainer.innerHTML = "";
     toggleButton.textContent = "View Sections";
     return;
   }
 
-  // handle no sections available
-  if (sectionsById.length === 0) {
-    sectionsContainer.innerHTML = `<b><div class="msg">No available sections for this course...</div></b>`;
-    toggleButton.textContent = "View Sections";
-    return;
-  }
+  try {
+    const sectionsForCourse = await sectionService.getSectionsByCourse(courseId);
+    console.log(`Sections for course ${courseId}:`, sectionsForCourse);
 
-  // display each section
-  for (const sec of sectionsById) {
-    // calculate remaining seats
-    const enrolledCount = sec.enrolledStudents.length;
-    const remainingSeats = sec.capacity - enrolledCount;
-
-    // check if student is already registered
-    const isRegistered = registrations.some(
-      (r) =>
-        r.studentId == currentStudentInfo.id &&
-        r.sectionId == sec.id &&
-        r.status !== "cancelled"
-    );
-
-    // registration availability
-    let registerButton;
-    if (isRegistered) {
-      registerButton = `<button class="register-btn green" disabled>Already Registered</button>`;
-    } else if (sec.status == "cancelled") {
-      registerButton = `<button class="register-btn red" disabled>Registration Closed</button>`;
-    } else if (remainingSeats == 0) {
-      registerButton = `<button class="register-btn yellow" disabled>Section Full</button>`;
-    } else {
-      registerButton = `<button type="button" onclick="registerForSection(event, '${sec.id}', '${courseid}')" class="register-btn blue">Register</button>`;
+    if (!sectionsForCourse || sectionsForCourse.length === 0) {
+      sectionsContainer.innerHTML = `<b><div class="msg">No available sections for this course...</div></b>`;
+      toggleButton.textContent = "View Sections";
+      return;
     }
 
-    const timeString = convertToAmPmRange(sec.Time);
-    sectionsContainer.innerHTML += `
-      <div class="sectionsCard">
-        <div class="sectionHeader">
-          <p class="section-id">Section ${sec.id}</p>
-          <p class="section-instructor">Instructor: ${sec.instructorName}</p>
-        </div>
+    sectionsContainer.innerHTML = "";
+    for (const sec of sectionsForCourse) {
+      const enrolledCount = sec.enrolledStudents ? sec.enrolledStudents.length : 0;
+      const remainingSeats = sec.capacity - enrolledCount;
 
-        <div class="sectionInfo">
-          <p><b>Course:</b> ${courseShortName}</p>
-          <p><b>Semester:</b> ${sec.semester}</p>
-          <p><b>Time:</b> ${timeString}</p>
-          <p><b>Days:</b> ${sec.Days.join(", ")}</p>
-        </div>
+      const isRegisteredForThisSection = allRegistrations.some(
+        (r) =>
+          r.studentId == currentStudentInfo.id &&
+          r.sectionId == sec.id &&
+          r.status !== "cancelled"
+      );
 
-        <div class="sectionCapacity">
-          <p><b>Capacity:</b> ${sec.capacity}</p>
-          <p><b>Enrolled:</b> ${enrolledCount}</p>
-          <p><b>Remaining:</b> ${remainingSeats}</p>
-          <p><b>Status:</b> ${sec.status}</p>
-        </div>
+      const isRegisteredForThisCourseAnySection = allRegistrations.some(r => {
+        const registrationSection = allSections.find(s => s.id === r.sectionId);
+        return r.studentId == currentStudentInfo.id &&
+               registrationSection &&
+               registrationSection.courseId == courseId &&
+               r.status !== "cancelled";
+      });
 
-        <div class="registerContainer">
-          ${registerButton}
+      let registerButton;
+      if (isRegisteredForThisSection) {
+        registerButton = `<button class="register-btn green" disabled>Registered in this Section</button>`;
+      } else if (isRegisteredForThisCourseAnySection) {
+        registerButton = `<button class="register-btn grey" disabled>Registered in this Course</button>`;
+      } else if (sec.status === "cancelled" || sec.status === "closed") {
+        registerButton = `<button class="register-btn red" disabled>Registration Closed</button>`;
+      } else if (remainingSeats <= 0) {
+        registerButton = `<button class="register-btn yellow" disabled>Section Full</button>`;
+      } else {
+        registerButton = `<button type="button" onclick="registerForSection(event, '${sec.id}', '${courseId}')" class="register-btn blue">Register</button>`;
+      }
+
+      const timeString = sec.Time ? convertToAmPmRange(sec.Time) : "N/A";
+      const daysString = sec.Days && sec.Days.length > 0 ? sec.Days.join(", ") : "N/A";
+
+      sectionsContainer.innerHTML += `
+        <div class="sectionsCard">
+          <div class="sectionHeader">
+            <p class="section-id">Section ${sec.id}</p>
+            <p class="section-instructor">Instructor: ${sec.instructorName || 'TBD'}</p>
+          </div>
+          <div class="sectionInfo">
+            <p><b>Course:</b> ${courseShortName}</p>
+            <p><b>Semester:</b> ${sec.semester}</p>
+            <p><b>Time:</b> ${timeString}</p>
+            <p><b>Days:</b> ${daysString}</p>
+          </div>
+          <div class="sectionCapacity">
+            <p><b>Capacity:</b> ${sec.capacity}</p>
+            <p><b>Enrolled:</b> ${enrolledCount}</p>
+            <p><b>Remaining:</b> ${remainingSeats}</p>
+            <p><b>Status:</b> ${sec.status}</p>
+          </div>
+          <div class="registerContainer">
+            ${registerButton}
+          </div>
         </div>
-      </div>
-      `;
+        `;
+    }
+    toggleButton.textContent = "Hide Sections";
+  } catch (error) {
+    console.error(`Error loading sections for course ${courseId}:`, error);
+    sectionsContainer.innerHTML = `<b><div class="msg">Error loading sections.</div></b>`;
   }
-  toggleButton.textContent = "Hide Sections";
 }
-window.loadsections = loadsections;
+window.loadSections = loadSections;
 
 async function registerForSection(event, sectionId, courseId) {
-  // edge case to do: a student can't register a course if he/she is already registered for that course
-
-  // condition - check if the student is already registered for the course, just a different section
   event.preventDefault();
-  console.log(event);
 
-  console.log("sectionId: ", sectionId);
-  console.log("courseId: ", courseId);
-
-  // check if student is already registered for this course
-  const isRegisteredForCourse = registrations.some(
-    (r) =>
-      r.studentId == currentStudentInfo.id &&
-      sections.find((s) => s.id == r.sectionId)?.courseId == courseId &&
-      r.status !== "cancelled"
-  );
-
-  if (isRegisteredForCourse) {
-    alert("You are already are/were registered in a section for this course");
+  if (!currentStudentInfo || !currentUserID) {
+    alert("Error: Student information not loaded. Please refresh.");
     return;
   }
 
-  // condition - check prerequisites
-  const course = courses.find((c) => c.id == courseId);
-  const hasPrerequisites = course.prerequisites.every((prereq) =>
-    currentStudentInfo.completedCourses?.some((c) => c.courseId === prereq)
+  const course = allCourses.find((c) => c.id == courseId);
+  if (!course) {
+    alert("Error: Course details not found.");
+    return;
+  }
+
+  const isAlreadyRegisteredForCourse = allRegistrations.some(r => {
+    const registrationSection = allSections.find(s => s.id === r.sectionId);
+    return r.studentId == currentStudentInfo.id &&
+           registrationSection &&
+           registrationSection.courseId == courseId &&
+           r.status !== "cancelled";
+  });
+
+  if (isAlreadyRegisteredForCourse) {
+    alert("You are already registered in a section for this course or your registration is pending.");
+    return;
+  }
+
+  const completedCourseIds = currentStudentInfo.completedCourses?.map(cc => cc.courseId) || [];
+  const hasPrerequisites = course.prerequisites.every((prereqId) =>
+    completedCourseIds.includes(prereqId)
   );
+
   if (!hasPrerequisites) {
-    alert(`You haven't completed all prerequisites for this course!
-  Required: ${course.prerequisites.join(", ")}`);
+    const prereqShortNames = course.prerequisites.map(prereqId => {
+        const pc = allCourses.find(c => c.id === prereqId);
+        return pc ? pc.shortName : `ID ${prereqId}`;
+    }).join(", ");
+    alert(`You haven't completed all prerequisites for this course! Required: ${prereqShortNames}`);
     return;
   }
 
-  // create new registration
-  const newRegistration = {
-    id: registrations.length + 1,
+  const newRegistrationData = {
     studentId: parseInt(currentUserID),
     sectionId: parseInt(sectionId),
     status: "pending",
-    Grade: "",
   };
 
   try {
-    await createAndSaveRegistration(newRegistration);
+    const createdRegistration = await registrationService.createRegistration(newRegistrationData);
+    console.log("Registration successful:", createdRegistration);
+    
+    allRegistrations.push(createdRegistration);
+
+    alert("You have successfully registered for this section! The page will now refresh to reflect changes.");
+    
+    currentStudentInfo = await studentService.getStudentById(currentUserID);
+    loadSections(courseId);
+
   } catch (err) {
     console.error("Error creating registration: ", err);
+    alert(`Registration failed: ${err.message || "Unknown error"}`);
   }
-
-  let sectionIndex = sections.findIndex((section) => section.id == sectionId);
-  sections[sectionIndex].enrolledStudents.push(currentStudentInfo.id);
-  await addStudentToSection(parseInt(sectionId), parseInt(currentUserID));
-  await addCourseToRegisteredCourses(
-    parseInt(courseId),
-    parseInt(sectionId),
-    parseInt(currentUserID)
-  );
-  alert("You have successfully registered for this section! refreshing page");
-  await new Promise((resolve) => setTimeout(resolve, 5000));
 }
 window.registerForSection = registerForSection;
 
 const logoutbtn = document.querySelector("#logOutBtn");
 logoutbtn.addEventListener("click", logoutCurrentUser);
+
+document.addEventListener("DOMContentLoaded", initializeRegistrationPage);

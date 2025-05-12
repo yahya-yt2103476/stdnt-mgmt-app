@@ -6,39 +6,108 @@ class SectionRepo {
     }
 
     async findAll() {
-        return this.prisma.section.findMany();
+        return this.prisma.section.findMany({
+            include: { sectionDays: true } 
+        });
     }
 
     async findById(id) {
-        return this.prisma.section.findUnique({ where: { id } });
+        return this.prisma.section.findUnique({ 
+            where: { id: Number(id) },
+            include: { sectionDays: true } 
+        });
     }
 
     async create(sectionData) {
-        return this.prisma.section.create({ data: sectionData });
+        const { Days, ...restOfSectionData } = sectionData; 
+        if (restOfSectionData.courseId) restOfSectionData.courseId = Number(restOfSectionData.courseId);
+        if (restOfSectionData.instructorId !== undefined && restOfSectionData.instructorId !== null) {
+            restOfSectionData.instructorId = Number(restOfSectionData.instructorId);
+        }
+        if (restOfSectionData.capacity) restOfSectionData.capacity = Number(restOfSectionData.capacity);
+
+        const createPayload = {
+            ...restOfSectionData
+        };
+
+        if (Days && Array.isArray(Days) && Days.length > 0) {
+            createPayload.sectionDays = {
+                create: Days.map(dayString => ({ day: dayString }))
+            };
+        }
+
+        return this.prisma.section.create({ 
+            data: createPayload,
+            include: { sectionDays: true } 
+        });
     }
 
     async update(id, sectionData) {
-        return this.prisma.section.update({ where: { id }, data: sectionData });
+        const { Days, ...restOfSectionData } = sectionData;
+        const sectionId = Number(id);
+
+        
+        if (restOfSectionData.courseId) restOfSectionData.courseId = Number(restOfSectionData.courseId);
+        
+        if (restOfSectionData.instructorId !== undefined) {
+             restOfSectionData.instructorId = restOfSectionData.instructorId === null ? null : Number(restOfSectionData.instructorId);
+        }
+        if (restOfSectionData.capacity) restOfSectionData.capacity = Number(restOfSectionData.capacity);
+
+
+        const updatePayload = { ...restOfSectionData };
+
+        if (Days && Array.isArray(Days)) { 
+            await this.prisma.sectionDay.deleteMany({
+                where: { sectionId: sectionId }
+            });
+            if (Days.length > 0) {
+                updatePayload.sectionDays = {
+                    create: Days.map(dayString => ({ day: dayString }))
+                };
+            }
+        }
+        return this.prisma.section.update({ 
+            where: { id: sectionId }, 
+            data: updatePayload,
+            include: { sectionDays: true }  });
     }
 
     async delete(id) {
-        return this.prisma.section.delete({ where: { id } });
+        const sectionId = Number(id);
+        
+        return this.prisma.section.delete({ 
+            where: { id: sectionId } 
+        });
     }
 
+    
     async getSectionsByCourseId(courseId) {
-        return this.prisma.section.findMany({ where: { courseId: Number(courseId) } });
+        return this.prisma.section.findMany({ 
+            where: { courseId: Number(courseId) },
+            include: { sectionDays: true } 
+        });
     }
 
     async getSectionsBySemester(semester) {
-        return this.prisma.section.findMany({ where: { semester: semester } });
+        return this.prisma.section.findMany({ 
+            where: { semester: semester },
+            include: { sectionDays: true } 
+        });
     }
 
     async getSectionsByInstructorId(instructorId) {
-        return this.prisma.section.findMany({ where: { instructorId: Number(instructorId) } });
+        return this.prisma.section.findMany({ 
+            where: { instructorId: Number(instructorId) },
+            include: { sectionDays: true } 
+        });
     }
 
     async getSectionsByCourseIdAndSemester(courseId, semester) {
-        return this.prisma.section.findMany({ where: { courseId: Number(courseId), semester: semester } });
+        return this.prisma.section.findMany({ 
+            where: { courseId: Number(courseId), semester: semester },
+            include: { sectionDays: true } 
+        });
     }
 
     async getSectionsByCourseIdAndInstructorId(courseId, instructorId) {
@@ -46,7 +115,10 @@ class SectionRepo {
     }
 
     async getSectionsByStatus(status) {
-        return this.prisma.section.findMany({ where: { status: status } });
+        return this.prisma.section.findMany({ 
+            where: { status: status },
+            include: { sectionDays: true }
+        });
     }
 
     async getSectionsByLocation(location) {
@@ -67,31 +139,29 @@ class SectionRepo {
     }
 
     async getMostRegisteredSemester() {
-        // 1. Fetch all sections, including their semester and a count of related registrations
+       
         const sectionsWithRegistrationCounts = await this.prisma.section.findMany({
             select: {
                 semester: true,
                 _count: {
-                    select: { registrations: true } // Get registration count per section
+                    select: { registrations: true } 
                 }
             }
         });
 
-        // 2. Aggregate registration counts per semester in JavaScript
+        
         const semesterCounts = {};
         for (const section of sectionsWithRegistrationCounts) {
             const semester = section.semester;
-            const count = section._count.registrations; // Get the count for this section
-
-            // Initialize count for the semester if it's the first time seeing it
+            const count = section._count.registrations; 
             if (semesterCounts[semester] === undefined) {
                 semesterCounts[semester] = 0;
             }
-            // Add the section's registration count to the semester's total
+           
             semesterCounts[semester] += count;
         }
 
-        // 3. Find the semester with the highest total count
+        
         let mostRegisteredSemester = null;
         let maxCount = -1;
 
@@ -102,14 +172,15 @@ class SectionRepo {
             }
         }
 
-        // 4. Format and return the result
+        
         if (mostRegisteredSemester !== null) {
-            // Return in a similar structure to groupBy for consistency, if desired
+            
             return [{ semester: mostRegisteredSemester, count: maxCount }];
         } else {
-            return []; // Return empty array if no sections/registrations found
+            return []; 
         }
     }
 }
 
-export default new SectionRepo();
+const sectionRepoInstance = new SectionRepo();
+export default sectionRepoInstance;

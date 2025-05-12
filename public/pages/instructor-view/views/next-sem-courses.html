@@ -97,6 +97,63 @@
         padding: 40px;
         color: #666;
       }
+
+      
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr); 
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .calendar-day-header {
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .calendar-day-column {
+        border: 1px solid #e0e0e0;
+        padding: 10px;
+        min-height: 200px; 
+        border-radius: 4px;
+        background-color: #f9f9f9;
+      }
+
+      .calendar-section-card {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 0.9em;
+        cursor: pointer; 
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      .calendar-section-card:hover {
+        border-color: #007bff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      }
+
+      .calendar-section-card .course-name {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+      }
+      .calendar-section-card .instructor-name,
+      .calendar-section-card .time,
+      .calendar-section-card .location,
+      .calendar-section-card .status {
+        margin: 3px 0;
+        color: #555;
+      }
+      .calendar-section-card .status {
+        font-style: italic;
+        font-size: 0.9em;
+      }
     </style>
   </head>
   <body>

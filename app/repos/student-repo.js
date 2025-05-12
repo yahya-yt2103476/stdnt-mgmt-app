@@ -15,6 +15,17 @@ class StudentRepo {
         })
     }
 
+    async findByUserId(userId) {
+        console.log(`Repo: Searching for student with userId: ${userId} (Type: ${typeof userId})`);
+        const student = await this.prisma.student.findUnique({
+            where: { userId: Number(userId) },
+            include: {
+            }
+        });
+        console.log(`Repo: Found student:`, student);
+        return student;
+    }
+
     async create(studentData) {
         return this.prisma.student.create({
             data: studentData

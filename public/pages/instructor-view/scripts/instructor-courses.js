@@ -1,23 +1,26 @@
-import { fetchInstructorById } from "../../../services/instructor-service.js";
-import { fetchAllCourses } from "../../../services/course-service.js";
-import { fetchAllSections } from "../../../services/section-service.js";
+import InstructorService from "../../../services/instructor-service.js";
+import CourseService from "../../../services/course-service.js";
+import SectionService from "../../../services/section-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 
 
 let instructor_Id = Number(sessionStorage.getItem('instructor_id'));
-var currentInstructor = await fetchInstructorById(instructor_Id);
+var currentInstructor = await InstructorService.getInstructorById(instructor_Id);
 
 console.log("I am supposed to be instructor_Id: ",instructor_Id);
 
 let instructorName = currentInstructor.name.replace(/Dr\. ?/i, "").trim();
 console.log("Name: ",instructorName);
 
-let allCourses = await fetchAllCourses();
-let allSections = await fetchAllSections();
+let allCourses = await CourseService.getAllCourses();
+let allSections = await SectionService.getAllSections();
 
 let instructorSections = () => {
   return allSections.filter(
-    (section) => section.instructorName.trim() === instructorName
+    (section) => {
+      return section.instructorName && typeof section.instructorName === 'string' &&
+             section.instructorName.trim() === instructorName;
+    }
   );
 };
 let instructorCourses = () => {
@@ -35,21 +38,31 @@ function main() {
   }
 
   const mainContent = document.querySelector(".coursesContainer");
-  let neededInfo = filterIntoOne(instructorCourses(), instructorSections());
+  const instructorCourseList = instructorCourses();
+  const instructorSectionList = instructorSections();
 
-  console.log("Smth i wanna see");
-  console.log(neededInfo[0].totalEnrolled);  
+  let neededInfo = filterIntoOne(instructorCourseList, instructorSectionList);
 
-  mainContent.innerHTML = loadCourses(
-    neededInfo,
-    instructorCourses(),
-    instructorSections()
-  ).join(" ");
+  if (neededInfo && neededInfo.length > 0) {
+    console.log("Smth i wanna see");
+    console.log(neededInfo[0].totalEnrolled);
+
+    mainContent.innerHTML = loadCourses(
+      neededInfo,
+      instructorCourseList,
+      instructorSectionList
+    ).join(" ");
+  } else {
+    mainContent.innerHTML = "<p>No courses found for this instructor.</p>";
+    console.log("No courses/sections found for the instructor after filtering.");
+  }
 
   const searchBar = document.querySelector("#searchBar");
-  searchBar.addEventListener("input", () =>
-    handleSearch(neededInfo, instructorCourses(), instructorSections())
-  );
+  if (searchBar) {
+    searchBar.addEventListener("input", () =>
+      handleSearch(neededInfo, instructorCourseList, instructorSectionList)
+    );
+  }
 }
 
 function filterIntoOne(corList, secList) {

@@ -57,3 +57,151 @@ textarea {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 20px;
+}
+
+.calendar-day-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+}
+
+.calendar-day-cell {
+    border: 1px solid #e0e0e0;
+    min-height: 100px;
+    padding: 5px;
+    background-color: #f9f9f9;
+}
+
+.calendar-section-card {
+    background-color: #fff;
+    border: 1px solid #b3e5fc; 
+    border-left: 5px solid #03a9f4; 
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.calendar-section-card:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.calendar-section-card strong {
+    color: #0277bd;
+}
+
+.calendar-section-card small {
+    display: block;
+    color: #555;
+    margin-top: 2px;
+}
+
+.view-toggle button {
+    padding: 8px 15px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.view-toggle button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.no-courses-msg {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+.calendar-view-container { 
+    padding: 1rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 8px; 
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #fdfdfd;
+}
+
+.calendar-day-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 5px;
+    background-color: #f0f2f5;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.calendar-day-cell {
+    border: 1px solid #e7e7e7;
+    background-color: #fff;
+    min-height: 120px; 
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px; 
+}
+
+.calendar-section-card {
+    background-color: #e3f2fd; 
+    border: 1px solid #bbdefb;
+    border-left: 5px solid #2196F3; 
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.calendar-section-card:hover {
+    box-shadow: 0 3px 7px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+
+.calendar-section-card strong {
+    color: #1e88e5; 
+    display: block;
+    margin-bottom: 3px;
+}
+
+.calendar-section-card small {
+    display: block;
+    color: #555e68;
+    line-height: 1.4;
+    font-size: 0.95em;
+}
+
+.view-toggle button {
+}
+
+.view-toggle button.active {
+}
+
+.no-courses-msg { 
+    padding: 20px;
+    text-align: center;
+    color: #777;
+    grid-column: 1 / -1; 
+}

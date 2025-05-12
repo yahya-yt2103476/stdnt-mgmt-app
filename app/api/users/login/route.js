@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import UserRepo from "../../../repos/user-repo";
 import { signJwtAccessToken } from "../../../lib/jwt";
 

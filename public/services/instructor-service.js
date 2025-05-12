@@ -31,6 +31,25 @@ class InstructorService {
     }
   }
 
+  async getInstructorByUserId(userId) {
+    try {
+      // Calls the new endpoint: /api/instructors/user/{userId}
+      const response = await fetch(`${this.baseUrl}/user/${userId}`);
+      if (!response.ok) {
+         if (response.status === 404) {
+           console.log(`No instructor found for user ID: ${userId}`);
+           return null; // Or throw a specific "NotFound" error
+        }
+        const error = await response.json();
+        throw new Error(error.details || `Failed to fetch instructor for user ID ${userId} 0_0`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching instructor by user ID ${userId}:`, error);
+      throw error;
+    }
+  }
+
   async createInstructor(instructorData) {
     try {
       const response = await fetch(this.baseUrl, {

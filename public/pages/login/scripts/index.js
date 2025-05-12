@@ -1,8 +1,8 @@
-import { createUser, fetchAllUsers } from "../../../services/user-service.js";
+import userService from "../../../services/user-service.js";
 
-import { AddStudent } from "../../../services/student-service.js";
-import { updateInstructor } from "../../../services/instructor-service.js";
-import { updateAdmin } from "../../../services/admin-service.js";
+import studentService from "../../../services/student-service.js";
+import instructorService from "../../../services/instructor-service.js";
+import adminService from "../../../services/admin-service.js";
 
 async function main() {
   const icons = [];
@@ -15,104 +15,134 @@ async function main() {
   const Admin_icn = document.querySelector("#Admin-icon");
   icons.push(Admin_icn);
   const indicator = document.querySelector("#indicator");
-  const userType = document.querySelector("#usertype");
+  const userTypeIndicator = document.querySelector("#usertype");
   if (window.location.pathname.includes("signup.html")) {
     const registerBtn = document.querySelector("#registerButton");
     registerBtn.addEventListener("click", handleRegisterUser);
   }
-  let usertype;
+  let selectedUserType;
 
-  std_icn.addEventListener("click", () => handleUserType("Student"));
-  Inst_icn.addEventListener("click", () => handleUserType("Instructor"));
-  Admin_icn.addEventListener("click", () => handleUserType("Admin"));
-  if (window.location.pathname.includes("login_page.html")) {
+  std_icn.addEventListener("click", () => handleUserTypeSelection("Student"));
+  Inst_icn.addEventListener("click", () => handleUserTypeSelection("Instructor"));
+  Admin_icn.addEventListener("click", () => handleUserTypeSelection("Admin"));
+  if (window.location.pathname.includes("login-page.html")) {
     form.addEventListener("submit", handleLoginUser);
   } else {
-    console.log("not login page");
+    console.log("Not on login page, login handler not attached.");
   }
 
-  function handleUserType(e) {
+  function handleUserTypeSelection(type) {
     icons.forEach((i) => {
       i.style.transform = "scale(1)";
       i.style.color = "grey";
     });
 
-    if (e === "Student") {
-      usertype = e;
+    selectedUserType = type;
+
+    if (type === "Student") {
       std_icn.style.transform = "scale(1.05)";
       std_icn.style.color = "Black";
       if (window.location.pathname.includes("signup.html")) {
         document.querySelector("#Major").style.display = "block";
         document.querySelector("label[for='Major']").style.display = "block";
       }
-    } else if (e === "Instructor") {
-      usertype = e;
+    } else if (type === "Instructor") {
       Inst_icn.style.transform = "scale(1.05)";
       Inst_icn.style.color = "Black";
       if (window.location.pathname.includes("signup.html")) {
         document.querySelector("#Major").style.display = "none";
         document.querySelector("label[for='Major']").style.display = "none";
       }
-    } else if (e === "Admin") {
-      usertype = e;
-      Admin_icn.transform = "scale(1.05)";
+    } else if (type === "Admin") {
+      Admin_icn.style.transform = "scale(1.05)";
       Admin_icn.style.color = "Black";
       if (window.location.pathname.includes("signup.html")) {
         document.querySelector("#Major").style.display = "none";
         document.querySelector("label[for='Major']").style.display = "none";
       }
     }
+    userTypeIndicator.style.display = "none";
   }
 
   async function handleLoginUser(e) {
     e.preventDefault();
+    indicator.style.display = "none";
+    userTypeIndicator.style.display = "none";
+
+    if (!selectedUserType) {
+      userTypeIndicator.textContent = "Please select a user type!";
+      userTypeIndicator.style.display = "block";
+      return;
+    }
 
     const formData = new FormData(form);
-    let formObject = {};
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    formData.forEach((value, key) => {
-      formObject[key] = value;
-    });
-    let users = await fetchAllUsers();
-    console.log("used the new method");
-    console.log(users);
-
-    let user = users.find((u) => {
-      return u.email == formObject.email && u.password == formObject.password;
-    });
-
-    if (user && usertype != undefined && user.userType == usertype) {
-      console.log(`user have been found`);
-      indicator.style.display = "none";
-
-      switch (user.userType) {
-        case "Student":
-          loadPage(user, "../../student-view/views/stdnt-main-dashboard.html");
-          break;
-        case "Instructor":
-          loadPage(
-            user,
-            "/frontend/pages/instructor-view/views/instructor-main-dashboard.html"
-          );
-          break;
-
-        case "Admin":
-          loadPage(user, "/frontend/pages/admin/views/admin-dashboard.html");
-          break;
-      }
-    } else if (usertype == undefined) {
-      userType.style.display = "block";
-      await new Promise((resolve) => setTimeout(resolve, 4000));
-      userType.style.display = "none";
-    } else {
-      indicator.style.display = "block";
+    if (!email || !password) {
+       indicator.textContent = "Please enter both email and password.";
+       indicator.style.display = "block";
+       return;
     }
-    form.reset();
-  }
 
-  async function loadPage(user, page) {
-    window.location.href = page;
-    sessionStorage.setItem("authenticated_user_id", `${user.id}`);
+    try {
+      console.log(`Attempting login for ${email} as ${selectedUserType}`);
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: email, 
+          password: password, 
+          userType: selectedUserType
+        }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("Login successful, received data:", userData);
+
+        if (userData && userData.id && userData.profile) {
+           sessionStorage.setItem("authenticated_user_id", userData.id.toString());
+           sessionStorage.setItem("authenticated_user_type", userData.userType.toUpperCase());
+           
+           switch (userData.userType.toUpperCase()) { 
+              case "STUDENT":
+                window.location.href = "/pages/student-view/views/stdnt-main-dashboard.html";
+                break;
+              case "INSTRUCTOR":
+                 window.location.href = "/pages/instructor-view/views/instructor-main-dashboard.html";
+                break;
+              case "ADMIN":
+                 window.location.href = "/pages/admin/views/admin-dashboard.html";
+                break;
+              default:
+                  console.error("Unknown user type received from server:", userData.userType);
+                  indicator.textContent = "Login failed: Unknown user role.";
+                  indicator.style.display = "block";
+            }
+        } else {
+             console.error("Login failed: User ID or profile data missing from server response.", userData);
+             indicator.textContent = "Login failed. Please try again (profile data missing).";
+             indicator.style.display = "block";
+        }
+
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error(`Login failed: ${response.status} ${response.statusText}`, errorData);
+        indicator.textContent = errorData.error || "Incorrect Email/Password or User Type.";
+        indicator.style.display = "block";
+      }
+
+    } catch (error) {
+      console.error("Network or unexpected error during login:", error);
+      indicator.textContent = "An error occurred during login. Please check connection.";
+      indicator.style.display = "block";
+    } finally {
+       // Optionally clear password field after attempt
+       // form.querySelector('#password').value = ''; 
+    }
   }
 
   async function handleRegisterUser(event) {
@@ -124,113 +154,62 @@ async function main() {
       formObject[key] = value;
     });
 
-    const randomId = Math.floor(Math.random() * 10000);
-    const user = {
-      id: randomId,
-      ...formObject,
-      userType: usertype,
-    };
-
+    // Validation
     if (formObject.password !== formObject.confirmPassword) {
       alert("Password and Confirm Password do not match");
       return;
     }
-
-    if (!usertype) {
+    if (!selectedUserType) {
       alert("Please select a user type");
       return;
     }
-
     if (!formObject.email || !formObject.password || !formObject.name) {
       alert("Please fill all the fields");
       return;
     }
-
-    if (user.userType == "Student" && !formObject.Major) {
+    if (selectedUserType == "Student" && !formObject.Major) {
       alert("Please Choose a major");
       return;
     }
-    switch (user.userType) {
-      case "Student":
-        await AddStudent({
-          id: randomId,
-          name: user.name,
-          gpa: "0.0",
-          major: user.Major,
-          completedCourses: [],
-          registeredCourses: [],
+
+    // 1. Create the user with only valid fields
+    const userPayload = {
+      email: formObject.email,
+      password: formObject.password,
+      userType: selectedUserType.toUpperCase(),
+    };
+    
+    try {
+      const createdUser = await userService.createUser(userPayload);
+
+      // 2. Create the related entity
+      if (selectedUserType == "Student") {
+        await studentService.createStudent({
+          name: formObject.name,
+          gpa: 0.0,
+          major: formObject.Major,
+          userId: createdUser.id,
         });
-        break;
+      } else if (selectedUserType == "Instructor") {
+        await instructorService.createInstructor({
+          name: formObject.name,
+          userId: createdUser.id,
+        });
+      } else if (selectedUserType == "Admin") {
+        await adminService.createAdmin({
+          name: formObject.name,
+          userId: createdUser.id,
+        });
+      }
 
-      case "Instructor":
-        await updateInstructor(
-          {
-            id: randomId,
-            name: user.name,
-          },
-          "POST"
-        );
-        break;
-
-      case "Admin":
-        await updateAdmin(
-          {
-            id: randomId,
-            name: user.name,
-          },
-          "POST"
-        );
-        break;
+      alert("User created successfully, click OK to go to login page");
+      window.location.href = "/pages/login/views/login-page.html";
+    } catch (error) {
+      console.error("Registration error:", error);
+      const errorDetails = error.response ? await error.response.json().catch(() => ({})) : {};
+      alert(`Error creating user: ${errorDetails.details || error.message}`);
     }
-
-    await createUser(user);
-    alert("User created successfully, click OK to go to login page");
-    window.location.href = "/frontend/pages/login/views/login_page.html";
   }
 }
 
 main();
-
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('form');
-  
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    // Get selected user type
-    const userType = document.querySelector('#usertype').textContent.includes('Student') ? 'Student' : 
-                     document.querySelector('#usertype').textContent.includes('Instructor') ? 'Instructor' : 'Admin';
-    
-    try {
-      let redirectPage = '';
-      
-      if (userType === 'Student') {
-        redirectPage = '/pages/student-view/views/stdnt-main-dashboard.html';
-      } else if (userType === 'Instructor') {
-        redirectPage = '/pages/instructor-view/views/instructor-main-dashboard.html';
-      } else if (userType === 'Admin') {
-        redirectPage = '/pages/admin/views/admin-dashboard.html';
-      }
-      
-      window.location.href = redirectPage;
-      
-    } catch (error) {
-      document.getElementById('indicator').style.display = 'block';
-    }
-  });
-  
-  document.getElementById('Student-icon').addEventListener('click', () => {
-    document.getElementById('usertype').textContent = 'Student';
-  });
-  
-  document.getElementById('Instructor-icon').addEventListener('click', () => {
-    document.getElementById('usertype').textContent = 'Instructor';
-  });
-  
-  document.getElementById('Admin-icon').addEventListener('click', () => {
-    document.getElementById('usertype').textContent = 'Admin';
-  });
-});

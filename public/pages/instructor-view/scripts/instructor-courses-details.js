@@ -1,12 +1,12 @@
-import { fetchAllCourses } from "../../../services/course-service.js";
-import {fetchAllSections,updateSection} from "../../../services/section-service.js";
-import {fetchAllRegistrations,updateRegistrationData} from "../../../services/registration-service.js";
-import {fetchAllStudents} from "../../../services/student-service.js";
+import { getAllCourses } from "../../../services/course-service.js";
+import { getAllSections, updateSection } from "../../../services/section-service.js";
+import { getAllRegistrations, updateRegistration } from "../../../services/registration-service.js";
+import { getAllStudents } from "../../../services/student-service.js";
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
 import { convertToAmPmRange as convertToAmPmRange } from "../../../services/format-time.js";
 
 //for phase 2 MEQ added this import statement
-import { submitFinalGrades } from "../../../services/server-actions";
+import { submitFinalGrades } from "../../../../app/actions/server-actions.js";
 
 var gradesOutPut = null;
 
@@ -15,10 +15,10 @@ const courseId = Number(urlParams.get("courseId"));
 const sectionId = Number(parseInt(urlParams.get("sectionId")));
 const courseShortName = urlParams.get("courseShortName").replace(/\s/g, "").trim();
 
-let allCourses = await fetchAllCourses();
-let allSections = await fetchAllSections();
-let allStudents = await fetchAllStudents();
-let allRegistrations = await fetchAllRegistrations();
+let allCourses = await getAllCourses();
+let allSections = await getAllSections();
+let allStudents = await getAllStudents();
+let allRegistrations = await getAllRegistrations();
 
 let instructorSections = () => {
   return allSections.find((section) => section.id === sectionId);
@@ -351,7 +351,9 @@ function compareAndUpdateLists(list1, list2) {
 
 // this uses the same logic as the one we used in updateSectionList
 async function updateRegistrationList(registrations) {
-  updateRegistrationData(registrations);
+  // This function appears unused after introducing server actions.
+  // The call below is incorrect as updateRegistration expects (id, data).
+  // updateRegistrationData(registrations);
 }
 
 const logoutbtn = document.querySelector("#logOutBtn");

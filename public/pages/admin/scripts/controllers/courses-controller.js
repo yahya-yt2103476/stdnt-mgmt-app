@@ -1,17 +1,17 @@
 import CourseService from '../../../../services/course-service.js';
 import SectionService from '../../../../services/section-service.js';
-import { courseCard } from '../components/course-card.js';
-import { sectionCard } from '../components/section-card.js';
 import InstructorService from '../../../../services/instructor-service.js';
 import PublishedCoursesService from '../../../../services/published-courses-service.js';
-import { createSectionCard } from "../controllers/publish-courses-controller.js";
+import { logoutCurrentUser } from '../../../../services/logout.js';
+import { convertToAmPmRange } from '../../../../services/format-time.js';
 
-let courses = [];
 let coursesContainer;
 let loadingIndicator;
 let addCourseBtn;
+let listViewBtn;
 let calendarViewBtn;
-let hybridViewBtn;
+
+let allFetchedCourses = [];
 
 function isSemesterFuture(semester) {
     if (!semester) return false;
@@ -64,304 +64,80 @@ function isSemesterCurrent(semester) {
 }
 
 async function loadCourses() {
-    console.log('Loading courses...');
+    console.log('Courses-controller: Loading all courses (simplified view)...');
+    if (!coursesContainer) {
+        console.error("coursesContainer element not found in loadCourses.");
+        if (loadingIndicator) loadingIndicator.textContent = 'Error: UI element missing.';
+        return;
+    }
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+        loadingIndicator.textContent = 'Loading courses...';
+    }
+
     try {
-        const coursesData = await CourseService.getAllCourses();
-        console.log('Fetched courses data:', coursesData); 
+        const allCoursesData = await CourseService.getAllCourses();
         
-        if (!Array.isArray(coursesData)) {
-            console.error('Courses data is not an array:', coursesData);
+        if (!Array.isArray(allCoursesData)) {
+            console.error('Courses data is not an array:', allCoursesData);
+            if (loadingIndicator) loadingIndicator.textContent = 'Error: Course data format incorrect.';
+            coursesContainer.innerHTML = '<p class="error-message">Error loading course data.</p>';
             return;
         }
-        
-        courses = coursesData;
-        
-        let coursesWithActiveSections = [];
-        let coursesWithoutActiveSections = [];
-      
-        for (const course of coursesData) {
-            const sections = await SectionService.getSectionsByCourse(course.id);
-            course.sections = sections;
-            
-            if (Array.isArray(sections)) {
-                
-                const activeSections = sections.filter(section => {
-                    const isInProgress = isSemesterCurrent(section.semester);
-                    const isPendingRegistration = isSemesterFuture(section.semester) || 
-                        (isSemesterCurrent(section.semester) && !section.isRegistrationClosed);
-                    
-                    console.log(`Section ${section.id} status:`, {
-                        semester: section.semester,
-                        isInProgress,
-                        isPendingRegistration
-                    });
 
-                    return isInProgress || isPendingRegistration;
-                });
-                
-                if (activeSections.length > 0) {
-                    console.log(`Course ${course.id} has active sections:`, activeSections);
-                    coursesWithActiveSections.push({
-                        ...course,
-                        sections: activeSections
-                    });
-                } else {
-                    console.log(`Course ${course.id} has no active sections`);
-                    coursesWithoutActiveSections.push({
-      ...course,
-                        sections: []
-                    });
-                }
-            }
+        if (allCoursesData.length === 0) {
+            coursesContainer.innerHTML = '<p class="no-courses-msg">No courses found in the system.</p>';
+        } else {
+            const courseCardsHtml = await Promise.all(
+                allCoursesData.map(course => createSimplifiedCourseCard(course))
+            );
+            coursesContainer.innerHTML = `<div class="courses-list">${courseCardsHtml.join('')}</div>`;
         }
         
-        console.log('Courses categorized:', {
-            withActiveSections: coursesWithActiveSections,
-            withoutActiveSections: coursesWithoutActiveSections
-        });
+        addButtonEventListeners(); 
 
-        renderHybridView(coursesWithActiveSections, coursesWithoutActiveSections);
+    } catch (error) {
+        console.error('Error loading courses in courses-controller:', error);
+        coursesContainer.innerHTML = `<p class="error-message">Failed to load courses: ${error.message}</p>`;
+    } finally {
         if (loadingIndicator) {
             loadingIndicator.classList.add('hidden');
         }
-    } catch (error) {
-        console.error('Error loading courses:', error);
     }
 }
 
-function addDropdownHandlers() {
-    document.querySelectorAll('.dropdown-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const targetId = header.dataset.target;
-            const targetList = document.getElementById(targetId);
-            const toggleIcon = header.querySelector('.toggle-icon');
-            
-            targetList.classList.toggle('collapsed');
-            toggleIcon.textContent = targetList.classList.contains('collapsed') ? '▶' : '▼';
-        });
-    });
-}
+async function createSimplifiedCourseCard(course) {
+    const addNewSectionButton = `<button class="add-new-section-btn" data-course-id="${course.id}">+ Add Section</button>`;
 
-async function renderHybridView(activeCourses, inactiveCourses) {
-    const container = document.getElementById('coursesContainer');
-    if (!container) {
-        console.error('Courses container not found');
-        return;
-    }
-    const activeCoursesCards = await Promise.all(
-        activeCourses.map(course => createCourseCardWithButtons(course, true))
-    );
-    
-    const inactiveCoursesCards = await Promise.all(
-        inactiveCourses.map(course => createCourseCardWithButtons(course, false))
-    );
-    container.innerHTML = `
-        <div class="courses-group active-courses">
-            <div class="dropdown-header" data-target="active-courses-list">
-                <h3>Active Courses (In Progress & Open Registration) (${activeCoursesCards.length})</h3>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="courses-list" id="active-courses-list">
-                ${activeCoursesCards.join('')}
-            </div>
-        </div>
-        
-        <div class="courses-group inactive-courses">
-            <div class="dropdown-header" data-target="inactive-courses-list">
-                <h3>Inactive Courses (${inactiveCoursesCards.length})</h3>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="courses-list" id="inactive-courses-list">
-                ${inactiveCoursesCards.join('')}
-            </div>
-        </div>
-    `;
-
-    addSectionStatusBadges();
-    addDropdownHandlers();
-    addButtonEventListeners();
-}
-async function isAvailableCourseForSection(courseId) {
-    try {
-        const publishedCourses = await PublishedCoursesService.getAllPublishedCourses();
-        const instructors = await InstructorService.getAllInstructors();
-        
-        // Check if course is published for next semester
-        const publishedCourse = publishedCourses.find(pc => pc.courseId === courseId);
-        if (!publishedCourse) return false;
-        
-        // Check if deadline has passed
-        const isDeadlinePassed = new Date() > new Date(publishedCourse.submissionDeadline);
-        if (!isDeadlinePassed) return false;
-        
-        // Check if instructors list is not empty
-        return instructors && instructors.length > 0;
-    } catch (error) {
-        console.error('Error checking course availability:', error);
-        return false;
-    }
-}
-
-async function  createCourseCardWithButtons(course, hasActiveSections) {
-    console.log('Creating card for course:', course); 
-
-    const addSectionsButton = await isAvailableCourseForSection(course.id) 
-        ? `<button class="add-sections-btn" data-course-id="${course.id}">Add Sections</button>` 
-        : '';
     return `
-        <div class="course-card ${hasActiveSections ? 'active' : 'inactive'}" data-course-id="${course.id}">
+        <div class="course-card" data-course-id="${course.id}">
             <div class="course-header">
-                <h4>${course.name}</h4>
-                <span class="course-id">${course.id}</span>
-                ${addSectionsButton}
+                <h4>${course.name} (${course.shortName || 'N/A'})</h4>
+                <span class="course-id">ID: ${course.id}</span>
+                ${addNewSectionButton}
             </div>
             <div class="course-info">
-                <p class="category">${course.category.charAt(0).toUpperCase() + course.category.slice(1)}</p>
-                <p class="prerequisites">Prerequisites: ${course.prerequisites?.join(', ') || 'None'}</p>
+                <p class="category"><strong>Category:</strong> ${course.category?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'N/A'}</p>
+                <p class="prerequisites"><strong>Prerequisites:</strong> ${course.prerequisites?.map(prereqId => {
+                    return `ID ${prereqId}`;    
+                }).join(', ') || 'None'}</p>
+                <p><strong>Credit Hours:</strong> ${course.creditHours || 'N/A'}</p>
             </div>
-            ${hasActiveSections ? renderSections(course.sections) : ''}
             <div class="course-actions">
-                <button class="view-btn" data-action="view" data-course-id="${course.id}">View</button>
-                <button class="edit-btn" data-action="edit" data-course-id="${course.id}">Edit</button>
-                <button class="delete-btn" data-action="delete" data-course-id="${course.id}">Delete</button>
+                <button class="view-btn" data-action="view" data-course-id="${course.id}">View Details & Sections</button>
+                <button class="edit-btn" data-action="edit" data-course-id="${course.id}">Edit Course</button>
+                <button class="delete-btn" data-action="delete" data-course-id="${course.id}">Delete Course</button>
             </div>
         </div>
     `;
-}
-
-function renderSections(sections) {
-    if (!sections || sections.length === 0) return '';
-    
-    return `
-        <div class="sections-list">
-            <h5>Active Sections:</h5>
-            ${sections.map(section => `
-                <div class="section-item" data-section-id="${section.id}">
-                    <div class="section-info">
-                        <span class="section-id">Section ${section.id}</span>
-                        <span class="semester">${section.semester}</span>
-                        <span class="instructor">${section.instructorName}</span>
-                        <span class="status-badge ${getSectionStatusClass(section)}">
-                            ${getSectionStatus(section)}
-                        </span>
-                    </div>
-                    <div class="section-actions">
-                        <button class="view-btn" data-action="view" data-section-id="${section.id}">View</button>
-                        <button class="delete-btn" data-action="delete" data-section-id="${section.id}">Delete</button>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-function getSectionStatus(section) {
-    if (isSemesterCurrent(section.semester)) {
-        return 'In Progress';
-    }
-    return 'Open for Registration';
-}
-
-function getSectionStatusClass(section) {
-    if (isSemesterCurrent(section.semester)) {
-        return 'in-progress';
-    }
-    return 'open-registration';
-}
-
-function addSectionStatusBadges() {
-    const styles = `
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .status-badge.in-progress {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .status-badge.open-registration {
-            background-color: #2196F3;
-            color: white;
-        }
-    `;
-    
-    if (!document.querySelector('#status-badge-styles')) {
-        const styleSheet = document.createElement('style');
-        styleSheet.id = 'status-badge-styles';
-        styleSheet.textContent = styles;
-        document.head.appendChild(styleSheet);
-    }
-}
-
-function clearCoursesContainer() {
-  while (coursesContainer.firstChild) {
-    coursesContainer.removeChild(coursesContainer.firstChild);
-  }
-  
-  if (courses.length === 0) {
-    const emptyMessage = document.createElement('p');
-    emptyMessage.textContent = 'No courses available.';
-    coursesContainer.appendChild(emptyMessage);
-    return true;
-  }
-  return false;
-}
-
-function renderCalendarView() {
-  if (clearCoursesContainer()) return;
-  
-  coursesContainer.className = 'calendar-view';
-  
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-  days.forEach(day => {
-    const dayHeader = document.createElement('div');
-    dayHeader.textContent = day;
-    dayHeader.className = 'day-header';
-    coursesContainer.appendChild(dayHeader);
-  });
-  
-  const dayColumns = {};
-  days.forEach(day => {
-    const dayColumn = document.createElement('div');
-    dayColumn.className = 'day-column';
-    coursesContainer.appendChild(dayColumn);
-    dayColumns[day] = dayColumn;
-  });
-  
-  courses.forEach(course => {
-    if (course.sections && course.sections.length > 0) {
-      course.sections.forEach(section => {
-        if (section.Days && section.Days.length > 0) {
-          section.Days.forEach(day => {
-            if (dayColumns[day]) {
-              const sectionElement = sectionCard(
-                section, 
-                course.shortName || course.name,
-                () => navigateToSectionDetails(section.id, course.id)
-              );
-              dayColumns[day].appendChild(sectionElement);
-            }
-          });
-        }
-      });
-    }
-  });
 }
 
 async function navigateToCourseDetails(courseId) {
     try {
-        console.log('Fetching course details for:', courseId);
-        const allCourses = await CourseService.getAllCourses();
-        console.log('All courses:', allCourses); 
-        
-        const numericCourseId = parseInt(courseId);
-        const course = allCourses.find(c => c.id === numericCourseId || c.id === courseId);
+        const course = await CourseService.getCourseById(courseId);
         
         if (!course) {
-            console.error('Course not found:', courseId);
-            console.log('Available course IDs:', allCourses.map(c => c.id)); // Debug log
+            console.error('Course not found for details navigation:', courseId);
             alert('Course not found');
             return;
         }
@@ -374,21 +150,24 @@ async function navigateToCourseDetails(courseId) {
             category: course.category || 'Uncategorized',
             prerequisites: course.prerequisites || []
         }));
-
         window.location.href = `course-details-view.html?id=${course.id}`;
     } catch (error) {
         console.error('Error navigating to course details:', error);
-        console.log('Full error:', error); // Debug log
         alert('Failed to load course details. Please try again.');
     }
 }
 
 function navigateToSectionDetails(sectionId, courseId) {
-  window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseId}`;
+    if (!courseId) {
+        console.error("Course ID is required to navigate to section details.");
+        alert("Cannot navigate: Course context is missing.");
+        return;
+    }
+    window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseId}`;
 }
 
 function navigateToAddCourse() {
-  window.location.href = 'course-details-view.html?mode=add';
+    window.location.href = 'course-details-view.html?mode=add';
 }
 
 function addButtonEventListeners() {
@@ -397,15 +176,9 @@ function addButtonEventListeners() {
             e.stopPropagation();
             const action = e.target.dataset.action;
             const courseId = e.target.dataset.courseId;
-            console.log('Button clicked:', {
-                action,
-                courseId,
-                buttonElement: e.target,
-                dataset: e.target.dataset
-            });
 
             if (!courseId) {
-                console.error('No course ID found on button');
+                console.error('No course ID found on action button');
                 return;
             }
 
@@ -417,13 +190,14 @@ function addButtonEventListeners() {
                     window.location.href = `course-details-view.html?id=${courseId}&mode=edit`;
                     break;
                 case 'delete':
-                    if (confirm('Are you sure you want to delete this course?')) {
+                    if (confirm('Are you sure you want to delete this course and all its associated sections?')) {
                         try {
                             await CourseService.deleteCourse(courseId);
-                            window.location.reload();
+                            alert('Course deleted successfully.');
+                            loadCourses();
                         } catch (error) {
                             console.error('Failed to delete course:', error);
-                            alert('Failed to delete course. Please try again.');
+                            alert(`Failed to delete course: ${error.message}`);
                         }
                     }
                     break;
@@ -431,227 +205,198 @@ function addButtonEventListeners() {
         });
     });
 
-    document.querySelectorAll('.section-actions button').forEach(button => {
+    document.querySelectorAll('.add-new-section-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
-            const action = e.target.dataset.action;
-            const sectionId = e.target.dataset.sectionId;
-            console.log(`Section button clicked: ${action} for section ${sectionId}`);
-
-            switch(action) {
-                case 'view':
-                    console.log('Navigating to section details:', sectionId);
-                    navigateToSectionDetails(sectionId);
-                    break;
-                case 'edit':
-                    console.log('Navigating to edit section:', sectionId);
-                    window.location.href = `section-details-view.html?id=${sectionId}&mode=edit`;
-                    break;
-                case 'delete':
-                    console.log('Attempting to delete section:', sectionId);
-                    if (confirm('Are you sure you want to delete this section?')) {
-                        SectionService.deleteSection(sectionId)
-                            .then(() => {
-                                console.log('Section deleted successfully:', sectionId);
-                                window.location.reload();
-                            })
-                            .catch(error => {
-                                console.error('Failed to delete section:', error);
-                                alert('Failed to delete section. Please try again.');
-                            });
-                    }
-                    break;
-            }
-        });
-    });
-
-    document.querySelectorAll('.add-sections-btn').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            e.stopPropagation();
             const courseId = e.target.dataset.courseId;
-        
-            try {
-                const publishedCourses = await PublishedCoursesService.getAllPublishedCourses();
-                const course = courses.find(c => c.id.toString() === courseId);
-                const publishedInfo = publishedCourses.find(pc => pc.courseId.toString() === courseId);
-                
-                if (!course || !publishedInfo) {
-                    console.error('Course or published info not found');
-                    return;
-                }
-
-                
-                const overlay = document.createElement('div');
-                overlay.className = 'section-form-overlay';
-                
-                
-                const formContainer = document.createElement('div');
-                formContainer.className = 'section-form-container';
-                
-                
-                const closeButton = document.createElement('button');
-                closeButton.className = 'close-overlay';
-                closeButton.innerHTML = '&times;';
-                closeButton.onclick = () => overlay.remove();
-
-                
-                const formHtml = await createSectionCard(course, publishedInfo);
-                formContainer.innerHTML = formHtml;
-
-                
-                const form = formContainer.querySelector(`#sectionForm_${courseId}`);
-                form.onsubmit = async (e) => {
-                    e.preventDefault();
-                    try {
-                        const selectedDays = Array.from(form.querySelectorAll(`input[name="days_${courseId}"]:checked`))
-                            .map(checkbox => checkbox.value);
-
-                        if (selectedDays.length === 0) {
-                            alert('Please select at least one day');
-                            return;
-                        }
-
-                        const startTime = form.querySelector(`#timeStart_${courseId}`).value;
-                        const endTime = form.querySelector(`#timeEnd_${courseId}`).value;
-
-                        if (startTime >= endTime) {
-                            alert('End time must be after start time');
-                            return;
-                        }
-
-                        const sectionData = {
-                            courseId: parseInt(courseId),
-                            instructorId: parseInt(form.querySelector(`#instructor_${courseId}`).value),
-                            schedule: {
-                                days: selectedDays,
-                                timeStart: startTime,
-                                timeEnd: endTime
-                            },
-                            location: form.querySelector(`#location_${courseId}`).value,
-                            courseContent: form.querySelector(`#content_${courseId}`).value,
-                            semester: publishedInfo.semester,
-                            isRegistrationClosed: false
-                        };
-
-                        await SectionService.createSection(sectionData);
-                        alert('Section created successfully!');
-                        overlay.remove();
-                        await loadCourses();
-                        renderCalendarView(); 
-                    } catch (error) {
-                        console.error('Error creating section:', error);
-                        alert('Failed to create section. Please try again.');
-                    }
-                };
-
-                
-                const cancelButton = formContainer.querySelector('.cancel-btn');
-                if (cancelButton) {
-                    cancelButton.addEventListener('click', () => overlay.remove());
-                }
-                
-                
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        overlay.remove();
-                    }
-                });
-                
-                
-                formContainer.insertBefore(closeButton, formContainer.firstChild);
-                overlay.appendChild(formContainer);
-                document.body.appendChild(overlay);
-
-                
-                if (!document.querySelector('#overlay-styles')) {
-                    const styles = document.createElement('style');
-                    styles.id = 'overlay-styles';
-                    styles.textContent = `
-                        .section-form-overlay {
-                            position: fixed;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background: rgba(0, 0, 0, 0.5);
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            z-index: 1000;
-                        }
-                        .section-form-container {
-                            background: white;
-                            padding: 20px;
-                            border-radius: 8px;
-                            max-width: 500px;
-                            width: 90%;
-                            max-height: 80vh;
-                            overflow-y: auto;
-                            position: relative;
-                        }
-                        .close-overlay {
-                            position: absolute;
-                            right: 10px;
-                            top: 10px;
-                            background: none;
-                            border: none;
-                            font-size: 24px;
-                            cursor: pointer;
-                            padding: 5px;
-                        }
-                    `;
-                    document.head.appendChild(styles);
-                }
-
-            } catch (error) {
-                console.error('Error creating section:', error);
+            if (courseId) {
+                window.location.href = `section-details-view.html?mode=add&courseId=${courseId}`;
+            } else {
+                console.error("No course ID found for adding section.");
             }
         });
     });
 }
 
 async function init() {
-  coursesContainer = document.getElementById('coursesContainer');
-  loadingIndicator = document.getElementById('loadingIndicator');
+    coursesContainer = document.getElementById('coursesContainer');
+    loadingIndicator = document.getElementById('loadingIndicator');
     addCourseBtn = document.getElementById('addCourseBtn');
-  calendarViewBtn = document.getElementById('calendarViewBtn');
-    hybridViewBtn = document.getElementById('hybridViewBtn');
+    listViewBtn = document.getElementById('listViewBtn');
+    calendarViewBtn = document.getElementById('calendarViewBtn');
     
-    if (!coursesContainer) {
-        console.error('Courses container not found');
+    if (!coursesContainer || !listViewBtn || !calendarViewBtn) {
+        console.error('One or more critical UI elements not found. Cannot initialize courses view.');
+        if (loadingIndicator) loadingIndicator.textContent = 'Error: UI setup incorrect.';
         return;
     }
 
     if (addCourseBtn) {
-  addCourseBtn.addEventListener('click', navigateToAddCourse);
+        addCourseBtn.addEventListener('click', navigateToAddCourse);
     }
 
-    if (calendarViewBtn) {
-        calendarViewBtn.addEventListener('click', () => {
-            hybridViewBtn.classList.remove('active');
-            calendarViewBtn.classList.add('active');
-            coursesContainer.className = 'calendar-view';
-            renderCalendarView();
-        });
-    }
+    listViewBtn.addEventListener('click', () => {
+        calendarViewBtn.classList.remove('active');
+        listViewBtn.classList.add('active');
+        renderListView();
+    });
 
-    if (hybridViewBtn) {
-        hybridViewBtn.addEventListener('click', () => {
-            calendarViewBtn.classList.remove('active');
-            hybridViewBtn.classList.add('active');
-            coursesContainer.className = 'list-view';
-            loadCourses();
-        });
-    }
-  
-  try {
-    await loadCourses();
-  } catch (error) {
-    console.error('Failed to initialize courses view:', error);
-        if (loadingIndicator) {
-            loadingIndicator.textContent = 'Failed to load courses. Please try again.';
-        }
-  }
+    calendarViewBtn.addEventListener('click', () => {
+        listViewBtn.classList.remove('active');
+        calendarViewBtn.classList.add('active');
+        renderCalendarView();
+    });
+
+    await renderListView();
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+const logoutbtn = document.querySelector("#logOutBtn"); 
+if (logoutbtn) {
+    logoutbtn.addEventListener("click", logoutCurrentUser);
+}
+
+async function renderListView() {
+    console.log('Courses-controller: Rendering List View...');
+    if (!coursesContainer) {
+        console.error("coursesContainer element not found in renderListView.");
+        if (loadingIndicator) loadingIndicator.textContent = 'Error: UI element missing.';
+        return;
+    }
+    coursesContainer.className = 'courses-list-view';
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+        loadingIndicator.textContent = 'Loading courses...';
+    }
+
+    try {
+        const coursesData = await CourseService.getAllCourses();
+        allFetchedCourses = [];
+
+        for (const course of coursesData) {
+            const sections = await SectionService.getSectionsByCourse(course.id);
+            allFetchedCourses.push({...course, sections: sections || []});
+        }
+        
+        if (!Array.isArray(allFetchedCourses) || allFetchedCourses.length === 0) {
+            coursesContainer.innerHTML = '<p class="no-courses-msg">No courses found in the system.</p>';
+        } else {
+            const courseCardsHtml = await Promise.all(
+                allFetchedCourses.map(course => createSimplifiedCourseCard(course))
+            );
+            coursesContainer.innerHTML = `<div class="courses-list">${courseCardsHtml.join('')}</div>`;
+        }
+        
+        addButtonEventListeners();
+
+    } catch (error) {
+        console.error('Error loading courses for list view:', error);
+        coursesContainer.innerHTML = `<p class="error-message">Failed to load courses: ${error.message}</p>`;
+    } finally {
+        if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+        }
+    }
+}
+
+async function renderCalendarView() {
+    console.log('Courses-controller: Rendering Calendar View...');
+    if (!coursesContainer) {
+        console.error("coursesContainer element not found in renderCalendarView.");
+        if (loadingIndicator) loadingIndicator.textContent = 'Error: UI element missing.';
+        return;
+    }
+    coursesContainer.className = 'calendar-view-container';
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+        loadingIndicator.textContent = 'Loading schedule...';
+    }
+    coursesContainer.innerHTML = '';
+
+    try {
+        if (allFetchedCourses.length === 0) {
+            const coursesData = await CourseService.getAllCourses();
+            allFetchedCourses = [];
+            for (const course of coursesData) {
+                const sections = await SectionService.getSectionsByCourse(course.id);
+                allFetchedCourses.push({...course, sections: sections || []});
+            }
+        }
+
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const calendarGrid = document.createElement('div');
+        calendarGrid.className = 'calendar-grid';
+
+        daysOfWeek.forEach(day => {
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'calendar-day-header';
+            dayHeader.textContent = day;
+            calendarGrid.appendChild(dayHeader);
+        });
+
+        const dayCells = {};
+        daysOfWeek.forEach(day => {
+            const dayCell = document.createElement('div');
+            dayCell.className = 'calendar-day-cell';
+            calendarGrid.appendChild(dayCell);
+            dayCells[day] = dayCell;
+        });
+
+        let sectionsScheduled = 0;
+        allFetchedCourses.forEach(course => {
+            if (course.sections && course.sections.length > 0) {
+                course.sections.forEach(section => {
+                    if (section.status === 'APPROVED' && isSemesterCurrent(section.semester)) {
+                        const sectionDays = section.sectionDays?.map(sd => sd.day) || [];
+                        sectionDays.forEach(day => {
+                            if (dayCells[day]) {
+                                const sectionCardEl = createCalendarSectionCard(section, course);
+                                dayCells[day].appendChild(sectionCardEl);
+                                sectionsScheduled++;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        if (sectionsScheduled === 0) {
+            calendarGrid.innerHTML = '<p class="no-courses-msg">No sections currently in progress for this week.</p>';
+        }
+        
+        coursesContainer.appendChild(calendarGrid);
+
+    } catch (error) {
+        console.error('Error rendering calendar view:', error);
+        coursesContainer.innerHTML = `<p class="error-message">Failed to load schedule: ${error.message}</p>`;
+    } finally {
+        if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+        }
+    }
+}
+
+function createCalendarSectionCard(section, course) {
+    const sectionCard = document.createElement('div');
+    sectionCard.className = 'calendar-section-card'; 
+    sectionCard.dataset.sectionId = section.id;
+    sectionCard.dataset.courseId = course.id;
+
+    const timeString = section.Time ? convertToAmPmRange(section.Time) : 'N/A';
+    const instructorName = section.instructorName || (section.instructorId ? `Instructor ID: ${section.instructorId}` : 'TBD');
+    const location = section.location || 'TBD';
+
+    sectionCard.innerHTML = `
+        <div class="course-name">${course.shortName || course.name} (Sec: ${section.id})</div>
+        <div class="instructor-name">Instr: ${instructorName}</div>
+        <div class="time">Time: ${timeString}</div>
+        <div class="location">Loc: ${location}</div>
+        <div class="status">Status: ${section.status}</div>
+    `;
+
+    sectionCard.addEventListener('click', () => {
+        navigateToSectionDetails(section.id, course.id);
+    });
+
+    return sectionCard;
+}

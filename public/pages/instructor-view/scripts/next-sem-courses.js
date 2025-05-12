@@ -1,18 +1,21 @@
 import { logoutCurrentUser as logoutCurrentUser } from "../../../services/logout.js";
-import { fetchAllCourses } from "../../../services/course-service.js";
-import {
-  updatePublishedCourse,
-  fetchPublishedCourse,
-  fetchAllPublishedCourses,
-} from "../../../services/published-courses-service.js";
+import CourseService from "../../../services/course-service.js";
+import PublishedCoursesService from "../../../services/published-courses-service.js";
 
 let coursesContainer;
 let loadingIndicator;
-const instructorId = sessionStorage.getItem("authenticated_user_id");
+const instructorId = sessionStorage.getItem("instructor_id");
+
+let allCoursesDataGlobal = [];
+let publishedCoursesDataGlobal = [];
 
 function createCourseCard(course, publishedInfo) {
-  const instructors = publishedInfo.instructors || [];
-  const isInterested = instructors.includes(parseInt(instructorId));
+  const interestedIds = Array.isArray(publishedInfo.interestedInstructorIds) 
+    ? publishedInfo.interestedInstructorIds 
+    : JSON.parse(publishedInfo.interestedInstructorIds || "[]");
+
+  const numericInstructorId = instructorId ? parseInt(instructorId) : null;
+  const isInterested = numericInstructorId ? interestedIds.includes(numericInstructorId) : false;
 
   return `
         <div class="course-card" data-course-id="${course.id}">
@@ -29,12 +32,12 @@ function createCourseCard(course, publishedInfo) {
                     <p><strong>Credit Hours:</strong> ${course.creditHours}</p>
                     <p><strong>Semester:</strong> ${publishedInfo.semester}</p>
                     <p><strong>Prerequisites:</strong> ${
-                      course.prerequisites?.join(", ") || "None"
+                      course.prerequisites?.map(p => p.prerequisite?.shortName).join(", ") || "None"
                     }</p>
                 </div>
                 <div class="instructor-list">
                     <p><strong>Interested Instructors:</strong> ${
-                      instructors.length
+                      interestedIds.length
                     }</p>
                 </div>
                 ${
@@ -43,6 +46,7 @@ function createCourseCard(course, publishedInfo) {
                     : `<button 
                         class="interest-btn" 
                         data-published-course-id="${publishedInfo.id}"
+                        ${!numericInstructorId ? 'disabled title="Log in as instructor to register interest"' : ''}
                     >
                         Register Interest
                     </button>`
@@ -53,36 +57,57 @@ function createCourseCard(course, publishedInfo) {
 }
 
 async function registerInterest(publishedCourseId) {
+  if (!instructorId) {
+      alert("Could not identify instructor. Please log in again.");
+      return;
+  }
   try {
-    const publishedCourse = await fetchPublishedCourse(publishedCourseId);
+    const publishedCourse = await PublishedCoursesService.getPublishedCourseById(publishedCourseId);
 
-    if (!publishedCourse.instructors) {
-      publishedCourse.instructors = [];
-    }
+    let currentInterestedIds = Array.isArray(publishedCourse.interestedInstructorIds)
+        ? publishedCourse.interestedInstructorIds
+        : JSON.parse(publishedCourse.interestedInstructorIds || "[]");
 
-    if (!publishedCourse.instructors.includes(parseInt(instructorId))) {
-      publishedCourse.instructors.push(parseInt(instructorId));
-      await updatePublishedCourse(publishedCourse);
-      console.log("Updated published course:", publishedCourse);
+    const numericInstructorId = parseInt(instructorId);
+
+    if (!currentInterestedIds.includes(numericInstructorId)) {
+      currentInterestedIds.push(numericInstructorId);
+      
+      const updateData = { ...publishedCourse, interestedInstructorIds: currentInterestedIds };
+      
+      await PublishedCoursesService.updatePublishedCourse(publishedCourseId, updateData);
+      console.log("Updated published course:", updateData);
       alert("Interest registered successfully!");
-      await loadCourses();
+      await loadCourses(); 
+    } else {
+      console.log("Interest already registered.");
+      await loadCourses(); 
     }
   } catch (error) {
     console.error("Error registering interest:", error);
-    alert("Failed to register interest. Please try again.");
+    alert(`Failed to register interest. ${error.message || "Please try again."}`);
   }
 }
 
 async function loadCourses() {
   try {
-    const [allCourses, publishedCourses] = await Promise.all([
-      fetchAllCourses(),
-      fetchAllPublishedCourses(),
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+        loadingIndicator.textContent = 'Loading available courses...';
+    }
+
+    const [fetchedCourses, fetchedPublishedCourses] = await Promise.all([
+      CourseService.getAllCourses(),
+      PublishedCoursesService.getAllPublishedCourses(),
     ]);
 
-    const activePublishedCourses = publishedCourses.filter((course) => {
+    allCoursesDataGlobal = fetchedCourses;
+    publishedCoursesDataGlobal = fetchedPublishedCourses;
+
+
+    const activePublishedCourses = publishedCoursesDataGlobal.filter((course) => {
       const deadline = new Date(course.submissionDeadline);
-      return deadline > new Date();
+      return !isNaN(deadline.getTime()) && deadline > new Date();
     });
 
     if (
@@ -91,7 +116,7 @@ async function loadCourses() {
     ) {
       coursesContainer.innerHTML = `
                 <div class="no-courses">
-                    <p>No courses are currently available for the next semester.</p>
+                    <p>No courses are currently available for the next semester registration period.</p>
                 </div>
             `;
       return;
@@ -99,10 +124,13 @@ async function loadCourses() {
 
     const courseCards = await Promise.all(
       activePublishedCourses.map(async (publishedCourse) => {
-        const course = allCourses.find(
+        const course = allCoursesDataGlobal.find(
           (c) => c.id === publishedCourse.courseId
         );
-        if (!course) return "";
+        if (!course) {
+            console.warn(`Course data not found for published course ID: ${publishedCourse.courseId}`);
+            return "";
+        }
         return createCourseCard(course, publishedCourse);
       })
     );
@@ -112,16 +140,15 @@ async function loadCourses() {
     document
       .querySelectorAll(".interest-btn:not([disabled])")
       .forEach((button) => {
-        button.addEventListener("click", async (e) => {
-          const publishedCourseId = e.target.dataset.publishedCourseId;
-          await registerInterest(publishedCourseId);
-        });
+        button.removeEventListener('click', handleRegisterInterestClick); 
+        button.addEventListener('click', handleRegisterInterestClick);
       });
   } catch (error) {
     console.error("Error loading courses:", error);
     coursesContainer.innerHTML = `
             <div class="error-message">
                 <p>Failed to load courses. Please try again later.</p>
+                <p><i>Error: ${error.message}</i></p>
             </div>
         `;
   } finally {
@@ -131,14 +158,57 @@ async function loadCourses() {
   }
 }
 
+async function handleRegisterInterestClick(e) {
+    const button = e.target;
+    const publishedCourseId = button.dataset.publishedCourseId;
+
+    button.disabled = true; 
+    button.textContent = "Registering...";
+
+    try {
+        await registerInterest(publishedCourseId);
+        // loadCourses() is called within registerInterest on success, which will re-render 
+        // and thus update the button state if interest was registered.
+    } catch (error) {
+        // If registerInterest itself fails, re-enable the button
+        // (This might be redundant if loadCourses always runs, but good for robustness)
+        console.error("Handler caught error from registerInterest:", error);
+        button.disabled = false;
+        button.textContent = "Register Interest";
+        // alert is already in registerInterest
+    }
+    // No finally block needed to re-enable button if loadCourses handles the UI refresh
+}
+
 function init() {
-  console.log("Initializing with instructor ID:", instructorId);
+  console.log("Initializing course interests with instructor ID:", instructorId);
   coursesContainer = document.getElementById("coursesContainer");
   loadingIndicator = document.getElementById("loadingIndicator");
+
+  if (!instructorId) {
+    console.warn("Instructor ID not found in session storage. Interest registration disabled.");
+    
+  }
+
+  if (loadingIndicator) {
+    loadingIndicator.classList.remove('hidden');
+  } else {
+    console.warn("Loading indicator element not found");
+  }
+
+  if (!coursesContainer) {
+      console.error("Courses container element not found!");
+      if(loadingIndicator) loadingIndicator.classList.add("hidden");
+      return;
+  }
 
   loadCourses();
 }
 
 document.addEventListener("DOMContentLoaded", init);
 const logoutbtn = document.querySelector("#logOutBtn");
-logoutbtn.addEventListener("click", logoutCurrentUser);
+if(logoutbtn) {
+    logoutbtn.addEventListener("click", logoutCurrentUser);
+} else {
+    console.warn("Logout button not found");
+}

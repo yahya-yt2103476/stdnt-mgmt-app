@@ -17,16 +17,34 @@ class StudentService {
     }
   }
 
-  async getStudentById(id) {
+  async getStudentById(studentId) {
     try {
-      const response = await fetch(`${this.baseUrl}/${id}`);
+      const response = await fetch(`${this.baseUrl}/${studentId}`);
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.details + 'Failed to fetch student 0_0');
       }
       return response.json();
     } catch (error) {
-      console.error(`Error fetching student ${id}:`, error);
+      console.error(`Error fetching student ${studentId}:`, error);
+      throw error;
+    }
+  }
+
+  async getStudentByUserId(userId) {
+    try {
+      const response = await fetch(`${this.baseUrl}/user/${userId}`);
+      if (!response.ok) {
+         if (response.status === 404) {
+           console.log(`No student found for user ID: ${userId}`);
+           return null;
+        }
+        const error = await response.json();
+        throw new Error(error.details || `Failed to fetch student for user ID ${userId} 0_0`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching student by user ID ${userId}:`, error);
       throw error;
     }
   }
@@ -52,9 +70,9 @@ class StudentService {
     }
   }
 
-  async updateStudent(id, studentData) {
+  async updateStudent(studentId, studentData) {
     try {
-      const response = await fetch(`${this.baseUrl}/${id}`, {
+      const response = await fetch(`${this.baseUrl}/${studentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -68,14 +86,14 @@ class StudentService {
       }
       return response.json();
     } catch (error) {
-      console.error(`Error updating student ${id}:`, error);
+      console.error(`Error updating student ${studentId}:`, error);
       throw error;
     }
   }
 
-  async deleteStudent(id) {
+  async deleteStudent(studentId) {
     try {
-      const response = await fetch(`${this.baseUrl}/${id}`, {
+      const response = await fetch(`${this.baseUrl}/${studentId}`, {
         method: 'DELETE',
       });
       
@@ -85,7 +103,7 @@ class StudentService {
       }
       return response.json();
     } catch (error) {
-      console.error(`Error deleting student ${id}:`, error);
+      console.error(`Error deleting student ${studentId}:`, error);
       throw error;
     }
   }
