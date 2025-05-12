@@ -194,7 +194,8 @@ exports.Prisma.PublishedCourseScalarFieldEnum = {
   courseId: 'courseId',
   semester: 'semester',
   publishedDate: 'publishedDate',
-  submissionDeadline: 'submissionDeadline'
+  submissionDeadline: 'submissionDeadline',
+  interestedInstructorIds: 'interestedInstructorIds'
 };
 
 exports.Prisma.SortOrder = {
@@ -226,6 +227,7 @@ exports.CourseCategory = exports.$Enums.CourseCategory = {
 };
 
 exports.Status = exports.$Enums.Status = {
+  PENDING: 'PENDING',
   OPEN: 'OPEN',
   APPROVED: 'APPROVED',
   CANCELLED: 'CANCELLED'

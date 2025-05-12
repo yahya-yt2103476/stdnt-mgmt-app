@@ -18,6 +18,7 @@ enum UserType {
 }
 
 enum Status {
+  PENDING
   OPEN
   APPROVED
   CANCELLED
@@ -120,9 +121,9 @@ model CoursePrerequisite {
 model Section {
   id               Int           @id @default(autoincrement())
   courseId         Int
-  instructorId     Int
+  instructorId     Int?          
   capacity         Int
-  status           Status        @default(OPEN)
+  status           Status        @default(PENDING) 
   semester         Semester
   time             String
   location         String
@@ -130,7 +131,7 @@ model Section {
 
   
   course           Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  instructor       Instructor    @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  instructor       Instructor?   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   registrations    Registration[]
   sectionDays      SectionDay[]
 }
@@ -176,6 +177,7 @@ model PublishedCourse {
   semester           Semester
   publishedDate      DateTime    @default(now())
   submissionDeadline DateTime?
+  interestedInstructorIds String @default("[]")
 
   course             Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
   

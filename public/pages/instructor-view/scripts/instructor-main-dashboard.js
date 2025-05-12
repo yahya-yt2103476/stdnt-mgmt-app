@@ -1,18 +1,27 @@
 import { logoutCurrentUser } from "../../../services/logout.js";
-import { fetchInstructorById} from "../../../services/instructor-service.js";
+import InstructorService from "../../../services/instructor-service.js";
 
 const yourCoursesCard = document.getElementById("yourCourses");
 const courseInterestsCard = document.getElementById("courseInterests");
 const logoutbtn = document.querySelector("#logOutBtn");
 const welcomeMessage = document.querySelector("#welcomeMsg");
 
-const instructorId = sessionStorage.getItem("authenticated_user_id");
+const userId = sessionStorage.getItem("authenticated_user_id");
 
 async function init() {
-  console.log("I am supposed to be instructor_Id: ", instructorId);
+  console.log("I am supposed to be user_Id: ", userId);
 
   try {
-    const instructor = await fetchInstructorById(instructorId);
+    const instructor = await InstructorService.getInstructorByUserId(userId);
+
+    if (!instructor) {
+      console.error(`No instructor found for user ID: ${userId}`);
+      welcomeMessage.innerHTML = "Welcome! (Instructor profile not found)";
+      yourCoursesCard.style.display = 'none';
+      courseInterestsCard.style.display = 'none';
+      return;
+    }
+
     let name =  instructor.name;
     let instructorFullName =  name.split(" ");
     console.log(instructorFullName);
@@ -23,20 +32,20 @@ async function init() {
     
     welcomeMessage.innerHTML = `Welcome back ${instructorFirstName} ${instructorLastName}!`;
     
-      
-    setupEventListeners();
+    sessionStorage.setItem("instructor_id", instructor.id);
+
+    setupEventListeners(instructor.id);
   } catch (error) {
     console.error("Error initializing dashboard:", error);
     welcomeMessage.innerHTML = "Welcome to Instructor Dashboard";
   }
 }
 
-function setupEventListeners() {
+function setupEventListeners(instructorId) {
   logoutbtn.addEventListener("click", logoutCurrentUser);
 
   yourCoursesCard.addEventListener("click", function () {
     window.location.href = "../views/instructor-courses.html";
-    sessionStorage.setItem("instructor_id", instructorId);
   });
 
   courseInterestsCard.addEventListener("click", function () {

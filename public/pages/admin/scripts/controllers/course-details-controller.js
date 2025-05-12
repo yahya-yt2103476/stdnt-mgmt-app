@@ -1,16 +1,14 @@
 import CourseService from '../../../../services/course-service.js';
 import SectionService from '../../../../services/section-service.js';
 
-// Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const courseId = urlParams.get('id');
 const mode = urlParams.get('mode');
 
-// DOM elements
+
 let courseDetails, sectionsList, viewMode, editMode;
 let courseForm, prerequisitesContainer;
 
-// Data
 let currentCourse, allCourses, sections = [];
 
 function clearCourseStorage() {
@@ -18,7 +16,6 @@ function clearCourseStorage() {
 }
 
 async function init() {
-  // Get DOM elements
   courseDetails = document.getElementById('courseDetails');
   sectionsList = document.getElementById('sectionsList');
   viewMode = document.getElementById('viewMode');
@@ -60,8 +57,8 @@ async function init() {
       
       sections = await SectionService.getSectionsByCourse(courseId);
       
-      // Make sure sections is always an array
       if (!Array.isArray(sections)) {
+        console.warn(`Sections for course ${courseId} was not an array:`, sections);
         sections = [];
       }
       
@@ -97,8 +94,9 @@ async function init() {
       courseDetails.innerHTML = '<p>No course selected</p>';
     }
   } catch (error) {
-    console.error('Error loading data:', error);
-    courseDetails.innerHTML = `<p>Error: ${error.message}</p>`;
+    console.error('Error loading data in course-details-controller:', error);
+    if (courseDetails) courseDetails.innerHTML = `<p>Error: ${error.message}</p>`;
+    if (sectionsList) sectionsList.innerHTML = `<p>Error loading sections: ${error.message}</p>`;
   }
 }
 
@@ -126,26 +124,47 @@ function getPrerequisiteNames() {
 }
 
 function displaySections() {
+  if (!sectionsList) {
+      console.error("sectionsList element not found in displaySections");
+      return;
+  }
   if (!sections || sections.length === 0) {
-    sectionsList.innerHTML = '<p>No sections available</p>';
+    sectionsList.innerHTML = '<p>No sections available for this course.</p>';
     return;
   }
   
-  sectionsList.innerHTML = sections.map(section => `
-    <div class="section-card" data-id="${section.id}">
-      <h4>Section ${section.id} - ${section.instructorName}</h4>
-      <p>Schedule: ${section.Days.join(', ')} at ${section.Time}</p>
-      <p>Status: ${section.status} | Enrolled: ${section.enrolledStudents.length}/${section.capacity}</p>
-    </div>
-  `).join('');
+  sectionsList.innerHTML = sections.map(section => {
+    const daysToDisplay = section.sectionDays && Array.isArray(section.sectionDays)
+        ? section.sectionDays.map(sd => sd.day).join(', ') 
+        : 'Not Set';
+    
+    const timeToDisplay = section.time || 'Not Set'; 
+    const instructorNameDisplay = section.instructorName || (section.instructorId ? `Instructor ID: ${section.instructorId}`: 'TBD');
+    const enrolledCount = section.registrations?.length || 0; 
+
+    return `
+      <div class="section-card" data-id="${section.id}" data-course-id="${section.courseId}"> 
+        <h4>Section ${section.id} - ${instructorNameDisplay}</h4>
+        <p>Schedule: ${daysToDisplay} at ${timeToDisplay}</p>
+        <p>Status: ${section.status} | Enrolled: ${enrolledCount}/${section.capacity}</p>
+        <p>Semester: ${section.semester || 'N/A'}</p>
+        <p>Location: ${section.location || 'TBD'}</p>
+      </div>
+    `;
+  }).join('');
   
-  const sectionCards = document.querySelectorAll('.section-card');
+  const sectionCards = document.querySelectorAll('#sectionsList .section-card');
   sectionCards.forEach(card => {
     card.addEventListener('click', () => {
       const sectionId = card.getAttribute('data-id');
-      window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseId}`;
+      const courseIdForNav = card.getAttribute('data-course-id'); // Get courseId from card
+      if (sectionId && courseIdForNav) {
+        window.location.href = `section-details-view.html?id=${sectionId}&courseId=${courseIdForNav}`;
+      } else {
+        console.error("Missing sectionId or courseId on section card for navigation.");
+      }
     });
-    card.style.cursor = 'pointer';
+    card.style.cursor = 'pointer'; 
   });
 }
 
