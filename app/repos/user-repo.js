@@ -49,6 +49,22 @@ class UserRepo {
       where: { id: Number(id) }
     });
   }
+
+  async findUserByEmailAndPassword(email, password, usertype) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+  
+    if (!user) return null;
+  
+    // no use of hashing passwords and comparing them. i removed it for testing purposes.
+    //
+    if (user.password !== password) return null;
+  
+    if (user.userType !== usertype) return null;
+  
+    return user;
+  }
 }
 
 export default UserRepo;

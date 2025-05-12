@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials"
+import UserRepo from "../../../repos/user-repo.js"
 
 const handler = NextAuth({
   providers: [
@@ -13,27 +14,29 @@ const handler = NextAuth({
         credentials:{
             email: { label: "Email", type: "text" },
             password: { label: "Password", type: "password" },
+            usertype: {label: "user type", type: "text"}
           },
 
           async authorize(credentials, req) {
-            const res = await fetch("/api/users/login", {
+            const res = await fetch(`${process.env.NEXTAUTH_URL}/api/users/login`, {
               method: "POST",
-              body: JSON.stringify(credentials),
-              headers: { "Content-Type": "application/json" },
-            })
-            
-            const user = await res.json()
-            console.log("user is: ");
-            console.log(user);
-            
-            
-    
-            // If no error then return the user data otherwise return nulll
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+                usertype: credentials.usertype
+              }),
+            });
+          
+            const user = await res.json();
+          
             if (res.ok && user) {
-              return user
+              return user;
             }
-            return null
-          },
+            return null;
+          }
     })
 
   ],

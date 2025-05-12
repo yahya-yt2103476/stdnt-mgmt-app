@@ -1,9 +1,13 @@
 import UserRepo from "../../../repos/user-repo";
+import { signJwtAccessToken } from "../../../lib/jwt";
 
 const userRepo = new UserRepo()
 export async function POST(request, { params }) {
-    const body = request.json()
-    const user = await userRepo.findByEmail(body.email)
+    const body = await request.json()
+    console.log("from the endpoint, received the following");
+    console.log(body);
+    
+    const user = await userRepo.findUserByEmailAndPassword(body.email,body.password, body.usertype)
 
     if (user) {
         const { password, ...userWithoutPass } = user
@@ -14,7 +18,9 @@ export async function POST(request, { params }) {
         }
         return new Response(JSON.stringify(result))
     } else {
-        return new Response(JSON.stringify(null))
+        return new Response(JSON.stringify({ error: "Invalid credentials" }), {
+            status: 401,
+          });
     }
 
 

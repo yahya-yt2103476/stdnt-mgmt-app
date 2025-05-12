@@ -1,19 +1,42 @@
 "use client";
 import "../../styles/login.css";
 import React from "react";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 export default function page() {
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+  
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const usertype = e.target.usertype.value;
+  
+    const result = await signIn("credentials", {
+      redirect: false, 
+      email,
+      password,
+      usertype,
+      callbackUrl: "/pages/statistics-dashboard", 
+    });
+  
+    if (!result.ok) {
+      alert("Login failed. Please check your credentials.");
+    }else if (result.ok) {
+      alert("Login successful!");
+      window.location.href = "/pages/statistics-dashboard"; // Redirect to the dashboard
+      
+    }
+  };
+
   return (
     <>
       <main>
         <h1>Welcome to Qatar University's CSE Resgistration system</h1>
 
         <div>
-        <form id="form">
+        <form id="form" onSubmit={handleLogin}>
           <div className="form-group">
-            <p id="usertype">Please choose user type...</p>
             <label htmlFor="email">
               <p>Email:</p>
             </label>
@@ -35,6 +58,18 @@ export default function page() {
               name="password"
               required
               placeholder="e.g. Pass123"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="usertype">
+              <p>user type:</p>
+            </label>
+            <input
+              type="text"
+              id="usertype"
+              name="usertype"
+              required
+              placeholder="e.g. Admin, Instructor, Student"
             />
           </div>
           <div className="form-group">
