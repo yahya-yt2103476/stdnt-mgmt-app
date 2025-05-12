@@ -1,8 +1,8 @@
 import { createUser, fetchAllUsers } from "../../../services/user-service.js";
 
-import { AddStudent } from "../../../services/student-service.js";
-import { updateInstructor } from "../../../services/instructor-service.js";
-import { updateAdmin } from "../../../services/admin-service.js";
+import studentService from "../../../services/student-service.js";
+import { createUser, updateInstructor } from "../../../services/instructor-service.js";
+import { createAdmin, updateAdmin } from "../../../services/admin-service.js";
 
 async function main() {
   const icons = [];
@@ -25,7 +25,7 @@ async function main() {
   std_icn.addEventListener("click", () => handleUserType("Student"));
   Inst_icn.addEventListener("click", () => handleUserType("Instructor"));
   Admin_icn.addEventListener("click", () => handleUserType("Admin"));
-  if (window.location.pathname.includes("login_page.html")) {
+  if (window.location.pathname.includes("login-page.html")) {
     form.addEventListener("submit", handleLoginUser);
   } else {
     console.log("not login page");
@@ -152,7 +152,7 @@ async function main() {
     }
     switch (user.userType) {
       case "Student":
-        await AddStudent({
+        await studentService.createStudent({
           id: randomId,
           name: user.name,
           gpa: "0.0",
@@ -185,7 +185,7 @@ async function main() {
 
     await createUser(user);
     alert("User created successfully, click OK to go to login page");
-    window.location.href = "/frontend/pages/login/views/login_page.html";
+    window.location.href = "/frontend/pages/login/views/login-page.html";
   }
 }
 
