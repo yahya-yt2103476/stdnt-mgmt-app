@@ -31,6 +31,26 @@ class AdminService {
     }
   }
 
+  async getAdminByUserId(userId) {
+    try {
+      // Calls the new endpoint: /api/admins/user/{userId}
+      const response = await fetch(`${this.baseUrl}/user/${userId}`); 
+      if (!response.ok) {
+        // Handle 404 specifically if needed, or just throw generic error
+        if (response.status === 404) {
+           console.log(`No admin found for user ID: ${userId}`);
+           return null; // Or throw a specific "NotFound" error
+        }
+        const error = await response.json();
+        throw new Error(error.details || `Failed to fetch admin for user ID ${userId}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`Error fetching admin by user ID ${userId}:`, error);
+      throw error;
+    }
+  }
+
   async createAdmin(adminData) {
     try {
       const response = await fetch(this.baseUrl, {

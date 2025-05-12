@@ -15,6 +15,12 @@ class AdminRepo {
         })
     }
 
+    async findByUserId(userId) {
+        return this.prisma.admin.findUnique({
+            where: { userId: Number(userId) }
+        });
+    }
+
     async create(adminData) {
         return this.prisma.admin.create({
             data: adminData

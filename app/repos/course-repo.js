@@ -6,38 +6,132 @@ class CourseRepo {
   }
 
   async findAll() {
-    return this.prisma.course.findMany();
+    // Fetch courses and include related CoursePrerequisite entries, selecting only the prerequisiteId
+    const courses = await this.prisma.course.findMany({
+        include: {
+            prerequisites: {         // Include the relation named 'prerequisites' (CoursePrerequisite[])
+                select: {
+                    prerequisiteId: true // From each CoursePrerequisite, select only the ID of the prerequisite course
+                }
+            }
+        }
+    });
+
+    // Transform the result to match the frontend's expectation:
+    // Replace course.prerequisites = [{prerequisiteId: 1}, {prerequisiteId: 2}]
+    // With course.prerequisites = [1, 2]
+    return courses.map(course => ({
+        ...course, // Keep all original course fields
+        // Map the array of prerequisite objects to an array of just the IDs
+        prerequisites: course.prerequisites.map(p => p.prerequisiteId)
+    }));
   }
 
   async findById(id) {
-    return this.prisma.course.findUnique({
+    // Also update findById to include and format prerequisites
+    const course = await this.prisma.course.findUnique({
       where: { id: Number(id) },
+      include: {
+        prerequisites: {
+            select: {
+                prerequisiteId: true
+            }
+        }
+      }
     });
+
+    if (course) {
+        return {
+            ...course,
+            prerequisites: course.prerequisites.map(p => p.prerequisiteId)
+        };
+    }
+    return null; // Return null if course not found
   }
 
   async create(courseData) {
-    return this.prisma.course.create({
-      data: courseData,
+    // If courseData includes an array of prerequisite IDs like { prerequisites: [1, 2] }
+    // You need to handle the creation of CoursePrerequisite entries separately.
+    const { prerequisites, ...restCourseData } = courseData; // Separate prerequisite IDs
+    
+    const newCourse = await this.prisma.course.create({
+      data: restCourseData, // Create course with core data first
     });
+
+    // If prerequisites were provided, create the join table entries
+    if (Array.isArray(prerequisites) && prerequisites.length > 0) {
+      const prerequisiteLinks = prerequisites.map(prereqId => ({
+        courseId: newCourse.id,
+        prerequisiteId: Number(prereqId) // Ensure IDs are numbers
+      }));
+      
+      await this.prisma.coursePrerequisite.createMany({
+        data: prerequisiteLinks,
+        skipDuplicates: true, // Avoid errors if a link already exists (optional)
+      });
+    }
+
+    // Re-fetch the course with formatted prerequisites to return consistent data
+    return this.findById(newCourse.id); 
   }
 
   async update(id, courseData) {
-    return this.prisma.course.update({
-      where: { id: Number(id) },
-      data: courseData,
+    const { prerequisites, ...restCourseData } = courseData;
+    const courseId = Number(id);
+
+    // Update the core course data
+    const updatedCourse = await this.prisma.course.update({
+      where: { id: courseId },
+      data: restCourseData,
     });
+
+    // If prerequisites array is provided (even if empty), manage the links
+    if (prerequisites !== undefined) { 
+        // Delete existing prerequisites for this course
+        await this.prisma.coursePrerequisite.deleteMany({
+            where: { courseId: courseId }
+        });
+
+        // If there are new prerequisites, create them
+        if (Array.isArray(prerequisites) && prerequisites.length > 0) {
+            const prerequisiteLinks = prerequisites.map(prereqId => ({
+                courseId: courseId,
+                prerequisiteId: Number(prereqId)
+            }));
+            
+            await this.prisma.coursePrerequisite.createMany({
+                data: prerequisiteLinks,
+                skipDuplicates: true, 
+            });
+        }
+    }
+
+    // Re-fetch the course with formatted prerequisites
+    return this.findById(courseId);
   }
 
   async delete(id) {
+    // Prisma cascade delete should handle related CoursePrerequisites automatically
+    // if the relation is set up correctly in schema.prisma (which it seems to be)
     return this.prisma.course.delete({
       where: { id: Number(id) },
     });
   }
 
   async findByCategory(category) {
-    return this.prisma.course.findMany({
+     // Update findByCategory similarly to findAll
+    const courses = await this.prisma.course.findMany({
       where: { category: category },
+      include: {
+        prerequisites: {
+          select: { prerequisiteId: true }
+        }
+      }
     });
+    return courses.map(course => ({
+        ...course,
+        prerequisites: course.prerequisites.map(p => p.prerequisiteId)
+    }));
   }
 
   async getTotalCoursesByCategory(category) {
@@ -47,9 +141,24 @@ class CourseRepo {
   }
 
   async findByShortName(shortName) {
-    return this.prisma.course.findUnique({
+    // Update findByShortName similarly to findById
+    const course = await this.prisma.course.findUnique({
       where: { shortName: shortName },
+       include: {
+        prerequisites: {
+            select: {
+                prerequisiteId: true
+            }
+        }
+      }
     });
+     if (course) {
+        return {
+            ...course,
+            prerequisites: course.prerequisites.map(p => p.prerequisiteId)
+        };
+    }
+    return null;
   }
 
   async getTotalCourses() {

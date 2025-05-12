@@ -15,6 +15,12 @@ class InstructorRepo {
         })
     }
 
+    async findByUserId(userId) {
+        return this.prisma.instructor.findUnique({
+            where: { userId: Number(userId) }
+        });
+    }
+
     async create(instructorData) {
         return this.prisma.instructor.create({
             data: instructorData
