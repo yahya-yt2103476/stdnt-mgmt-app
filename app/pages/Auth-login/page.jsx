@@ -24,9 +24,24 @@ export default function page() {
       alert("Login failed. Please check your credentials.");
     }else if (result.ok) {
       alert("Login successful!");
-      window.location.href = "/pages/statistics-dashboard"; // Redirect to the dashboard
-      
+      window.location.href = "/pages/statistics-dashboard";
+
     }
+    
+    //this should be implemented to redirct the user to the correct page. for now, it goes directly to the admins dashboard
+    
+    // else if (usertype == "admin") {
+    //   alert("Login successful!");
+    //   // window.location.href = "/pages/statistics-dashboard";
+      
+    // }else if (usertype == "instructor") {
+    //   alert("Login successful!");
+    //   // window.location.href = "/pages/statistics-dashboard";
+    // }
+    // else if (usertype == "student") {
+    //   alert("Login successful!");
+    //   // window.location.href = "/pages/statistics-dashboard"; 
+    // }
   };
 
   return (
